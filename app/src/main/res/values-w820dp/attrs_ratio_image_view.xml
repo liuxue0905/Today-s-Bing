@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="FitRatioImageView">
+        <attr name="widthToheight" format="float" />
+    </declare-styleable>
+</resources>

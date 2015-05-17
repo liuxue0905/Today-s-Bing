@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackgroundPrimaryDark">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitCenter" />
+
+    <View
+        android:id="@+id/fakeStatusBar"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:background="#66000000"
+        android:layout_alignLeft="@+id/layoutHud"
+        android:layout_alignRight="@+id/layoutHud"/>
+
+    <RelativeLayout
+        android:id="@+id/layoutHud"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/fakeStatusBar"
+        android:background="#66000000"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="12dp"
+            android:background="#00ffff"
+            android:drawableTop="@drawable/ic_launcher"
+            android:gravity="center_horizontal"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="save"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/btnLocation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24dp"
+            android:layout_toRightOf="@+id/btnSave"
+            android:background="@null"
+            android:drawableTop="@drawable/ic_launcher"
+            android:gravity="center_horizontal"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="location"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/tvEnabledRotation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="18dp"
+            android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
+            android:text="Enabled\nRotation"
+            android:textSize="10sp" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/tvEnabledRotation"
+            android:layout_toRightOf="@+id/btnLocation">
+
+            <TextView
+                android:id="@+id/tvResolution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:paddingLeft="1sp"
+                android:text="Resolution"
+                android:textSize="10sp" />
+
+            <Button
+                android:id="@+id/btnResolution"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvResolution"
+                android:layout_centerHorizontal="true"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:background="@null"
+                android:text="480x800"
+                android:textSize="18sp" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

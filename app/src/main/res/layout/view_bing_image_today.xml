@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackgroundPrimaryDark">
+
+    <ImageView
+        android:id="@+id/iv"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <!--240的渐变-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#33000000" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/iv_mkt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="14dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:src="@drawable/abc_btn_check_material" />
+
+        <TextView
+            android:id="@+id/tv_mkt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_mkt"
+            android:layout_alignTop="@+id/iv_mkt"
+            android:layout_toRightOf="@+id/iv_mkt"
+            android:gravity="center_vertical"
+            android:text="China" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/abc_btn_check_material" />
+
+        <RelativeLayout
+            android:id="@+id/layout_copyright"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="100dp"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin">
+
+            <TextView
+                android:id="@+id/tv_copyright_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="莲叶"
+                android:textColor="#fff"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tv_copyright_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_copyright_left"
+                android:text="\@ VIEW STOCK RF/Age FotoStock"
+                android:textColor="#fff"
+                android:textSize="12sp" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/ib"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/layout_copyright"
+            android:layout_alignRight="@+id/layout_copyright"
+            android:src="@drawable/abc_btn_check_material" />
+    </RelativeLayout>
+
+
+</FrameLayout>
