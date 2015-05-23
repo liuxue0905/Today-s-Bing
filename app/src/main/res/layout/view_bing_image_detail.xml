@@ -66,7 +66,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"
-            android:drawableLeft="@drawable/abc_btn_check_to_on_mtrl_015"
+            android:drawableLeft="@drawable/appbar_switch_portrait_landscape_dark"
             android:text="Enabled\nRotation"
             android:textSize="10sp" />
 
@@ -82,7 +82,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:paddingLeft="1sp"
                 android:text="Resolution"
                 android:textSize="10sp" />
 

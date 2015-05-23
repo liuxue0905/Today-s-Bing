@@ -1,9 +1,15 @@
 package com.lx.todaysbing.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
+import android.widget.RelativeLayout;
+
+import com.lx.todaysbing.view.BingImageDetailView;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -95,5 +101,29 @@ public class Utils {
     public static boolean hasJellyBean() {
         //4.1以上
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN;
+    }
+
+    public static boolean hasKitKat() {
+        //Android 4.4以上
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+    }
+
+    public static int getStatusBarHeight(Activity activity) {
+        Rect frame = new Rect();
+        activity.getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+        return frame.top;
+    }
+
+    public static void setupFakeStatusBarHeight(Activity activity, View fakeStatusBar) {
+        RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) fakeStatusBar.getLayoutParams();
+        if (hasKitKat()) {
+            int statusBarHeight = getStatusBarHeight(activity);
+            Log.d(TAG, "setupHudLayoutParams() statusBarHeight:" + statusBarHeight);
+            params2.height = statusBarHeight;
+            fakeStatusBar.setLayoutParams(params2);
+        } else {
+            params2.height = 0;
+            fakeStatusBar.setLayoutParams(params2);
+        }
     }
 }

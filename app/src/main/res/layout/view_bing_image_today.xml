@@ -29,7 +29,7 @@
             android:layout_marginBottom="14dp"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
-            android:src="@drawable/abc_btn_check_material" />
+            android:src="@drawable/appbar_globe_wire_dark" />
 
         <TextView
             android:id="@+id/tv_mkt"
@@ -47,7 +47,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:layout_marginBottom="10dp"
-            android:src="@drawable/abc_btn_check_material" />
+            android:src="@drawable/ic_bing" />
 
         <RelativeLayout
             android:id="@+id/layout_copyright"
@@ -79,12 +79,12 @@
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/ib"
+            android:id="@+id/ivDownload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/layout_copyright"
             android:layout_alignRight="@+id/layout_copyright"
-            android:src="@drawable/abc_btn_check_material" />
+            android:src="@drawable/appbar_download" />
     </RelativeLayout>
 
 

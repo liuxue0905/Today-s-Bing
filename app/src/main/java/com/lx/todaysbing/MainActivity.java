@@ -1,6 +1,9 @@
 package com.lx.todaysbing;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
@@ -9,16 +12,27 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 
 import com.lx.todaysbing.fragment.BingImagesFragment;
+import com.lx.todaysbing.util.Utils;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class MainActivity extends AppCompatActivity implements BingImagesFragment.OnTodaysBingFragmentInteractionListener {
+
+    @InjectView(R.id.fakeStatusBar)
+    View fakeStatusBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.inject(this);
 
 //        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);
@@ -32,6 +46,30 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
                     .add(R.id.container, BingImagesFragment.newInstance())
                     .commit();
         }
+
+        if (Utils.hasKitKat()) {
+            //透明状态栏
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            //透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+        } else {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        }
+
+        fakeStatusBar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onGlobalLayout() {
+
+                Utils.setupFakeStatusBarHeight(MainActivity.this, fakeStatusBar);
+
+                if (Utils.hasJellyBean()) {
+                    fakeStatusBar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    fakeStatusBar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            }
+        });
     }
 
 

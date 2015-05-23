@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.model.Image;
 import com.lx.todaysbing.util.Utils;
@@ -65,7 +66,7 @@ public class BingImageNDayItemView extends RelativeLayout {
 
         setupTvNDaysAgo(position);
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(getContext(), image.url)).into(imageView);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(getContext(), image.url)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     private void setupTvNDaysAgo(int position) {

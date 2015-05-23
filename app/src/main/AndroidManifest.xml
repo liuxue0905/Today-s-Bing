@@ -27,6 +27,9 @@
         <activity
             android:name=".activity.MarketActivity"
             android:label="@string/title_activity_market"></activity>
+
+        <meta-data android:name="com.lx.todaysbing.util.GlideConfiguration"
+            android:value="GlideModule"/>
     </application>
 
 </manifest>

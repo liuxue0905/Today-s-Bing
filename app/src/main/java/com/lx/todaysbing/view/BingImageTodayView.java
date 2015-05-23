@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.BingImageDetailActivity;
 import com.lx.todaysbing.activity.MarketActivity;
@@ -112,7 +113,7 @@ public class BingImageTodayView extends RelativeLayout {
         tvCopyRightLeft.setText(copyrightParts[0]);
         tvCopyRightRight.setText(copyrightParts[1]);
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(getContext(), image.url)).into(imageView);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(getContext(), image.url)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     @OnClick(R.id.layout_copyright)
