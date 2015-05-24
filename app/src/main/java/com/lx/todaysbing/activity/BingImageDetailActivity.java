@@ -7,11 +7,16 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.fragment.BingImageDetailFragment;
 import com.lx.todaysbing.model.Image;
+import com.lx.todaysbing.util.Utils;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 
 public class BingImageDetailActivity extends ActionBarActivity {
@@ -19,6 +24,9 @@ public class BingImageDetailActivity extends ActionBarActivity {
     private static final String EXTRA_IMAGE = "Image";
 
     private Image mImage;
+
+//    @InjectView(R.id.fakeStatusBar)
+//    View fakeStatusBar;
 
     public static void action(Context context, Image image) {
         Intent intent = new Intent(context, BingImageDetailActivity.class);
@@ -29,17 +37,10 @@ public class BingImageDetailActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        } else {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-
         setContentView(R.layout.activity_bing_image_detail);
+        ButterKnife.inject(this);
+
+//        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
         mImage = (Image) getIntent().getSerializableExtra(EXTRA_IMAGE);
 

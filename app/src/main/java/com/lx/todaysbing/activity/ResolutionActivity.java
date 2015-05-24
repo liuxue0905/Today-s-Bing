@@ -1,5 +1,6 @@
 package com.lx.todaysbing.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,10 +10,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewTreeObserver;
 
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.adapter.MarketAdapter;
 import com.lx.todaysbing.adapter.ResolutionAdapter;
+import com.lx.todaysbing.util.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -20,6 +24,8 @@ import butterknife.InjectView;
 
 public class ResolutionActivity extends AppCompatActivity {
 
+    @InjectView(R.id.fakeStatusBar)
+    View fakeStatusBar;
     @InjectView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
@@ -35,6 +41,8 @@ public class ResolutionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resolution);
         ButterKnife.inject(this);
+
+        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);

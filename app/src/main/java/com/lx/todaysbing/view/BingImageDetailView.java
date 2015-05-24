@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -39,6 +40,10 @@ public class BingImageDetailView extends RelativeLayout {
     ImageView imageView;
     @InjectView(R.id.btnResolution)
     Button btnResolution;
+    @InjectView(R.id.btnSave)
+    Button btnSave;
+    @InjectView(R.id.btnLocation)
+    Button btnLocation;
 
     private Image mImage;
 
@@ -67,12 +72,12 @@ public class BingImageDetailView extends RelativeLayout {
         inflate(context, R.layout.view_bing_image_detail, this);
         ButterKnife.inject(this);
 
+        Utils.setupFakeStatusBarHeightOnGlobalLayout((Activity) getContext(), fakeStatusBar);
+
         this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @SuppressLint("NewApi")
             @Override
             public void onGlobalLayout() {
-
-                Utils.setupFakeStatusBarHeight((Activity) getContext(), fakeStatusBar);
 
                 setupHudLayoutParams();
 

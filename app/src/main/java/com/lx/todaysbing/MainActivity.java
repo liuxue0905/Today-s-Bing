@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         ButterKnife.inject(this);
+        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
 //        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);
@@ -47,29 +47,6 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
                     .commit();
         }
 
-        if (Utils.hasKitKat()) {
-            //透明状态栏
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            //透明导航栏
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        } else {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-
-        fakeStatusBar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @SuppressLint("NewApi")
-            @Override
-            public void onGlobalLayout() {
-
-                Utils.setupFakeStatusBarHeight(MainActivity.this, fakeStatusBar);
-
-                if (Utils.hasJellyBean()) {
-                    fakeStatusBar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    fakeStatusBar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
-            }
-        });
     }
 
 

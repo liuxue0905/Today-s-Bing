@@ -9,9 +9,7 @@
         android:id="@+id/fakeStatusBar"
         android:layout_width="match_parent"
         android:layout_height="26dp"
-        android:background="#66000000"
-        android:layout_alignLeft="@+id/layoutHud"
-        android:layout_alignRight="@+id/layoutHud"/>
+        android:background="@android:color/black"/>
 
     <FrameLayout
         android:id="@+id/container"

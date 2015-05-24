@@ -1,5 +1,6 @@
 package com.lx.todaysbing.util;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
@@ -7,8 +8,11 @@ import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import com.lx.todaysbing.activity.ResolutionActivity;
 import com.lx.todaysbing.view.BingImageDetailView;
 
 import java.util.regex.Matcher;
@@ -114,7 +118,7 @@ public class Utils {
         return frame.top;
     }
 
-    public static void setupFakeStatusBarHeight(Activity activity, View fakeStatusBar) {
+    private static void setupFakeStatusBarHeight(Activity activity, View fakeStatusBar) {
         RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams) fakeStatusBar.getLayoutParams();
         if (hasKitKat()) {
             int statusBarHeight = getStatusBarHeight(activity);
@@ -125,5 +129,31 @@ public class Utils {
             params2.height = 0;
             fakeStatusBar.setLayoutParams(params2);
         }
+    }
+
+    public static void setupFakeStatusBarHeightOnGlobalLayout(final Activity activity, final View fakeStatusBar) {
+//        if (Utils.hasKitKat()) {
+//            //透明状态栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            //透明导航栏
+////            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        } else {
+////            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        }
+
+        fakeStatusBar.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onGlobalLayout() {
+
+                Utils.setupFakeStatusBarHeight(activity, fakeStatusBar);
+
+                if (Utils.hasJellyBean()) {
+                    fakeStatusBar.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    fakeStatusBar.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+            }
+        });
     }
 }
