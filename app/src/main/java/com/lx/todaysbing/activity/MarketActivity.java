@@ -1,21 +1,16 @@
 package com.lx.todaysbing.activity;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewTreeObserver;
 
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.adapter.MarketAdapter;
-import com.lx.todaysbing.util.Utils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -23,16 +18,18 @@ import butterknife.InjectView;
 
 public class MarketActivity extends AppCompatActivity {
 
-    @InjectView(R.id.fakeStatusBar)
-    View fakeStatusBar;
+    public static final String EXTRA_MARKET = "market";
+    public static final int REQUEST_CODE = 1;
+
     @InjectView(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
     private MarketAdapter mAdapter;
 
-    public static void action(Context context) {
-        Intent intent = new Intent(context, MarketActivity.class);
-        context.startActivity(intent);
+    public static void action(Activity activity, int requestCode, String market) {
+        Intent intent = new Intent(activity, MarketActivity.class);
+        intent.putExtra(EXTRA_MARKET, market);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -40,8 +37,6 @@ public class MarketActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market);
         ButterKnife.inject(this);
-
-        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);

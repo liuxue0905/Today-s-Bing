@@ -4,6 +4,11 @@
     <string name="n_day_ago_1">昨天</string>
     <string name="n_day_ago_n"><xliff:g id="nday">%1$s</xliff:g>天前</string>
 
-    <string name="resolution">分辨率 (长 X 宽)</string>
-    <string name="market">地区</string>
+    <string name="activity_resolution_title">分辨率 (长 X 宽)</string>
+    <string name="activity_market_title">地区</string>
+
+    <string name="image_detail_save">保存</string>
+    <string name="image_detail_location">位置</string>
+    <string name="image_detail_resolution">分辨率</string>
+    <string name="image_detail_enabled_rotation">可旋转</string>
 </resources>

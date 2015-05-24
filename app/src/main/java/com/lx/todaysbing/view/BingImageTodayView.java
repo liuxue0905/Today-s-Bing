@@ -2,6 +2,7 @@ package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -35,6 +36,9 @@ import butterknife.OnClick;
 public class BingImageTodayView extends RelativeLayout {
 
     private static final String TAG = "BingImageTodayView";
+
+    private String mMarket;
+
     @InjectView(R.id.tv_copyright_left)
     public TextView tvCopyRightLeft;
     @InjectView(R.id.tv_copyright_right)
@@ -108,6 +112,7 @@ public class BingImageTodayView extends RelativeLayout {
     public void bind(Image image) {
         Log.d(TAG, "bind() image:" + image);
         mImage = image;
+        mMarket = "China";
 
         String[] copyrightParts = Utils.splitCopyRight(image.copyright);
         tvCopyRightLeft.setText(copyrightParts[0]);
@@ -123,6 +128,6 @@ public class BingImageTodayView extends RelativeLayout {
 
     @OnClick(R.id.tv_mkt)
     void onClickMkt() {
-        MarketActivity.action(getContext());
+        MarketActivity.action((Activity)getContext(), MarketActivity.REQUEST_CODE, mMarket);
     }
 }

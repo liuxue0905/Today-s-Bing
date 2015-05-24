@@ -1,6 +1,7 @@
 package com.lx.todaysbing.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,9 @@ import butterknife.InjectView;
 
 public class ResolutionActivity extends AppCompatActivity {
 
+    public static final String EXTRA_RESOLUTION = "resolution";
+    public static final int REQUEST_CODE = 1;
+
     @InjectView(R.id.fakeStatusBar)
     View fakeStatusBar;
     @InjectView(R.id.recyclerView)
@@ -31,9 +35,10 @@ public class ResolutionActivity extends AppCompatActivity {
 
     private ResolutionAdapter mAdapter;
 
-    public static void action(Context context) {
-        Intent intent = new Intent(context, ResolutionActivity.class);
-        context.startActivity(intent);
+    public static void action(Activity activity, int requestCode, String resolution) {
+        Intent intent = new Intent(activity, ResolutionActivity.class);
+        intent.putExtra(EXTRA_RESOLUTION, resolution);
+        activity.startActivityForResult(intent, requestCode);
     }
 
     @Override
@@ -43,6 +48,7 @@ public class ResolutionActivity extends AppCompatActivity {
         ButterKnife.inject(this);
 
         Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
+
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);

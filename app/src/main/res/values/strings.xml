@@ -12,6 +12,11 @@
     <string name="n_day_ago_1">YESTERDAY</string>
     <string name="n_day_ago_n"><xliff:g id="nday">%1$s</xliff:g> DAYS AGO</string>
 
-    <string name="resolution">RESOLUTION (WIDTH X HEIGHT)</string>
-    <string name="market">MARKET</string>
+    <string name="activity_resolution_title">RESOLUTION (WIDTH X HEIGHT)</string>
+    <string name="activity_market_title">MARKET</string>
+
+    <string name="image_detail_save">save</string>
+    <string name="image_detail_location">location</string>
+    <string name="image_detail_resolution">Resolution</string>
+    <string name="image_detail_enabled_rotation">Enabled\nRotation</string>
 </resources>

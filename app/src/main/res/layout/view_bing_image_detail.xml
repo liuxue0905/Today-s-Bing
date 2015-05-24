@@ -39,7 +39,7 @@
             android:gravity="center_horizontal"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:text="save"
+            android:text="@string/image_detail_save"
             android:textSize="10sp" />
 
         <Button
@@ -55,19 +55,20 @@
             android:alpha="0.6"
             android:minHeight="0dp"
             android:minWidth="0dp"
-            android:text="location"
+            android:text="@string/image_detail_location"
             android:textSize="10sp" />
 
         <TextView
             android:id="@+id/tvEnabledRotation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"
             android:drawableLeft="@drawable/appbar_switch_portrait_landscape_dark"
-            android:text="Enabled\nRotation"
+            android:text="@string/image_detail_enabled_rotation"
             android:textSize="10sp" />
 
         <RelativeLayout
@@ -82,8 +83,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="Resolution"
-                android:textSize="10sp" />
+                android:text="@string/image_detail_resolution"
+                android:textSize="10sp"/>
 
             <Button
                 android:id="@+id/btnResolution"

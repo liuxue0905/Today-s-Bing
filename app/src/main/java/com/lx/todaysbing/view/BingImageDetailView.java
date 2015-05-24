@@ -40,12 +40,13 @@ public class BingImageDetailView extends RelativeLayout {
     ImageView imageView;
     @InjectView(R.id.btnResolution)
     Button btnResolution;
-    @InjectView(R.id.btnSave)
-    Button btnSave;
+//    @InjectView(R.id.btnSave)
+//    Button btnSave;
     @InjectView(R.id.btnLocation)
     Button btnLocation;
 
     private Image mImage;
+    private String mSuggestResolutionStr;
 
     public BingImageDetailView(Context context) {
         super(context);
@@ -88,6 +89,8 @@ public class BingImageDetailView extends RelativeLayout {
                 }
             }
         });
+
+        mSuggestResolutionStr = Utils.getSuggestResolutionStr(getContext());
     }
 
     private void setupHudLayoutParams() {
@@ -100,11 +103,21 @@ public class BingImageDetailView extends RelativeLayout {
     public void bind(Image image) {
         mImage = image;
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(getContext(), image.url)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(image.url, mSuggestResolutionStr)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     @OnClick(R.id.btnResolution)
     void onClickResolution() {
-        ResolutionActivity.action(getContext());
+        ResolutionActivity.action((Activity)getContext(), ResolutionActivity.REQUEST_CODE, mSuggestResolutionStr);
+    }
+
+    @OnClick(R.id.btnSave)
+    void onClickSave() {
+
+    }
+
+    @OnClick(R.id.btnLocation)
+    void onClickLocation() {
+
     }
 }
