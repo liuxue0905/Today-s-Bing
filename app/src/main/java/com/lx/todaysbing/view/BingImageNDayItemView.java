@@ -72,7 +72,7 @@ public class BingImageNDayItemView extends RelativeLayout {
 
         setupTvNDaysAgo(position);
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(image.url, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(image, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     private void setupTvNDaysAgo(int position) {

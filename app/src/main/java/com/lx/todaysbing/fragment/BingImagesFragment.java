@@ -78,6 +78,8 @@ public class BingImagesFragment extends Fragment {
     };
     private OnTodaysBingFragmentInteractionListener mListener;
 
+    private String mMkt;
+
     public BingImagesFragment() {
         // Required empty public constructor
     }
@@ -95,7 +97,6 @@ public class BingImagesFragment extends Fragment {
         BingImagesFragment fragment = new BingImagesFragment();
         Bundle args = new Bundle();
 //        args.putString(ARG_PARAM1, param1);
-//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -106,6 +107,7 @@ public class BingImagesFragment extends Fragment {
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
+            mMkt = "zh-CN";
         }
     }
 
@@ -149,25 +151,9 @@ public class BingImagesFragment extends Fragment {
             }
         });
 
-        loadHPImage();
+        bind(mMkt);
     }
 
-    private void loadHPImage() {
-
-        API api = new APIImpl();
-        api.getHPImageArchive("js", 0, 7, "zh-CN", 1, new Callback<HPImageArchive>() {
-            @Override
-            public void success(HPImageArchive hpImageArchive, Response response) {
-                String mResolution = Utils.getSuggestResolutionStr(getActivity());
-                mAdapter.changeData(hpImageArchive, mResolution);
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
-    }
 
     private void setupViewPagerLayoutParams() {
 //        ImageView v;
@@ -207,6 +193,26 @@ public class BingImagesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void bind(final String mkt) {
+        mMkt = mkt;
+        final String mResolution = Utils.getSuggestResolutionStr(getActivity());
+        Log.d(TAG, "bind() mkt:" + mkt);
+        Log.d(TAG, "bind() resolution:" + mResolution);
+
+        API api = new APIImpl();
+        api.getHPImageArchive("js", 0, 7, mkt, 1, new Callback<HPImageArchive>() {
+            @Override
+            public void success(HPImageArchive hpImageArchive, Response response) {
+                mAdapter.changeData(mkt, hpImageArchive, mResolution);
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 
     /**

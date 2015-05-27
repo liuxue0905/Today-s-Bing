@@ -106,6 +106,8 @@ public class BingImageDetailFragment extends Fragment {
     }
 
     public void bind(Image image, String resolution) {
+        mImage = image;
+        mResolution = resolution;
         mBingImageDetailView.bind(mImage, mResolution);
     }
 

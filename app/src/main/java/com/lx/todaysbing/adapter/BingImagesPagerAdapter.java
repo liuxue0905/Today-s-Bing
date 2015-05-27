@@ -15,6 +15,7 @@ import com.lx.todaysbing.view.BingImageTodayView;
 public class BingImagesPagerAdapter extends PagerAdapter {
 
     Context context;
+    String mMkt;
     HPImageArchive hpImageArchive;
     String mResolurtion;
 
@@ -22,7 +23,8 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         this.context = context;
     }
 
-    public void changeData(HPImageArchive hpImageArchive, String resolution) {
+    public void changeData(String mkt, HPImageArchive hpImageArchive, String resolution) {
+        mMkt = mkt;
         this.hpImageArchive = hpImageArchive;
         mResolurtion = resolution;
         this.notifyDataSetChanged();
@@ -43,7 +45,7 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         int realPosition = position % 2;
         if (realPosition == 0) {
             BingImageTodayView bitv = new BingImageTodayView(context);
-            bitv.bind(hpImageArchive, mResolurtion);
+            bitv.bind(mMkt, hpImageArchive, mResolurtion);
             container.addView(bitv);
             return bitv;
         } else if (realPosition == 1) {

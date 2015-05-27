@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class BingImageDetailActivity extends ActionBarActivity {
+public class BingImageDetailActivity extends AppCompatActivity {
 
     private static final String EXTRA_IMAGE = "Image";
     private static final String EXTRA_RESOLUTION = "Resolution";
@@ -80,10 +81,17 @@ public class BingImageDetailActivity extends ActionBarActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        BingImageDetailFragment fragment = (BingImageDetailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
-        fragment.bind(mImage, mResolution);
 
+        if (requestCode == ResolutionActivity.REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                String resolution = data.getStringExtra("resolution");
+                mResolution = resolution;
 
+                BingImageDetailFragment fragment = (BingImageDetailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                fragment.bind(mImage, mResolution);
+                return;
+            }
+        }
 
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -11,7 +11,8 @@ import retrofit.http.Query;
  */
 public interface API {
 
-    public static final String END_POINT = "http://www.bing.com";
+//    public static final String END_POINT = "http://www.bing.com";
+    public static final String END_POINT = "http://global.bing.com";
 
     //    http://www.bing.com/HPImageArchive.aspx?format=xml&idx=0&n=1&mkt=en-US   &video=1
     @GET("/HPImageArchive.aspx")

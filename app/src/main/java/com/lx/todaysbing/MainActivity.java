@@ -2,6 +2,7 @@ package com.lx.todaysbing;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 
+import com.lx.todaysbing.activity.MarketActivity;
 import com.lx.todaysbing.fragment.BingImagesFragment;
 import com.lx.todaysbing.util.Utils;
 
@@ -91,5 +93,21 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             return rootView;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == MarketActivity.REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                String market = data.getStringExtra("market");
+                String mkt = data.getStringExtra("mkt");
+                BingImagesFragment fragment = (BingImagesFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                fragment.bind(mkt);
+                return;
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

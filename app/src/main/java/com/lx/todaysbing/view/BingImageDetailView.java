@@ -5,9 +5,12 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.support.v4.graphics.ColorUtils;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -53,6 +56,7 @@ public class BingImageDetailView extends RelativeLayout {
 
     private Image mImage;
     private String mResolution;
+    private String mColor;
 
     public BingImageDetailView(Context context) {
         super(context);
@@ -95,6 +99,13 @@ public class BingImageDetailView extends RelativeLayout {
                 }
             }
         });
+
+        setColor();
+    }
+
+    private void setColor() {
+        mColor = "#006AC1";
+        btnResolution.setTextColor(Color.parseColor(mColor));
     }
 
     private void setupHudLayoutParams() {
@@ -110,7 +121,8 @@ public class BingImageDetailView extends RelativeLayout {
         mImage = image;
         mResolution = resolution;
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(image.url, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        btnResolution.setText(resolution);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(image, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     @OnClick(R.id.btnResolution)
@@ -123,7 +135,7 @@ public class BingImageDetailView extends RelativeLayout {
         Image image = mImage;
         String resolution = mResolution;
 
-        String url = Utils.rebuildImageUrl(image.url, resolution);
+        String url = Utils.rebuildImageUrl(image, resolution);
         String subPath = Utils.getSubPath(url);
 
         DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);

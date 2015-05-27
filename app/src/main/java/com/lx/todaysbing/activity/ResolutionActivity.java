@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.adapter.MarketAdapter;
@@ -23,7 +24,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
-public class ResolutionActivity extends AppCompatActivity {
+public class ResolutionActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     public static final String EXTRA_RESOLUTION = "resolution";
     public static final int REQUEST_CODE = 1;
@@ -54,6 +55,7 @@ public class ResolutionActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
 
         mAdapter = new ResolutionAdapter(this);
+        mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }
 
@@ -78,5 +80,14 @@ public class ResolutionActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        String resolution = mAdapter.getItem(position);
+        Intent intent = new Intent();
+        intent.putExtra("resolution", resolution);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

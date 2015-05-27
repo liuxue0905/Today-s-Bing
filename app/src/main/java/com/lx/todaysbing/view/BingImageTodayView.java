@@ -4,7 +4,10 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -37,9 +40,10 @@ public class BingImageTodayView extends RelativeLayout {
 
     private static final String TAG = "BingImageTodayView";
 
-    private String mMarket;
+    private String mMkt;
     private Image mImage;
     private String mResolution;
+    private String mColor;
 
     @InjectView(R.id.tv_copyright_left)
     public TextView tvCopyRightLeft;
@@ -49,6 +53,10 @@ public class BingImageTodayView extends RelativeLayout {
     ImageView imageView;
     @InjectView(R.id.layout_copyright)
     View layoutCopyright;
+    @InjectView(R.id.iv_mkt)
+    ImageView ivMkt;
+    @InjectView(R.id.tv_mkt)
+    TextView tvMkt;
 
     public BingImageTodayView(Context context) {
         super(context);
@@ -88,6 +96,18 @@ public class BingImageTodayView extends RelativeLayout {
                 }
             }
         });
+
+        setColor();
+    }
+
+    private void setColor() {
+        mColor = "#006AC1";
+
+        Drawable d = DrawableCompat.wrap(ivMkt.getDrawable());
+        DrawableCompat.setTint(d, Color.parseColor(mColor));
+        ivMkt.setImageDrawable(d);
+
+        tvMkt.setTextColor(Color.parseColor(mColor));
     }
 
     private void setupImageViewLayoutParams() {
@@ -104,23 +124,26 @@ public class BingImageTodayView extends RelativeLayout {
         imageView.setLayoutParams(params);
     }
 
-    public void bind(HPImageArchive hpImageArchive, String resolurtion) {
+    public void bind(String mkt, HPImageArchive hpImageArchive, String resolurtion) {
         if (hpImageArchive != null) {
-            bind(hpImageArchive.images.get(0), resolurtion);
+            bind(mkt, hpImageArchive.images.get(0), resolurtion);
         }
     }
 
-    public void bind(Image image, String resolurtion) {
+    public void bind(String mkt, Image image, String resolurtion) {
+        Log.d(TAG, "bind() mkt:" + mkt);
         Log.d(TAG, "bind() image:" + image);
         mImage = image;
         mResolution = resolurtion;
-        mMarket = "China";
+        mMkt = mkt;
+
+        tvMkt.setText(Utils.getMarket(getContext(), mkt));
 
         String[] copyrightParts = Utils.splitCopyRight(image.copyright);
         tvCopyRightLeft.setText(copyrightParts[0]);
         tvCopyRightRight.setText(copyrightParts[1]);
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(image.url, resolurtion)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(image, resolurtion)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     @OnClick(R.id.layout_copyright)
@@ -130,6 +153,6 @@ public class BingImageTodayView extends RelativeLayout {
 
     @OnClick(R.id.tv_mkt)
     void onClickMkt() {
-        MarketActivity.action((Activity)getContext(), MarketActivity.REQUEST_CODE, mMarket);
+        MarketActivity.action((Activity)getContext(), MarketActivity.REQUEST_CODE, mMkt);
     }
 }

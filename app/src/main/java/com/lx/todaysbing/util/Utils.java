@@ -3,6 +3,7 @@ package com.lx.todaysbing.util;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Rect;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -15,10 +16,14 @@ import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
 
+import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.ResolutionActivity;
+import com.lx.todaysbing.model.Image;
 import com.lx.todaysbing.view.BingImageDetailView;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,14 +62,31 @@ public class Utils {
 //        return rebuildImageUrl(url, getSuggestResolutionStr(context));
 //    }
 
+    //China
+    // url:http://s.cn.bing.net/az/hprichbg/rb/FudanAni_ZH-CN13023015076_1920x1080.jpg
+    // urlbase:/az/hprichbg/rb/FudanAni_ZH-CN13023015076
+    // Other
+    // url:/az/hprichbg/rb/GoldenGateFogVideo_EN-US10020580773_1920x1080.jpg
+    // urlbase:/az/hprichbg/rb/GoldenGateFogVideo_EN-US10020580773
+    // China->Other
+    // http://global.bing.com/az/hprichbg/rb/PalaisDuPharo_ZH-CN6551548558_1920x1080.jpg
+
     //[a-zA-z]+://[^\s]*_(\d+x\d+).jpg$
-    public static String rebuildImageUrl(String url, String suggestResolutionString) {
-        Pattern p = Pattern.compile("(\\d+x\\d+)");
-        Matcher m = p.matcher(url);
-        if (m.find()) {
-            return m.replaceAll(suggestResolutionString);
-        }
-        return url;
+//    public static String rebuildImageUrl(String url, String suggestResolutionString) {
+//
+////        Pattern p = Pattern.compile("(\\d+x\\d+)");
+////        Matcher m = p.matcher(url);
+////        if (m.find()) {
+////            return m.replaceAll(suggestResolutionString);
+////        }
+////        return url;
+//
+//        return "http://global.bing.com" + url + "_" + suggestResolutionString + ".jpg";
+//    }
+
+    public static String rebuildImageUrl(Image image, String resolution) {
+        String url = image.urlbase;
+        return "http://global.bing.com" + url + "_" + resolution + ".jpg";
     }
 
     public static int get90PWidth(Context context) {
@@ -254,5 +276,23 @@ public class Utils {
             return url.substring(url.lastIndexOf('/'));
         }
         return null;
+    }
+
+    public static String getMarket(Context context, String mkt) {
+        Resources resources = context.getResources();
+        String[] marketArray = resources.getStringArray(R.array.market);
+        String[] mktArray = resources.getStringArray(R.array.mkt);
+        int mktIndex = indexOf(mktArray, mkt);
+        return marketArray[mktIndex];
+    }
+
+    public static int indexOf(Object[] array, String e) {
+        if (array != null && array.length > 0) {
+            ArrayList<Object> list = new ArrayList<Object>(Arrays.asList(array));
+            int index = list.indexOf(e);
+            list.clear();
+            return index;
+        }
+        return -1;
     }
 }

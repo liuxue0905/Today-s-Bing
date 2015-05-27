@@ -6,9 +6,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.lx.todaysbing.R;
+import com.lx.todaysbing.activity.ResolutionActivity;
 
 /**
  * Created by liuxue on 2015/5/13.
@@ -19,6 +21,8 @@ public class ResolutionAdapter extends RecyclerView.Adapter<ResolutionAdapter.Vi
 
     private final Context context;
     private final String[] resolutions;
+
+    private AdapterView.OnItemClickListener onItemClickListener;
 
     public ResolutionAdapter(Context context) {
         this.context = context;
@@ -33,9 +37,18 @@ public class ResolutionAdapter extends RecyclerView.Adapter<ResolutionAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         String resolution = this.resolutions[position];
         holder.getTvResolution().setText(resolution);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "Element " + position + " clicked.");
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(null, holder.itemView, position, position);
+                }
+            }
+        });
     }
 
     @Override
@@ -43,9 +56,13 @@ public class ResolutionAdapter extends RecyclerView.Adapter<ResolutionAdapter.Vi
         return this.resolutions.length;
     }
 
-//    public String getItem(int position) {
-//        return this.resolutions[position];
-//    }
+    public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
+        onItemClickListener = listener;
+    }
+
+    public String getItem(int position) {
+        return this.resolutions[position];
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 

@@ -15,6 +15,33 @@
         <item>1920x1200</item>
     </string-array>
 
+    <string-array name="mkt">
+        <item>en-US</item>
+        <item>zh-CN</item>
+        <item>ja-JP</item>
+        <item>en-AU</item>
+        <item>en-UK</item>
+        <item>de-DE</item>
+        <item>en-NZ</item>
+        <item>en-CA</item>
+        <item>fr-FR</item>
+        <item>it-IT</item>
+        <item>pl-PL</item>
+        <item>en-IN</item>
+        <item>vi-VN</item>
+        <item>th-TH</item>
+        <item>ko-KR</item>
+        <item>ms-MY</item>
+        <item>pt-PT</item>
+        <item>es-ES</item>
+        <item>tr-TR</item>
+        <item>nl-NL</item>
+        <item>hu-HU</item>
+        <item>pt-BR</item>
+        <item>ru-RU</item>
+        <item>fi-FI</item>
+    </string-array>
+
     <string-array name="market">
         <item>United States</item>
         <item>China</item>
@@ -41,4 +68,5 @@
         <item>Russia</item>
         <item>Finland</item>
     </string-array>
+
 </resources>
