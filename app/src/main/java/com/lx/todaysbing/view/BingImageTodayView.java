@@ -38,12 +38,13 @@ public class BingImageTodayView extends RelativeLayout {
     private static final String TAG = "BingImageTodayView";
 
     private String mMarket;
+    private Image mImage;
+    private String mResolution;
 
     @InjectView(R.id.tv_copyright_left)
     public TextView tvCopyRightLeft;
     @InjectView(R.id.tv_copyright_right)
     public TextView tvCopyRightRight;
-    Image mImage;
     @InjectView(R.id.iv)
     ImageView imageView;
     @InjectView(R.id.layout_copyright)
@@ -103,27 +104,28 @@ public class BingImageTodayView extends RelativeLayout {
         imageView.setLayoutParams(params);
     }
 
-    public void bind(HPImageArchive hpImageArchive) {
+    public void bind(HPImageArchive hpImageArchive, String resolurtion) {
         if (hpImageArchive != null) {
-            bind(hpImageArchive.images.get(0));
+            bind(hpImageArchive.images.get(0), resolurtion);
         }
     }
 
-    public void bind(Image image) {
+    public void bind(Image image, String resolurtion) {
         Log.d(TAG, "bind() image:" + image);
         mImage = image;
+        mResolution = resolurtion;
         mMarket = "China";
 
         String[] copyrightParts = Utils.splitCopyRight(image.copyright);
         tvCopyRightLeft.setText(copyrightParts[0]);
         tvCopyRightRight.setText(copyrightParts[1]);
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(getContext(), image.url)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(image.url, resolurtion)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     @OnClick(R.id.layout_copyright)
     void onClickLayoutCopyright() {
-        BingImageDetailActivity.action(getContext(), mImage);
+        BingImageDetailActivity.action(getContext(), mImage, mResolution);
     }
 
     @OnClick(R.id.tv_mkt)

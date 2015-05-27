@@ -32,6 +32,9 @@ public class BingImageNDayItemView extends RelativeLayout {
     @InjectView(R.id.tvNDaysAgo)
     public TextView tvNDaysAgo;
 
+    private Image mImage;
+    private String mResolution;
+
     public BingImageNDayItemView(Context context) {
         super(context);
         init(context);
@@ -59,14 +62,17 @@ public class BingImageNDayItemView extends RelativeLayout {
 
     }
 
-    public void bind(int position, Image image) {
+    public void bind(int position, Image image, String resolution) {
+        mImage = image;
+        mResolution = resolution;
+
         String[] copyrightParts = Utils.splitCopyRight(image.copyright);
         tvCopyRightLeft.setText(copyrightParts[0]);
         tvCopyRightRight.setText(copyrightParts[1]);
 
         setupTvNDaysAgo(position);
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(getContext(), image.url)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(image.url, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     private void setupTvNDaysAgo(int position) {

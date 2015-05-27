@@ -3,16 +3,21 @@ package com.lx.todaysbing.view;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -32,6 +37,7 @@ public class BingImageDetailView extends RelativeLayout {
 
     private static final String TAG = "BingImageDetailView";
 
+
     @InjectView(R.id.layoutHud)
     View layoutHud;
     @InjectView(R.id.fakeStatusBar)
@@ -46,7 +52,7 @@ public class BingImageDetailView extends RelativeLayout {
     Button btnLocation;
 
     private Image mImage;
-    private String mSuggestResolutionStr;
+    private String mResolution;
 
     public BingImageDetailView(Context context) {
         super(context);
@@ -89,8 +95,6 @@ public class BingImageDetailView extends RelativeLayout {
                 }
             }
         });
-
-        mSuggestResolutionStr = Utils.getSuggestResolutionStr(getContext());
     }
 
     private void setupHudLayoutParams() {
@@ -100,20 +104,46 @@ public class BingImageDetailView extends RelativeLayout {
         layoutHud.setLayoutParams(params);
     }
 
-    public void bind(Image image) {
+    public void bind(Image image, String resolution) {
+        Log.d(TAG, "bind() image:" + image);
+        Log.d(TAG, "bind() resolution:" + resolution);
         mImage = image;
+        mResolution = resolution;
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(image.url, mSuggestResolutionStr)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(image.url, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
     }
 
     @OnClick(R.id.btnResolution)
     void onClickResolution() {
-        ResolutionActivity.action((Activity)getContext(), ResolutionActivity.REQUEST_CODE, mSuggestResolutionStr);
+        ResolutionActivity.action((Activity)getContext(), ResolutionActivity.REQUEST_CODE, mResolution);
     }
 
     @OnClick(R.id.btnSave)
     void onClickSave() {
+        Image image = mImage;
+        String resolution = mResolution;
 
+        String url = Utils.rebuildImageUrl(image.url, resolution);
+        String subPath = Utils.getSubPath(url);
+
+        DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+        boolean has = Utils.hasExternalStoragePublicPicture(subPath);
+        if (has) {
+            Toast.makeText(getContext(), R.string.image_detail_downloaded, Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, subPath);
+        request.setTitle(image.urlbase);
+        request.setDescription(image.copyright);
+        request.allowScanningByMediaScanner();
+        request.setVisibleInDownloadsUi(true);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+        manager.enqueue(request);
+
+        Toast.makeText(getContext(), getContext().getString(R.string.image_detail_download_start), Toast.LENGTH_LONG).show();
     }
 
     @OnClick(R.id.btnLocation)

@@ -64,7 +64,7 @@
                 android:id="@+id/tv_copyright_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="莲叶"
+                android:text="@null"
                 android:textColor="#fff"
                 android:textSize="22sp" />
 
@@ -73,7 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_copyright_left"
-                android:text="\@ VIEW STOCK RF/Age FotoStock"
+                android:text="@null"
                 android:textColor="#fff"
                 android:textSize="12sp" />
 

@@ -22,15 +22,18 @@ import butterknife.InjectView;
 public class BingImageDetailActivity extends ActionBarActivity {
 
     private static final String EXTRA_IMAGE = "Image";
+    private static final String EXTRA_RESOLUTION = "Resolution";
 
     private Image mImage;
+    private String mResolution;
 
 //    @InjectView(R.id.fakeStatusBar)
 //    View fakeStatusBar;
 
-    public static void action(Context context, Image image) {
+    public static void action(Context context, Image image, String resolution) {
         Intent intent = new Intent(context, BingImageDetailActivity.class);
         intent.putExtra(EXTRA_IMAGE, image);
+        intent.putExtra(EXTRA_RESOLUTION, resolution);
         context.startActivity(intent);
     }
 
@@ -43,10 +46,11 @@ public class BingImageDetailActivity extends ActionBarActivity {
 //        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
         mImage = (Image) getIntent().getSerializableExtra(EXTRA_IMAGE);
+        mResolution = getIntent().getStringExtra(EXTRA_RESOLUTION);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, BingImageDetailFragment.newInstance(mImage))
+                    .add(R.id.container, BingImageDetailFragment.newInstance(mImage, mResolution))
                     .commit();
         }
     }
@@ -74,5 +78,13 @@ public class BingImageDetailActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        BingImageDetailFragment fragment = (BingImageDetailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+        fragment.bind(mImage, mResolution);
 
+
+
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

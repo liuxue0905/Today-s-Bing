@@ -158,7 +158,8 @@ public class BingImagesFragment extends Fragment {
         api.getHPImageArchive("js", 0, 7, "zh-CN", 1, new Callback<HPImageArchive>() {
             @Override
             public void success(HPImageArchive hpImageArchive, Response response) {
-                mAdapter.changeData(hpImageArchive);
+                String mResolution = Utils.getSuggestResolutionStr(getActivity());
+                mAdapter.changeData(hpImageArchive, mResolution);
             }
 
             @Override

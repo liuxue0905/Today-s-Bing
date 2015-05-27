@@ -27,9 +27,14 @@ public class BingImageDetailFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_IMAGE = "Image";
+    private static final String ARG_RESOLUTION = "Resolution";
+
     @InjectView(R.id.viewBingImageDetailView)
     BingImageDetailView mBingImageDetailView;
+
     private Image mImage;
+    private String mResolution;
+
     private OnFragmentInteractionListener mListener;
 
     public BingImageDetailFragment() {
@@ -43,10 +48,11 @@ public class BingImageDetailFragment extends Fragment {
      * @param image Parameter 1.
      * @return A new instance of fragment BingImageDetailFragment.
      */
-    public static BingImageDetailFragment newInstance(Image image) {
+    public static BingImageDetailFragment newInstance(Image image, String resolution) {
         BingImageDetailFragment fragment = new BingImageDetailFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_IMAGE, (java.io.Serializable) image);
+        args.putString(ARG_RESOLUTION, resolution);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,6 +62,7 @@ public class BingImageDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mImage = (Image) getArguments().getSerializable(ARG_IMAGE);
+            mResolution = getArguments().getString(ARG_RESOLUTION);
         }
     }
 
@@ -71,7 +78,7 @@ public class BingImageDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
 
-        mBingImageDetailView.bind(mImage);
+        bind(mImage, mResolution);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -96,6 +103,10 @@ public class BingImageDetailFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    public void bind(Image image, String resolution) {
+        mBingImageDetailView.bind(mImage, mResolution);
     }
 
     /**

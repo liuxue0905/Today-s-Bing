@@ -16,13 +16,15 @@ public class BingImagesPagerAdapter extends PagerAdapter {
 
     Context context;
     HPImageArchive hpImageArchive;
+    String mResolurtion;
 
     public BingImagesPagerAdapter(Context context) {
         this.context = context;
     }
 
-    public void changeData(HPImageArchive hpImageArchive) {
+    public void changeData(HPImageArchive hpImageArchive, String resolution) {
         this.hpImageArchive = hpImageArchive;
+        mResolurtion = resolution;
         this.notifyDataSetChanged();
     }
 
@@ -41,12 +43,12 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         int realPosition = position % 2;
         if (realPosition == 0) {
             BingImageTodayView bitv = new BingImageTodayView(context);
-            bitv.bind(hpImageArchive);
+            bitv.bind(hpImageArchive, mResolurtion);
             container.addView(bitv);
             return bitv;
         } else if (realPosition == 1) {
             BingImageNDayView binv = new BingImageNDayView(context);
-            binv.bind(hpImageArchive);
+            binv.bind(hpImageArchive, mResolurtion);
             container.addView(binv);
             return binv;
         }

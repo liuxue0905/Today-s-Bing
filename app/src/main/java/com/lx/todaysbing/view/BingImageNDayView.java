@@ -35,15 +35,18 @@ public class BingImageNDayView extends RelativeLayout {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Log.d(TAG, "onItemClick() position:" + position);
             Image image = mAdapter.getItem(position);
+            String resolution = mResolution;
             Log.d(TAG, "onItemClick() image:" + image);
             if (image != null) {
-                BingImageDetailActivity.action(getContext(), image);
+                BingImageDetailActivity.action(getContext(), image, resolution);
             }
         }
     };
     @InjectView(R.id.recyclerView)
     RecyclerView mRecyclerView;
     private ImageNDayRecyclerViewAdapter mAdapter;
+
+    private String mResolution;
 
     public BingImageNDayView(Context context) {
         super(context);
@@ -73,14 +76,16 @@ public class BingImageNDayView extends RelativeLayout {
         setRecyclerViewLayoutManager();
     }
 
-    public void bind(HPImageArchive hpImageArchive) {
+    public void bind(HPImageArchive hpImageArchive, String resolution) {
         if (hpImageArchive != null) {
-            bind(new ArrayList<Image>(hpImageArchive.images.subList(1, hpImageArchive.images.size())));
+            bind(new ArrayList<Image>(hpImageArchive.images.subList(1, hpImageArchive.images.size())), resolution);
         }
     }
 
-    public void bind(List<Image> imageList) {
-        mAdapter = new ImageNDayRecyclerViewAdapter(getContext(), imageList);
+    public void bind(List<Image> imageList, String resolution) {
+        mResolution = resolution;
+
+        mAdapter = new ImageNDayRecyclerViewAdapter(getContext(), imageList, resolution);
         mAdapter.setOnItemClickListener(mOnItemClickList);
         mRecyclerView.setAdapter(mAdapter);
     }

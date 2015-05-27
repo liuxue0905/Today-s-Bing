@@ -36,15 +36,18 @@ public class ImageNDayRecyclerViewAdapter extends RecyclerView.Adapter<ImageNDay
     AdapterView.OnItemClickListener mOnItemClickListener;
     private Context context;
     private List<Image> mDataSet;
+    private String mResolution;
 
     /**
      * Initialize the dataset of the Adapter.
      *
      * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
+     * @param resolution
      */
-    public ImageNDayRecyclerViewAdapter(Context context, List<Image> dataSet) {
+    public ImageNDayRecyclerViewAdapter(Context context, List<Image> dataSet, String resolution) {
         this.context = context;
         mDataSet = dataSet;
+        mResolution = resolution;
     }
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
@@ -73,7 +76,7 @@ public class ImageNDayRecyclerViewAdapter extends RecyclerView.Adapter<ImageNDay
         // with that element
 //        viewHolder.getTextView().setText(mDataSet[position]);
 
-        ((BingImageNDayItemView) viewHolder.itemView).bind(position, mDataSet.get(position));
+        ((BingImageNDayItemView) viewHolder.itemView).bind(position, mDataSet.get(position), mResolution);
 
         final ViewHolder fViewHolder = viewHolder;
         fViewHolder.itemView.setOnClickListener(new View.OnClickListener() {

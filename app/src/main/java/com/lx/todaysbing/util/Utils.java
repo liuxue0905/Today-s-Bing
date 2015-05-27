@@ -4,7 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Rect;
+import android.media.MediaScannerConnection;
+import android.net.Uri;
 import android.os.Build;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +18,7 @@ import android.widget.RelativeLayout;
 import com.lx.todaysbing.activity.ResolutionActivity;
 import com.lx.todaysbing.view.BingImageDetailView;
 
+import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -49,9 +53,9 @@ public class Utils {
         return ResolutionUtils.getSuggestResolution(context, new ResolutionUtils.Resolution(dm.widthPixels, dm.heightPixels));
     }
 
-    public static String rebuildImageUrl(Context context, String url) {
-        return rebuildImageUrl(url, getSuggestResolutionStr(context));
-    }
+//    public static String rebuildImageUrl(Context context, String url) {
+//        return rebuildImageUrl(url, getSuggestResolutionStr(context));
+//    }
 
     //[a-zA-z]+://[^\s]*_(\d+x\d+).jpg$
     public static String rebuildImageUrl(String url, String suggestResolutionString) {
@@ -155,5 +159,100 @@ public class Utils {
                 }
             }
         });
+    }
+
+    public static void deleteExternalStoragePublicPicture(String name) {
+        // Create a path where we will place our picture in the user's
+        // public pictures directory and delete the file.  If external
+        // storage is not currently mounted this will fail.
+        File path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File file = new File(path, name);
+        file.delete();
+    }
+
+    public static boolean hasExternalStoragePublicPicture(String name) {
+        // Create a path where we will place our picture in the user's
+        // public pictures directory and check if the file exists.  If
+        // external storage is not currently mounted this will think the
+        // picture doesn't exist.
+        File path = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File file = new File(path, name);
+        return file.exists();
+    }
+
+    public static void deleteExternalStoragePrivatePicture(Context context, String name) {
+        // Create a path where we will place our picture in the user's
+        // public pictures directory and delete the file.  If external
+        // storage is not currently mounted this will fail.
+        File path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (path != null) {
+            File file = new File(path, name);
+            file.delete();
+        }
+    }
+
+    public static boolean hasExternalStoragePrivatePicture(Context context, String name) {
+        // Create a path where we will place our picture in the user's
+        // public pictures directory and check if the file exists.  If
+        // external storage is not currently mounted this will think the
+        // picture doesn't exist.
+        File path = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (path != null) {
+            File file = new File(path, name);
+            return file.exists();
+        }
+        return false;
+    }
+
+    public static void deleteExternalStoragePrivateFile(Context context, String name) {
+        // Get path for the file on external storage.  If external
+        // storage is not currently mounted this will fail.
+        File file = new File(context.getExternalFilesDir(null), name);
+        if (file != null) {
+            file.delete();
+        }
+    }
+
+    public static boolean hasExternalStoragePrivateFile(Context context, String name) {
+        // Get path for the file on external storage.  If external
+        // storage is not currently mounted this will fail.
+        File file = new File(context.getExternalFilesDir(null), name);
+        if (file != null) {
+            return file.exists();
+        }
+        return false;
+    }
+
+    public static void scanFile(Context context, String path, final MediaScannerConnection.OnScanCompletedListener listener) {
+        // Tell the media scanner about the new file so that it is
+        // immediately available to the user.
+        MediaScannerConnection.scanFile(context,
+                new String[]{path}, null,
+                new MediaScannerConnection.OnScanCompletedListener() {
+                    public void onScanCompleted(String path, Uri uri) {
+                        Log.i("ExternalStorage", "Scanned " + path + ":");
+                        Log.i("ExternalStorage", "-> uri=" + uri);
+                        if (listener != null) {
+                            listener.onScanCompleted(path, uri);
+                        }
+                    }
+                });
+    }
+
+    public static String getColor(Context context) {
+        return "#006AC1";
+    }
+
+    public static void setColor(Context context) {
+
+    }
+
+    public static String getSubPath(String url) {
+        if (url != null && url.length() != 0) {
+            return url.substring(url.lastIndexOf('/'));
+        }
+        return null;
     }
 }

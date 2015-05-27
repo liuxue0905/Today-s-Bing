@@ -18,13 +18,15 @@ public class ImageNDayAdapter extends BaseAdapter {
 
     private Context context;
     private List<Image> imageList;
+    private String mResolution;
 
     private int mItemHeight = 0;
     private RelativeLayout.LayoutParams mImageViewLayoutParams;
 
-    public ImageNDayAdapter(Context context, List<Image> imageList) {
+    public ImageNDayAdapter(Context context, List<Image> imageList, String resolution) {
         this.context = context;
         this.imageList = imageList;
+        mResolution = resolution;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class ImageNDayAdapter extends BaseAdapter {
 //            itemView.imageView.setLayoutParams(mImageViewLayoutParams);
 //        }
 
-        itemView.bind(position, getItem(position));
+        itemView.bind(position, getItem(position), mResolution);
         return itemView;
     }
 

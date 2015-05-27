@@ -11,4 +11,6 @@
     <string name="image_detail_location">位置</string>
     <string name="image_detail_resolution">分辨率</string>
     <string name="image_detail_enabled_rotation">可旋转</string>
+    <string name="image_detail_downloaded">已下载</string>
+    <string name="image_detail_download_start">开始下载</string>
 </resources>
