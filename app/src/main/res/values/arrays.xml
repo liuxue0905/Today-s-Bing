@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="resolution">
+    <string-array name="resolution" translatable="false">
         <item>240x240</item>
         <item>240x400</item>
         <item>400x240</item>
@@ -15,7 +15,7 @@
         <item>1920x1200</item>
     </string-array>
 
-    <string-array name="mkt">
+    <string-array name="mkt" translatable="false">
         <item>en-US</item>
         <item>zh-CN</item>
         <item>ja-JP</item>
@@ -42,7 +42,7 @@
         <item>fi-FI</item>
     </string-array>
 
-    <string-array name="market">
+    <string-array name="market" translatable="false">
         <item>United States</item>
         <item>China</item>
         <item>Japan</item>

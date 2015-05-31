@@ -8,6 +8,10 @@
     <string name="action_update">检查更新</string>
     <string name="action_share">分享</string>
 
+    <string name="title_activity_bing_image_detail">BingImageDetailActivity</string>
+    <string name="title_activity_resolution">ResolutionActivity</string>
+    <string name="title_activity_market">MarketActivity</string>
+
     <string name="activity_resolution_title">分辨率 (长 X 宽)</string>
     <string name="activity_market_title">地区</string>
 

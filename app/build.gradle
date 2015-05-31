@@ -43,9 +43,9 @@ android {
             // œ‘ æLog
             buildConfigField "boolean", "LOG_DEBUG", "true"
 
-//            versionNameSuffix "-debug"
-//            applicationIdSuffix ".debug"
-//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "debug"]
+            versionNameSuffix "-debug"
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "debug"]
             minifyEnabled false
             zipAlignEnabled false
             shrinkResources false

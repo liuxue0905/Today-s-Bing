@@ -67,6 +67,17 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
             UmengUpdateAgent.setUpdateOnlyWifi(false);
             UmengUpdateAgent.update(this);
+//            UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+//                @Override
+//                public void onUpdateReturned(int i, UpdateResponse updateResponse) {
+//                    Log.d(TAG, "onUpdateReturned() i:" + i + ",updateResponse:" + updateResponse);
+//                    switch (i) {
+//                        case UpdateStatus.Yes: // has update
+//                            UmengUpdateAgent.showUpdateDialog(mContext, updateResponse);
+//                            break;
+//                    }
+//                }
+//            });
         }
     }
 
@@ -120,27 +131,7 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
         UmengUpdateAgent.setUpdateOnlyWifi(false);
         UmengUpdateAgent.setSlotId("65102");
         UmengUpdateAgent.forceUpdate(this);
-        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-
-            @Override
-            public void onUpdateReturned(int i, UpdateResponse updateResponse) {
-                Log.d(TAG, "onUpdateReturned() i:" + i + ",updateResponse:" + updateResponse);
-                switch (i) {
-                    case UpdateStatus.Yes: // has update
-                        UmengUpdateAgent.showUpdateDialog(mContext, updateResponse);
-                        break;
-                    case UpdateStatus.No: // has no update
-                        Toast.makeText(mContext, R.string.check_update_has_no_update, Toast.LENGTH_SHORT).show();
-                        break;
-                    case UpdateStatus.NoneWifi: // none wifi
-                        Toast.makeText(mContext, R.string.check_update_none_wifi, Toast.LENGTH_SHORT).show();
-                        break;
-                    case UpdateStatus.Timeout: // time out
-                        Toast.makeText(mContext, R.string.check_update_time_out, Toast.LENGTH_SHORT).show();
-                        break;
-                }
-            }
-        });
+        UmengUpdateAgent.setUpdateListener(null);
     }
 
     @Override
