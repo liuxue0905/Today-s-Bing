@@ -27,16 +27,16 @@ android {
             // 移除无用的resource文件
 //            shrinkResources true
 
-//            applicationVariants.all { variant ->
-//                variant.outputs.each { output ->
-//                    def outputFile = output.outputFile
-//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                        // 输出apk名称为BingWallpaper_v1.0_d2015-01-15_wandoujia.apk
-//                        def fileName = "Today's_Bing_v${defaultConfig.versionName}(${defaultConfig.versionCode})_${releaseTime()}_${variant.productFlavors[0].name}.apk"
-//                        output.outputFile = new File(outputFile.parent, fileName)
-//                    }
-//                }
-//            }
+            applicationVariants.all { variant ->
+                variant.outputs.each { output ->
+                    def outputFile = output.outputFile
+                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                        // 输出apk名称为BingWallpaper_v1.0_d2015-01-15_wandoujia.apk
+                        def fileName = "Today's_Bing_v${defaultConfig.versionName}(${defaultConfig.versionCode})_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+                        output.outputFile = new File(outputFile.parent, fileName)
+                    }
+                }
+            }
         }
 
         debug {
@@ -52,22 +52,22 @@ android {
         }
     }
 
-//    productFlavors {
-//        umeng {}
-//        qh360 {}
-//        baidu {}
-//        hiapk {}
-//        zs91 {}
-//        yyb {}
-//        productFlavors.all { flavor ->
-//            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
-//        }
-//    }
+    productFlavors {
+        umeng {}
+        qh360 {}
+        baidu {}
+        hiapk {}
+        zs91 {}
+        yyb {}
+        productFlavors.all { flavor ->
+            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+        }
+    }
 }
 
-//def releaseTime() {
-//    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
-//}
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')

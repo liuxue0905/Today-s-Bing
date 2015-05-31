@@ -22,8 +22,8 @@
     <string name="image_detail_location">location</string>
     <string name="image_detail_resolution">Resolution</string>
     <string name="image_detail_enabled_rotation">Enabled\nRotation</string>
-    <string name="image_detail_downloaded">Downloaded</string>
-    <string name="image_detail_download_start">Start Download</string>
+    <string name="image_detail_downloaded">Downloaded\nPlease Check it out in System Gallery</string>
+    <string name="image_detail_download_start">Start Download\nUse System Download Manager</string>
 
     <string name="bing_images_failure">Load Failure</string>
 
@@ -31,5 +31,5 @@
     <string name="check_update_none_wifi">Check Update:None wifi</string>
     <string name="check_update_time_out">Check Update:Time out</string>
 
-    <string name="tips_im_coming_next_version">I'm Coming Next Version~</string>
+    <string name="tips_im_coming_next_version">I\'m Coming Next Version~</string>
 </resources>
