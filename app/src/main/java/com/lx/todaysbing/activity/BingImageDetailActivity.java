@@ -15,8 +15,12 @@ import android.view.WindowManager;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.fragment.BingImageDetailFragment;
 import com.lx.todaysbing.model.Image;
+import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -105,6 +109,11 @@ public class BingImageDetailActivity extends AppCompatActivity {
 
                 BingImageDetailFragment fragment = (BingImageDetailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
                 fragment.bind(mImage, mResolution);
+
+                Map<String, String> map = new HashMap<>();
+                map.put("resolution", resolution);
+                MobclickAgent.onEvent(this, MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_ONITEMCLICK_RESOLUTION, map);
+
                 return;
             }
         }

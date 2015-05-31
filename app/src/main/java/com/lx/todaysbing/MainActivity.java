@@ -20,12 +20,16 @@ import android.widget.Toast;
 import com.lx.todaysbing.activity.MarketActivity;
 import com.lx.todaysbing.event.OnScrollEvent;
 import com.lx.todaysbing.fragment.BingImagesFragment;
+import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
 import com.umeng.update.UmengUpdateListener;
 import com.umeng.update.UpdateResponse;
 import com.umeng.update.UpdateStatus;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -95,11 +99,18 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Toast.makeText(mContext, "-_-||", Toast.LENGTH_SHORT).show();
+            MobclickAgent.onEvent(this, MobclickAgentHelper.BingImageMain.EVENT_ID_BINGIMAGEMAIN_SETTINGS);
+            Toast.makeText(mContext, R.string.tips_im_coming_next_version, Toast.LENGTH_SHORT).show();
             return true;
         }
         else if (id == R.id.action_update) {
+            MobclickAgent.onEvent(this, MobclickAgentHelper.BingImageMain.EVENT_ID_BINGIMAGEMAIN_UPDATE);
             onActinUpdate();
+            return true;
+        }
+        else if (id == R.id.action_share) {
+            MobclickAgent.onEvent(this, MobclickAgentHelper.BingImageMain.EVENT_ID_BINGIMAGEMAIN_SHARE);
+            Toast.makeText(mContext, R.string.tips_im_coming_next_version, Toast.LENGTH_SHORT).show();
             return true;
         }
 
@@ -164,6 +175,11 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
                 BingImagesFragment fragment = (BingImagesFragment) getSupportFragmentManager().findFragmentById(R.id.container);
                 fragment.bind(mkt);
                 EventBus.getDefault().postSticky(new OnScrollEvent(null));
+
+                Map<String, String> map = new HashMap<>();
+                map.put("mkt", mkt);
+                map.put("market", market);
+                MobclickAgent.onEvent(this, MobclickAgentHelper.BingImageMain.EVENT_ID_BINGIMAGEMAIN_ONITEMCLICK_MARKET, map);
                 return;
             }
         }

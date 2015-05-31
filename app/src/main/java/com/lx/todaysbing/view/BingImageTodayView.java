@@ -26,10 +26,14 @@ import com.lx.todaysbing.activity.BingImageDetailActivity;
 import com.lx.todaysbing.activity.MarketActivity;
 import com.lx.todaysbing.model.HPImageArchive;
 import com.lx.todaysbing.model.Image;
+import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -178,10 +182,14 @@ public class BingImageTodayView extends RelativeLayout {
         if (mImage == null)
             return;
         BingImageDetailActivity.action(getContext(), mImage, mResolution);
+
+        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_DETAIL);
     }
 
     @OnClick(R.id.tv_mkt)
     void onClickMkt() {
         MarketActivity.action((Activity)getContext(), MarketActivity.REQUEST_CODE, mMkt);
+
+        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_MKT);
     }
 }

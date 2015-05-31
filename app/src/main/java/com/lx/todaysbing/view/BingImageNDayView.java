@@ -20,9 +20,13 @@ import com.lx.todaysbing.adapter.ImageNDayRecyclerViewAdapter;
 import com.lx.todaysbing.event.OnScrollEvent;
 import com.lx.todaysbing.model.HPImageArchive;
 import com.lx.todaysbing.model.Image;
+import com.lx.todaysbing.umeng.MobclickAgentHelper;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -98,6 +102,10 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
         if (image != null) {
             BingImageDetailActivity.action(getContext(), image, resolution);
         }
+
+        Map<String, String> map = new HashMap<>();
+        map.put("position", String.valueOf(position));
+        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageNDay.EVENT_ID_BINGIMAGENDAY_ONITEMCLICK, map);
     }
 
     public void setRecyclerViewLayoutManager() {

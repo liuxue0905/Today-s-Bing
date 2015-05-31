@@ -27,7 +27,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.ResolutionActivity;
 import com.lx.todaysbing.model.Image;
+import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -118,11 +120,15 @@ public class BingImageDetailView extends RelativeLayout {
 
     @OnClick(R.id.btnResolution)
     void onClickResolution() {
+        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_RESOLUTION);
+
         ResolutionActivity.action((Activity)getContext(), ResolutionActivity.REQUEST_CODE, mResolution);
     }
 
     @OnClick(R.id.btnSave)
     void onClickSave() {
+        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_SAVE);
+
         Image image = mImage;
         String resolution = mResolution;
 
@@ -151,6 +157,6 @@ public class BingImageDetailView extends RelativeLayout {
 
     @OnClick(R.id.btnLocation)
     void onClickLocation() {
-
+        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_LOCATION);
     }
 }
