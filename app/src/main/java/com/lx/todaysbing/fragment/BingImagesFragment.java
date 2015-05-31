@@ -2,10 +2,14 @@ package com.lx.todaysbing.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.adapter.BingImagesPagerAdapter;
@@ -35,7 +41,7 @@ import retrofit.client.Response;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BingImagesFragment.OnTodaysBingFragmentInteractionListener} interface
+ * {@link OnBingImagesFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link BingImagesFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -57,6 +63,8 @@ public class BingImagesFragment extends Fragment {
     ViewGroup mViewPagerContainer;
     @InjectView(R.id.viewPager)
     ViewPager mViewPager;
+    @InjectView(R.id.progressBar)
+    ProgressBar progressBar;
 
     BingImagesPagerAdapter mAdapter;
     ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -76,9 +84,11 @@ public class BingImagesFragment extends Fragment {
 
         }
     };
-    private OnTodaysBingFragmentInteractionListener mListener;
+    private OnBingImagesFragmentInteractionListener mListener;
 
     private String mMkt;
+    private String mResolution;
+    private String mColor;
 
     public BingImagesFragment() {
         // Required empty public constructor
@@ -108,6 +118,7 @@ public class BingImagesFragment extends Fragment {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
             mMkt = "zh-CN";
+            mResolution = Utils.getSuggestResolution(getActivity());
         }
     }
 
@@ -122,6 +133,8 @@ public class BingImagesFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
+
+        setColor();
 
         mAdapter = new BingImagesPagerAdapter(getActivity());
 
@@ -154,16 +167,22 @@ public class BingImagesFragment extends Fragment {
         bind(mMkt);
     }
 
+    private void setColor() {
+        mColor = "#006AC1";
+
+        Drawable d = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+        DrawableCompat.setTint(d, Color.parseColor(mColor));
+        progressBar.setProgressDrawable(d);
+    }
 
     private void setupViewPagerLayoutParams() {
-//        ImageView v;
+        ResolutionUtils.Resolution resolution = new ResolutionUtils.Resolution(mResolution);
 
-        ResolutionUtils.Resolution suggestResolution = Utils.getSuggestResolution(getActivity());
-        int[] wh = Utils.getScaledDSizeByFixHeight(suggestResolution.width, suggestResolution.height, mViewPagerContainer.getWidth(), mViewPagerContainer.getHeight());
+        int[] wh = Utils.getScaledDSizeByFixHeight(resolution.width, resolution.height, mViewPagerContainer.getWidth(), mViewPagerContainer.getHeight());
 
         Log.d(TAG, "setupViewPagerLayoutParams() mViewPagerContainer.getWidth()" + mViewPagerContainer.getWidth());
         Log.d(TAG, "setupViewPagerLayoutParams() mViewPagerContainer.getHeight()" + mViewPagerContainer.getHeight());
-        Log.d(TAG, "setupViewPagerLayoutParams() suggestResolution:" + suggestResolution);
+        Log.d(TAG, "setupViewPagerLayoutParams() resolution:" + resolution);
         Log.d(TAG, "setupViewPagerLayoutParams() wh:" + Arrays.toString(wh));
 
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mViewPager.getLayoutParams();
@@ -171,21 +190,20 @@ public class BingImagesFragment extends Fragment {
         mViewPager.setLayoutParams(params);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
-            mListener = (OnTodaysBingFragmentInteractionListener) activity;
+            mListener = (OnBingImagesFragmentInteractionListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+                    + " must implement OnBingImagesFragmentInteractionListener");
         }
     }
 
@@ -195,22 +213,38 @@ public class BingImagesFragment extends Fragment {
         mListener = null;
     }
 
+    APIImpl api;
+
     public void bind(final String mkt) {
         mMkt = mkt;
-        final String mResolution = Utils.getSuggestResolutionStr(getActivity());
         Log.d(TAG, "bind() mkt:" + mkt);
         Log.d(TAG, "bind() resolution:" + mResolution);
+        mAdapter.changeData(mkt, null, mResolution);
 
-        API api = new APIImpl();
+        setupViewPagerLayoutParams();
+
+        if (api != null) {
+            api.cancel();
+        }
+        api = new APIImpl();
+        progressBar.setVisibility(View.VISIBLE);
         api.getHPImageArchive("js", 0, 7, mkt, 1, new Callback<HPImageArchive>() {
             @Override
             public void success(HPImageArchive hpImageArchive, Response response) {
+                progressBar.setVisibility(View.GONE);
+                if (api.isCanceld()) {
+                    return;
+                }
                 mAdapter.changeData(mkt, hpImageArchive, mResolution);
             }
 
             @Override
             public void failure(RetrofitError error) {
-
+                progressBar.setVisibility(View.GONE);
+                if (api.isCanceld()) {
+                    return;
+                }
+                Toast.makeText(getActivity(), R.string.bing_images_failure, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -225,7 +259,7 @@ public class BingImagesFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnTodaysBingFragmentInteractionListener {
+    public interface OnBingImagesFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
     }
 }

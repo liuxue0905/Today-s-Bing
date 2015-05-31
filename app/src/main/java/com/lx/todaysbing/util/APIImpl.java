@@ -36,4 +36,11 @@ public class APIImpl implements API {
         service.getHPImageArchive(format, idx, n, mkt, video, callback);
     }
 
+    boolean isCanceld = false;
+    public void cancel() {
+        isCanceld = true;
+    }
+    public boolean isCanceld() {
+        return isCanceld;
+    }
 }

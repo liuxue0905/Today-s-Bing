@@ -20,9 +20,6 @@ public class ImageNDayAdapter extends BaseAdapter {
     private List<Image> imageList;
     private String mResolution;
 
-    private int mItemHeight = 0;
-    private RelativeLayout.LayoutParams mImageViewLayoutParams;
-
     public ImageNDayAdapter(Context context, List<Image> imageList, String resolution) {
         this.context = context;
         this.imageList = imageList;
@@ -58,17 +55,6 @@ public class ImageNDayAdapter extends BaseAdapter {
 
         itemView.bind(position, getItem(position), mResolution);
         return itemView;
-    }
-
-    public void setItemHeight(int height) {
-        if (height == mItemHeight) {
-            return;
-        }
-        mItemHeight = height;
-        mImageViewLayoutParams =
-                new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, mItemHeight);
-//        mImageFetcher.setImageSize(height);
-        notifyDataSetChanged();
     }
 
     public void changeData(List<Image> imageList) {

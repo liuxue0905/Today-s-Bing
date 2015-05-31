@@ -85,20 +85,7 @@ public class BingImageDetailView extends RelativeLayout {
 
         Utils.setupFakeStatusBarHeightOnGlobalLayout((Activity) getContext(), fakeStatusBar);
 
-        this.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @SuppressLint("NewApi")
-            @Override
-            public void onGlobalLayout() {
-
-                setupHudLayoutParams();
-
-                if (Utils.hasJellyBean()) {
-                    getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                } else {
-                    getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                }
-            }
-        });
+        setupHudLayoutParams();
 
         setColor();
     }
@@ -122,7 +109,11 @@ public class BingImageDetailView extends RelativeLayout {
         mResolution = resolution;
 
         btnResolution.setText(resolution);
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(image, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(getContext())
+                .load(Utils.rebuildImageUrl(image, resolution))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .error(R.drawable.no_image)
+                .into(imageView);
     }
 
     @OnClick(R.id.btnResolution)

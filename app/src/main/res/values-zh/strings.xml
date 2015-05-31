@@ -4,6 +4,9 @@
     <string name="n_day_ago_1">昨天</string>
     <string name="n_day_ago_n"><xliff:g id="nday">%1$s</xliff:g>天前</string>
 
+    <string name="action_settings">设置</string>
+    <string name="action_update">检查更新</string>
+
     <string name="activity_resolution_title">分辨率 (长 X 宽)</string>
     <string name="activity_market_title">地区</string>
 
@@ -13,4 +16,10 @@
     <string name="image_detail_enabled_rotation">可旋转</string>
     <string name="image_detail_downloaded">已下载</string>
     <string name="image_detail_download_start">开始下载</string>
+
+    <string name="bing_images_failure">加载失败</string>
+
+    <string name="check_update_has_no_update">检查更新：没有更新</string>
+    <string name="check_update_none_wifi">检查更新：没有wifi连接， 只在wifi下更新</string>
+    <string name="check_update_time_out">检查更新：超时</string>
 </resources>

@@ -14,4 +14,13 @@
         android:layout_marginRight="0dp"
         android:clipChildren="false" />
 
+    <!--android:indeterminate="false"-->
+    <!--android:max="100"-->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="visible"/>
 </FrameLayout>

@@ -49,18 +49,10 @@ public class Utils {
         return ret;
     }
 
-    public static String getSuggestResolutionStr(Context context) {
-        return getSuggestResolution(context).getResolutionString();
-    }
-
-    public static ResolutionUtils.Resolution getSuggestResolution(Context context) {
+    public static String getSuggestResolution(Context context) {
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        return ResolutionUtils.getSuggestResolution(context, new ResolutionUtils.Resolution(dm.widthPixels, dm.heightPixels));
+        return ResolutionUtils.getSuggestResolution(context, dm.widthPixels + "x" + dm.heightPixels);
     }
-
-//    public static String rebuildImageUrl(Context context, String url) {
-//        return rebuildImageUrl(url, getSuggestResolutionStr(context));
-//    }
 
     //China
     // url:http://s.cn.bing.net/az/hprichbg/rb/FudanAni_ZH-CN13023015076_1920x1080.jpg
@@ -85,8 +77,9 @@ public class Utils {
 //    }
 
     public static String rebuildImageUrl(Image image, String resolution) {
-        String url = image.urlbase;
-        return "http://global.bing.com" + url + "_" + resolution + ".jpg";
+        if (image == null)
+            return null;
+        return "http://global.bing.com" + image.urlbase + "_" + resolution + ".jpg";
     }
 
     public static int get90PWidth(Context context) {
@@ -263,14 +256,6 @@ public class Utils {
                 });
     }
 
-    public static String getColor(Context context) {
-        return "#006AC1";
-    }
-
-    public static void setColor(Context context) {
-
-    }
-
     public static String getSubPath(String url) {
         if (url != null && url.length() != 0) {
             return url.substring(url.lastIndexOf('/'));
@@ -295,4 +280,6 @@ public class Utils {
         }
         return -1;
     }
+
+
 }

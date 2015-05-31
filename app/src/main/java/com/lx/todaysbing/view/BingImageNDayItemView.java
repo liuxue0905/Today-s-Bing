@@ -1,5 +1,6 @@
 package com.lx.todaysbing.view;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
@@ -50,7 +51,7 @@ public class BingImageNDayItemView extends RelativeLayout {
         init(context);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("NewApi")
     public BingImageNDayItemView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
@@ -72,7 +73,7 @@ public class BingImageNDayItemView extends RelativeLayout {
 
         setupTvNDaysAgo(position);
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(image, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).into(imageView);
+        Glide.with(getContext()).load(Utils.rebuildImageUrl(image, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).error(R.drawable.no_image).into(imageView);
     }
 
     private void setupTvNDaysAgo(int position) {

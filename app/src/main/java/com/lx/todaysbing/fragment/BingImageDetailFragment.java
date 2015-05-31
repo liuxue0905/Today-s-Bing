@@ -35,7 +35,7 @@ public class BingImageDetailFragment extends Fragment {
     private Image mImage;
     private String mResolution;
 
-    private OnFragmentInteractionListener mListener;
+    private OnBingImageDetailFragmentInteractionListener mListener;
 
     public BingImageDetailFragment() {
         // Required empty public constructor
@@ -81,21 +81,20 @@ public class BingImageDetailFragment extends Fragment {
         bind(mImage, mResolution);
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+//    public void onButtonPressed(Uri uri) {
+//        if (mListener != null) {
+//            mListener.onFragmentInteraction(uri);
+//        }
+//    }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
 //        try {
-//            mListener = (OnFragmentInteractionListener) activity;
+//            mListener = (OnBingImageDetailFragmentInteractionListener) activity;
 //        } catch (ClassCastException e) {
 //            throw new ClassCastException(activity.toString()
-//                    + " must implement OnFragmentInteractionListener");
+//                    + " must implement OnBingImageDetailFragmentInteractionListener");
 //        }
     }
 
@@ -121,9 +120,9 @@ public class BingImageDetailFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
+    public interface OnBingImageDetailFragmentInteractionListener {
         // TODO: Update argument type and name
-        public void onFragmentInteraction(Uri uri);
+        public void onBingImageDetailFragmentInteraction(Uri uri);
     }
 
 }

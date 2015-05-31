@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,12 +16,15 @@ import com.lx.todaysbing.R;
 import com.lx.todaysbing.fragment.BingImageDetailFragment;
 import com.lx.todaysbing.model.Image;
 import com.lx.todaysbing.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 
 public class BingImageDetailActivity extends AppCompatActivity {
+
+    private static final String TAG = "BingImageDetailActivity";
 
     private static final String EXTRA_IMAGE = "Image";
     private static final String EXTRA_RESOLUTION = "Resolution";
@@ -40,6 +44,7 @@ public class BingImageDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d(TAG, "onCreate() savedInstanceState:" + savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bing_image_detail);
         ButterKnife.inject(this);
@@ -56,6 +61,17 @@ public class BingImageDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

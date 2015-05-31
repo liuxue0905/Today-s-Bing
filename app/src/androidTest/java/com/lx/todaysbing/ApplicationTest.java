@@ -25,7 +25,8 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     @SmallTest
     public void testResolution() {
 //        String suggestResolutionString = ResolutionUtils.getSuggestResolutionStr(getContext(), "960x540");
-        String suggestResolutionString = ResolutionUtils.getSuggestResolution(getContext(), "540x960");
+//        String suggestResolutionString = ResolutionUtils.getSuggestResolution(getContext(), "540x960");
+        String suggestResolutionString = ResolutionUtils.getSuggestResolution(getContext(), "720x1185");
 //        String suggestResolutionString = ResolutionUtils.getSuggestResolutionStr(getContext(), "1920x1080");
 //        String suggestResolutionString = ResolutionUtils.getSuggestResolutionStr(getContext(), "1280x720");
 //        String suggestResolutionString = Utils.getSuggestResolutionStr(getContext());

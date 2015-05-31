@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.adapter.MarketAdapter;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -46,6 +47,18 @@ public class MarketActivity extends AppCompatActivity implements AdapterView.OnI
         mAdapter = new MarketAdapter(this);
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

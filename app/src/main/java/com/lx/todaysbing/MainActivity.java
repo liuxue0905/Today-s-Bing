@@ -1,44 +1,58 @@
 package com.lx.todaysbing;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.lx.todaysbing.activity.MarketActivity;
+import com.lx.todaysbing.event.OnScrollEvent;
 import com.lx.todaysbing.fragment.BingImagesFragment;
 import com.lx.todaysbing.util.Utils;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
+import com.umeng.update.UpdateStatus;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 
-public class MainActivity extends AppCompatActivity implements BingImagesFragment.OnTodaysBingFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements BingImagesFragment.OnBingImagesFragmentInteractionListener {
+
+    private static final String TAG = "MainActivity";
+
+    private Context mContext;
 
     @InjectView(R.id.fakeStatusBar)
     View fakeStatusBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
 //        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);
 //        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
         if (savedInstanceState == null) {
 //            getSupportFragmentManager().beginTransaction()
@@ -47,10 +61,23 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, BingImagesFragment.newInstance())
                     .commit();
-        }
 
+            UmengUpdateAgent.setUpdateOnlyWifi(false);
+            UmengUpdateAgent.update(this);
+        }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -68,10 +95,42 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(mContext, "-_-||", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        else if (id == R.id.action_update) {
+            onActinUpdate();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void onActinUpdate() {
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
+        UmengUpdateAgent.setSlotId("65102");
+        UmengUpdateAgent.forceUpdate(this);
+        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+
+            @Override
+            public void onUpdateReturned(int i, UpdateResponse updateResponse) {
+                Log.d(TAG, "onUpdateReturned() i:" + i + ",updateResponse:" + updateResponse);
+                switch (i) {
+                    case UpdateStatus.Yes: // has update
+                        UmengUpdateAgent.showUpdateDialog(mContext, updateResponse);
+                        break;
+                    case UpdateStatus.No: // has no update
+                        Toast.makeText(mContext, R.string.check_update_has_no_update, Toast.LENGTH_SHORT).show();
+                        break;
+                    case UpdateStatus.NoneWifi: // none wifi
+                        Toast.makeText(mContext, R.string.check_update_none_wifi, Toast.LENGTH_SHORT).show();
+                        break;
+                    case UpdateStatus.Timeout: // time out
+                        Toast.makeText(mContext, R.string.check_update_time_out, Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
     }
 
     @Override
@@ -79,21 +138,21 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
     }
 
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
-        }
-    }
+//    /**
+//     * A placeholder fragment containing a simple view.
+//     */
+//    public static class PlaceholderFragment extends Fragment {
+//
+//        public PlaceholderFragment() {
+//        }
+//
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                                 Bundle savedInstanceState) {
+//            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+//            return rootView;
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -104,10 +163,12 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
                 String mkt = data.getStringExtra("mkt");
                 BingImagesFragment fragment = (BingImagesFragment) getSupportFragmentManager().findFragmentById(R.id.container);
                 fragment.bind(mkt);
+                EventBus.getDefault().postSticky(new OnScrollEvent(null));
                 return;
             }
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
+
 }

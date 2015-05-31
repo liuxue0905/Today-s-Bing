@@ -39,7 +39,7 @@
             android:layout_alignTop="@+id/iv_mkt"
             android:layout_toRightOf="@+id/iv_mkt"
             android:gravity="center_vertical"
-            android:text="China" />
+            android:text="@null" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -88,5 +88,15 @@
             android:src="@drawable/appbar_download" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fakeStatusBar"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    </LinearLayout>
 
 </FrameLayout>

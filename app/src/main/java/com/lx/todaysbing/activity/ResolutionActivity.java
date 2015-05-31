@@ -19,6 +19,7 @@ import com.lx.todaysbing.R;
 import com.lx.todaysbing.adapter.MarketAdapter;
 import com.lx.todaysbing.adapter.ResolutionAdapter;
 import com.lx.todaysbing.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -59,6 +60,17 @@ public class ResolutionActivity extends AppCompatActivity implements AdapterView
         mRecyclerView.setAdapter(mAdapter);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

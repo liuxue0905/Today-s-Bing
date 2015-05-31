@@ -9,38 +9,62 @@ import com.lx.todaysbing.R;
  */
 public class ResolutionUtils {
 
-    public static String[] getResolutionList(Context context) {
-        return context.getResources().getStringArray(R.array.resolution);
-    }
+//    public static String[] getResolutionList(Context context) {
+//        return context.getResources().getStringArray(R.array.resolution);
+//    }
 
-    public static String getSuggestResolution(Context context, String currentResolution) {
-        Resolution suggestResolution = getSuggestResolution(context, new Resolution(currentResolution));
-        if (suggestResolution != null) {
-            return suggestResolution.getResolutionString();
-        }
-        return null;
-    }
+    public static String getSuggestResolution(Context context, String currentResolutionStr) {
+        Resolution currentResolution = new Resolution(currentResolutionStr);
+        String[] resolutionArray = context.getResources().getStringArray(R.array.resolution);
 
-    public static Resolution getSuggestResolution(Context context, Resolution currentResolution) {
         Resolution suggestResolution = null;
+        int abs = Integer.MAX_VALUE;
 
-        String[] resolutionStringArray = context.getResources().getStringArray(R.array.resolution);
-        for (String resolutionString : resolutionStringArray) {
+        for (String resolutionString : resolutionArray) {
             Resolution resolution = new Resolution(resolutionString);
-            if (resolution.isPortrait() == currentResolution.isPortrait() && resolution.isLandscape() == resolution.isLandscape()) {
-                if (resolution.getPixels() <= currentResolution.getPixels()) {
-                    if (suggestResolution == null) {
-                        suggestResolution = resolution;
-                    }
-                    if (resolution.getPixels() >= suggestResolution.getPixels()) {
-                        suggestResolution = resolution;
-                    }
+
+            if (resolution.isPortrait() == currentResolution.isPortrait()
+                    && resolution.isLandscape() == resolution.isLandscape()) {
+
+                int tempAbs = Math.abs(resolution.getPixels() - currentResolution.getPixels());
+
+                if (tempAbs < abs) {
+                    suggestResolution = resolution;
+                    abs = tempAbs;
                 }
             }
         }
 
-        return suggestResolution;
+        return suggestResolution.getResolutionString();
     }
+
+//    public static Resolution getSuggestResolution(Context context, Resolution currentResolution) {
+//        Resolution suggestResolution = null;
+//        int abs = 0;
+//
+//        String[] resolutionStringArray = context.getResources().getStringArray(R.array.resolution);
+//        for (String resolutionString : resolutionStringArray) {
+//            Resolution resolution = new Resolution(resolutionString);
+//
+//            if (resolution.isPortrait() == currentResolution.isPortrait()
+//                    && resolution.isLandscape() == resolution.isLandscape()) {
+//
+//                int tempAbs = Math.abs(resolution.getPixels() - currentResolution.getPixels());
+//
+//
+//                if (resolution.getPixels() <= currentResolution.getPixels()) {
+//                    if (suggestResolution == null) {
+//                        suggestResolution = resolution;
+//                    }
+//                    if (resolution.getPixels() >= suggestResolution.getPixels()) {
+//                        suggestResolution = resolution;
+//                    }
+//                }
+//            }
+//        }
+//
+//        return null;
+//    }
 
     public static class Resolution {
 

@@ -10,14 +10,64 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+
+        // dex突破65535的限制
+        multiDexEnabled true
+        // 默认是umeng的渠道
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
     }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // 不显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "false"
+            zipAlignEnabled true
+            // 移除无用的resource文件
+//            shrinkResources true
+
+//            applicationVariants.all { variant ->
+//                variant.outputs.each { output ->
+//                    def outputFile = output.outputFile
+//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                        // 输出apk名称为BingWallpaper_v1.0_d2015-01-15_wandoujia.apk
+//                        def fileName = "Today's_Bing_v${defaultConfig.versionName}(${defaultConfig.versionCode})_${releaseTime()}_${variant.productFlavors[0].name}.apk"
+//                        output.outputFile = new File(outputFile.parent, fileName)
+//                    }
+//                }
+//            }
+        }
+
+        debug {
+            // 显示Log
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+
+//            versionNameSuffix "-debug"
+//            applicationIdSuffix ".debug"
+//            manifestPlaceholders = [UMENG_CHANNEL_VALUE: "debug"]
+            minifyEnabled false
+            zipAlignEnabled false
+            shrinkResources false
         }
     }
+
+//    productFlavors {
+//        umeng {}
+//        qh360 {}
+//        baidu {}
+//        hiapk {}
+//        zs91 {}
+//        yyb {}
+//        productFlavors.all { flavor ->
+//            flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+//        }
+//    }
 }
+
+//def releaseTime() {
+//    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+//}
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -28,5 +78,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.1.1'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.github.bumptech.glide:glide:3.6.0'
-//    compile 'com.google.guava:guava:18.0'
+    //    compile 'com.google.guava:guava:18.0'
+    compile 'com.umeng.analytics:analytics:5.5.3'
+    compile 'de.greenrobot:eventbus:2.4.0'
+//    compile 'com.mcxiaoke.volley:library:1.0.16'
 }
