@@ -2,23 +2,16 @@ package com.lx.todaysbing;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.lx.todaysbing.activity.MarketActivity;
-import com.lx.todaysbing.event.OnScrollEvent;
 import com.lx.todaysbing.fragment.BingImagesFragment;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
@@ -33,8 +26,6 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
-
 
 public class MainActivity extends AppCompatActivity implements BingImagesFragment.OnBingImagesFragmentInteractionListener {
 
@@ -178,18 +169,15 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
         if (requestCode == MarketActivity.REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                String market = data.getStringExtra("market");
-                String mkt = data.getStringExtra("mkt");
-                mMkt = mkt;
+//                String market = data.getStringExtra("market");
+                mMkt = data.getStringExtra("mkt");
 
                 BingImagesFragment fragment = (BingImagesFragment) getSupportFragmentManager().findFragmentById(R.id.container);
                 fragment.bind(mColor, mMkt);
 
-                EventBus.getDefault().postSticky(new OnScrollEvent(null));
-
                 Map<String, String> map = new HashMap<>();
-                map.put("mkt", mkt);
-                map.put("market", market);
+                map.put("mkt", mMkt);
+//                map.put("market", market);
                 MobclickAgent.onEvent(this, MobclickAgentHelper.BingImageMain.EVENT_ID_BINGIMAGEMAIN_ONITEMCLICK_MARKET, map);
                 return;
             }

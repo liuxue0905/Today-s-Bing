@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.lx.todaysbing.event.OnScrollEvent;
 import com.lx.todaysbing.model.HPImageArchive;
 import com.lx.todaysbing.view.BingImageNDayView;
 import com.lx.todaysbing.view.BingImageTodayView;
@@ -36,6 +37,8 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         mHpImageArchive = hpImageArchive;
         mResolurtion = resolution;
         this.notifyDataSetChanged();
+
+        EventBus.getDefault().postSticky(new OnScrollEvent(null));
     }
 
     @Override
