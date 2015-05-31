@@ -18,7 +18,7 @@ import butterknife.InjectView;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BingImageDetailFragment.OnFragmentInteractionListener} interface
+ * {@link BingImageDetailFragment.OnBingImageDetailFragmentInteractionListener} interface
  * to handle interaction events.
  * Use the {@link BingImageDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
@@ -26,12 +26,14 @@ import butterknife.InjectView;
 public class BingImageDetailFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_COLOR = "color";
     private static final String ARG_IMAGE = "Image";
     private static final String ARG_RESOLUTION = "Resolution";
 
     @InjectView(R.id.viewBingImageDetailView)
     BingImageDetailView mBingImageDetailView;
 
+    private String mColor;
     private Image mImage;
     private String mResolution;
 
@@ -48,9 +50,10 @@ public class BingImageDetailFragment extends Fragment {
      * @param image Parameter 1.
      * @return A new instance of fragment BingImageDetailFragment.
      */
-    public static BingImageDetailFragment newInstance(Image image, String resolution) {
+    public static BingImageDetailFragment newInstance(String color, Image image, String resolution) {
         BingImageDetailFragment fragment = new BingImageDetailFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_COLOR, color);
         args.putSerializable(ARG_IMAGE, (java.io.Serializable) image);
         args.putString(ARG_RESOLUTION, resolution);
         fragment.setArguments(args);
@@ -61,6 +64,7 @@ public class BingImageDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mColor = getArguments().getString(ARG_COLOR);
             mImage = (Image) getArguments().getSerializable(ARG_IMAGE);
             mResolution = getArguments().getString(ARG_RESOLUTION);
         }
@@ -107,7 +111,7 @@ public class BingImageDetailFragment extends Fragment {
     public void bind(Image image, String resolution) {
         mImage = image;
         mResolution = resolution;
-        mBingImageDetailView.bind(mImage, mResolution);
+        mBingImageDetailView.bind(mColor, mImage, mResolution);
     }
 
     /**

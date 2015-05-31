@@ -111,12 +111,9 @@ public class BingImageTodayView extends RelativeLayout {
                 }
             }
         });
-
-        setColor();
     }
 
     private void setColor() {
-        mColor = "#006AC1";
 
         Drawable d = DrawableCompat.wrap(ivMkt.getDrawable());
         DrawableCompat.setTint(d, Color.parseColor(mColor));
@@ -139,24 +136,26 @@ public class BingImageTodayView extends RelativeLayout {
         imageView.setLayoutParams(params);
     }
 
-    public void bind(String mkt, HPImageArchive hpImageArchive, String resolurtion) {
+    public void bind(String color, String mkt, HPImageArchive hpImageArchive, String resolurtion) {
         Image image = null;
         if (hpImageArchive != null) {
             image = hpImageArchive.images.get(0);
         }
-        bind(mkt, image, resolurtion);
+        bind(color, mkt, image, resolurtion);
     }
 
-    public void bind(String mkt, Image image, String resolurtion) {
+    public void bind(String color, String mkt, Image image, String resolurtion) {
         Log.d(TAG, "bind() mkt:" + mkt);
         Log.d(TAG, "bind() image:" + image);
         Log.d(TAG, "bind() resolurtion:" + resolurtion);
+        mColor = color;
         mMkt = mkt;
         mImage = image;
         mResolution = resolurtion;
 
         setupImageViewLayoutParams();
 
+        setColor();
         tvMkt.setText(Utils.getMarket(getContext(), mkt));
 
         if (image == null) {
@@ -181,7 +180,7 @@ public class BingImageTodayView extends RelativeLayout {
     void onClickLayoutCopyright() {
         if (mImage == null)
             return;
-        BingImageDetailActivity.action(getContext(), mImage, mResolution);
+        BingImageDetailActivity.action(getContext(), mColor, mImage, mResolution);
 
         MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_DETAIL);
     }

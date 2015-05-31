@@ -117,6 +117,7 @@ public class BingImagesFragment extends Fragment {
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
+            mColor = "";
             mMkt = "zh-CN";
             mResolution = Utils.getSuggestResolution(getActivity());
         }
@@ -164,7 +165,7 @@ public class BingImagesFragment extends Fragment {
             }
         });
 
-        bind(mMkt);
+        bind(mColor, mMkt);
     }
 
     private void setColor() {
@@ -215,11 +216,12 @@ public class BingImagesFragment extends Fragment {
 
     APIImpl api;
 
-    public void bind(final String mkt) {
+    public void bind(String color, String mkt) {
+        mColor = color;
         mMkt = mkt;
         Log.d(TAG, "bind() mkt:" + mkt);
         Log.d(TAG, "bind() resolution:" + mResolution);
-        mAdapter.changeData(mkt, null, mResolution);
+        mAdapter.changeData(color, mkt, null, mResolution);
 
         setupViewPagerLayoutParams();
 
@@ -235,7 +237,7 @@ public class BingImagesFragment extends Fragment {
                 if (api.isCanceld()) {
                     return;
                 }
-                mAdapter.changeData(mkt, hpImageArchive, mResolution);
+                mAdapter.changeData(mColor, mMkt, hpImageArchive, mResolution);
             }
 
             @Override

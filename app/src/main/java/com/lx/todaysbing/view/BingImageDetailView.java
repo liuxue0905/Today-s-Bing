@@ -88,8 +88,6 @@ public class BingImageDetailView extends RelativeLayout {
         Utils.setupFakeStatusBarHeightOnGlobalLayout((Activity) getContext(), fakeStatusBar);
 
         setupHudLayoutParams();
-
-        setColor();
     }
 
     private void setColor() {
@@ -104,13 +102,16 @@ public class BingImageDetailView extends RelativeLayout {
         layoutHud.setLayoutParams(params);
     }
 
-    public void bind(Image image, String resolution) {
+    public void bind(String color, Image image, String resolution) {
         Log.d(TAG, "bind() image:" + image);
         Log.d(TAG, "bind() resolution:" + resolution);
+        mColor = color;
         mImage = image;
         mResolution = resolution;
 
+        setColor();
         btnResolution.setText(resolution);
+
         Glide.with(getContext())
                 .load(Utils.rebuildImageUrl(image, resolution))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)

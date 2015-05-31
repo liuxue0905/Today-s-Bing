@@ -43,6 +43,7 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
     public RecyclerView mRecyclerView;
     private ImageNDayRecyclerViewAdapter mAdapter;
 
+    private String mColor;
     private String mResolution;
 
     public BingImageNDayView(Context context) {
@@ -73,13 +74,14 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
         setRecyclerViewLayoutManager();
     }
 
-    public void bind(HPImageArchive hpImageArchive, String resolution) {
+    public void bind(String color, HPImageArchive hpImageArchive, String resolution) {
         if (hpImageArchive != null) {
-            bind(new ArrayList<Image>(hpImageArchive.images.subList(1, hpImageArchive.images.size())), resolution);
+            bind(color, new ArrayList<Image>(hpImageArchive.images.subList(1, hpImageArchive.images.size())), resolution);
         }
     }
 
-    public void bind(List<Image> imageList, String resolution) {
+    public void bind(String color, List<Image> imageList, String resolution) {
+        mColor = color;
         mResolution = resolution;
 
 //        mAdapter = new ImageNDayAdapter(getContext(), imageList, resolution);
@@ -96,11 +98,12 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "onItemClick() position:" + position);
+        String color = mColor;
         Image image = mAdapter.getItem(position);
         String resolution = mResolution;
         Log.d(TAG, "onItemClick() image:" + image);
         if (image != null) {
-            BingImageDetailActivity.action(getContext(), image, resolution);
+            BingImageDetailActivity.action(getContext(), color, image, resolution);
         }
 
         Map<String, String> map = new HashMap<>();

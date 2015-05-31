@@ -21,6 +21,7 @@ import de.greenrobot.event.EventBus;
 public class BingImagesPagerAdapter extends PagerAdapter {
 
     Context context;
+    String mColor;
     String mMkt;
     HPImageArchive mHpImageArchive;
     String mResolurtion;
@@ -29,7 +30,8 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         this.context = context;
     }
 
-    public void changeData(String mkt, HPImageArchive hpImageArchive, String resolution) {
+    public void changeData(String color, String mkt, HPImageArchive hpImageArchive, String resolution) {
+        mColor = color;
         mMkt = mkt;
         mHpImageArchive = hpImageArchive;
         mResolurtion = resolution;
@@ -51,12 +53,12 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         int realPosition = position % 2;
         if (realPosition == 0) {
             BingImageTodayView view = new BingImageTodayView(context);
-            view.bind(mMkt, mHpImageArchive, mResolurtion);
+            view.bind(mColor, mMkt, mHpImageArchive, mResolurtion);
             container.addView(view);
             return view;
         } else if (realPosition == 1) {
             BingImageNDayView view = new BingImageNDayView(context);
-            view.bind(mHpImageArchive, mResolurtion);
+            view.bind(mColor, mHpImageArchive, mResolurtion);
             container.addView(view);
             EventBus.getDefault().registerSticky(view);
             return view;

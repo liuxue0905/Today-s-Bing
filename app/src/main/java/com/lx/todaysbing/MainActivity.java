@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
     @InjectView(R.id.fakeStatusBar)
     View fakeStatusBar;
 
+    private String mColor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         mContext = this;
@@ -69,6 +71,8 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
             UmengUpdateAgent.setUpdateOnlyWifi(false);
             UmengUpdateAgent.update(this);
         }
+
+        mColor = "#006AC1";
     }
 
     @Override
@@ -173,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
                 String market = data.getStringExtra("market");
                 String mkt = data.getStringExtra("mkt");
                 BingImagesFragment fragment = (BingImagesFragment) getSupportFragmentManager().findFragmentById(R.id.container);
-                fragment.bind(mkt);
+                fragment.bind(mColor, mkt);
                 EventBus.getDefault().postSticky(new OnScrollEvent(null));
 
                 Map<String, String> map = new HashMap<>();
