@@ -51,8 +51,9 @@ public class BingImagesFragment extends Fragment {
     private static final String TAG = "BingImagesFragment";
 
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-//    private static final String ARG_PARAM1 = "param1";
-//    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_COLOR = "color";
+    private static final String ARG_MKT = "mkt";
+    private static final String ARG_RESOLUTION = "resolution";
 //
 //    private String mParam1;
 //    private String mParam2;
@@ -103,10 +104,12 @@ public class BingImagesFragment extends Fragment {
      *
      * @return A new instance of fragment TodaysBingFragment.
      */
-    public static BingImagesFragment newInstance(/*String param1, String param2*/) {
+    public static BingImagesFragment newInstance(String color, String mkt, String resolution) {
         BingImagesFragment fragment = new BingImagesFragment();
         Bundle args = new Bundle();
-//        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_COLOR, color);
+        args.putString(ARG_MKT, mkt);
+        args.putString(ARG_RESOLUTION, resolution);
         fragment.setArguments(args);
         return fragment;
     }
@@ -117,9 +120,9 @@ public class BingImagesFragment extends Fragment {
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
-            mColor = "";
-            mMkt = "zh-CN";
-            mResolution = Utils.getSuggestResolution(getActivity());
+            mColor = getArguments().getString(ARG_COLOR);
+            mMkt = getArguments().getString(ARG_MKT);//"zh-CN";
+            mResolution = getArguments().getString(ARG_RESOLUTION);//Utils.getSuggestResolution(getActivity());
         }
     }
 
@@ -169,8 +172,6 @@ public class BingImagesFragment extends Fragment {
     }
 
     private void setColor() {
-        mColor = "#006AC1";
-
         Drawable d = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
         DrawableCompat.setTint(d, Color.parseColor(mColor));
         progressBar.setProgressDrawable(d);
@@ -214,16 +215,29 @@ public class BingImagesFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (api != null) {
+            api.cancel();
+        }
+    }
+
     APIImpl api;
 
     public void bind(String color, String mkt) {
         mColor = color;
         mMkt = mkt;
+        mResolution = mResolution;
+        Log.d(TAG, "bind() color:" + color);
         Log.d(TAG, "bind() mkt:" + mkt);
         Log.d(TAG, "bind() resolution:" + mResolution);
-        mAdapter.changeData(color, mkt, null, mResolution);
+
+        mAdapter.changeData(mColor, mMkt, null, mResolution);
 
         setupViewPagerLayoutParams();
+
+        setColor();
 
         if (api != null) {
             api.cancel();

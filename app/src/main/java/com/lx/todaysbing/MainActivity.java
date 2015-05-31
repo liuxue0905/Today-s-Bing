@@ -46,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
     View fakeStatusBar;
 
     private String mColor;
+    private String mMkt;
+    private String mResolution;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,19 +62,21 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
         Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
+        mColor = "#006AC1";
+        mMkt = "zh-CN";
+        mResolution = Utils.getSuggestResolution(this);
+
         if (savedInstanceState == null) {
 //            getSupportFragmentManager().beginTransaction()
 //                    .add(R.id.container, new PlaceholderFragment())
 //                    .commit();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, BingImagesFragment.newInstance())
+                    .add(R.id.container, BingImagesFragment.newInstance(mColor, mMkt, mResolution))
                     .commit();
 
             UmengUpdateAgent.setUpdateOnlyWifi(false);
             UmengUpdateAgent.update(this);
         }
-
-        mColor = "#006AC1";
     }
 
     @Override
@@ -176,8 +180,11 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
             if (resultCode == RESULT_OK) {
                 String market = data.getStringExtra("market");
                 String mkt = data.getStringExtra("mkt");
+                mMkt = mkt;
+
                 BingImagesFragment fragment = (BingImagesFragment) getSupportFragmentManager().findFragmentById(R.id.container);
-                fragment.bind(mColor, mkt);
+                fragment.bind(mColor, mMkt);
+
                 EventBus.getDefault().postSticky(new OnScrollEvent(null));
 
                 Map<String, String> map = new HashMap<>();
