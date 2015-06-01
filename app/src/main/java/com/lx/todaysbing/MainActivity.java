@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
     private String mColor;
     private String mMkt;
-    private String mResolution;
+//    private String mResolution;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,30 +55,24 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
         mColor = "#006AC1";
         mMkt = "zh-CN";
-        mResolution = Utils.getSuggestResolution(this);
+//        mResolution = Utils.getSuggestResolution(this);
+//        Log.d(TAG, "onCreate() mResolution:" + mResolution);
+//        Log.d(TAG, "onCreate() (savedInstanceState == null):" + (savedInstanceState == null));
 
         if (savedInstanceState == null) {
 //            getSupportFragmentManager().beginTransaction()
 //                    .add(R.id.container, new PlaceholderFragment())
 //                    .commit();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, BingImagesFragment.newInstance(mColor, mMkt, mResolution))
+                    .add(R.id.container, BingImagesFragment.newInstance(mColor, mMkt/*, mResolution*/))
                     .commit();
 
             UmengUpdateAgent.setUpdateOnlyWifi(false);
             UmengUpdateAgent.update(this);
-//            UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
-//                @Override
-//                public void onUpdateReturned(int i, UpdateResponse updateResponse) {
-//                    Log.d(TAG, "onUpdateReturned() i:" + i + ",updateResponse:" + updateResponse);
-//                    switch (i) {
-//                        case UpdateStatus.Yes: // has update
-//                            UmengUpdateAgent.showUpdateDialog(mContext, updateResponse);
-//                            break;
-//                    }
-//                }
-//            });
         }
+//        else {
+//
+//        }
     }
 
     @Override

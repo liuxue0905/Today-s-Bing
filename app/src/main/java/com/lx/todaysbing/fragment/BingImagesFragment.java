@@ -104,12 +104,12 @@ public class BingImagesFragment extends Fragment {
      *
      * @return A new instance of fragment TodaysBingFragment.
      */
-    public static BingImagesFragment newInstance(String color, String mkt, String resolution) {
+    public static BingImagesFragment newInstance(String color, String mkt/*, String resolution*/) {
         BingImagesFragment fragment = new BingImagesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_COLOR, color);
         args.putString(ARG_MKT, mkt);
-        args.putString(ARG_RESOLUTION, resolution);
+//        args.putString(ARG_RESOLUTION, resolution);
         fragment.setArguments(args);
         return fragment;
     }
@@ -122,7 +122,8 @@ public class BingImagesFragment extends Fragment {
 //            mParam2 = getArguments().getString(ARG_PARAM2);
             mColor = getArguments().getString(ARG_COLOR);
             mMkt = getArguments().getString(ARG_MKT);//"zh-CN";
-            mResolution = getArguments().getString(ARG_RESOLUTION);//Utils.getSuggestResolution(getActivity());
+//            mResolution = getArguments().getString(ARG_RESOLUTION);//Utils.getSuggestResolution(getActivity());
+            mResolution = Utils.getSuggestResolution(getActivity());
         }
     }
 
