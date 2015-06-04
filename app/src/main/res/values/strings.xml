@@ -4,7 +4,7 @@
     <string name="hello_world" translatable="false">Hello world!</string>
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
 
-    <string name="app_name">Today\'s Bing</string>
+    <string name="app_name">Today\'s Bing Wallpaper</string>
     <string name="n_day_ago_1">YESTERDAY</string>
     <string name="n_day_ago_n"><xliff:g id="nday">%1$s</xliff:g> DAYS AGO</string>
 

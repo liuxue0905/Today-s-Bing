@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <string name="app_name">今日必应</string>
+    <string name="app_name">今日必应壁纸</string>
     <string name="n_day_ago_1">昨天</string>
     <string name="n_day_ago_n"><xliff:g id="nday">%1$s</xliff:g>天前</string>
 
