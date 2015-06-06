@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
                     .add(R.id.container, BingImagesFragment.newInstance(mColor, mMkt/*, mResolution*/))
                     .commit();
 
+            UmengUpdateAgent.setSlotId("65102");
             UmengUpdateAgent.setUpdateOnlyWifi(false);
             UmengUpdateAgent.update(this);
             UmengUpdateAgent.setUpdateListener(null);
@@ -123,8 +124,8 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
     }
 
     private void onActinUpdate() {
-        UmengUpdateAgent.setUpdateOnlyWifi(false);
         UmengUpdateAgent.setSlotId("65102");
+        UmengUpdateAgent.setUpdateOnlyWifi(false);
         UmengUpdateAgent.forceUpdate(this);
         UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
             @Override
