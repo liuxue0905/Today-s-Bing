@@ -29,7 +29,8 @@ public class Image implements Serializable {
     public static final String RESOLUTION_CEDE_L = "l";
     public static final String RESOLUTION_CEDE_W = "w";
 
-    public static final String RESOLUTION_VALUE_S = "320x180";
+    public static final String RESOLUTION_VALUE_S_SMALL = "320x180";
+    public static final String RESOLUTION_VALUE_S_LARGE = "800x480";
     public static final String RESOLUTION_VALUE_L = "958x512";
     public static final String RESOLUTION_VALUE_W = "1920x1200";
 
