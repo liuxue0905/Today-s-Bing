@@ -9,18 +9,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.lx.todaysbing.R;
+import com.lx.todaysbing.fragment.BingGalleryImageDetailFragment;
 import com.lx.todaysbing.fragment.BingImageDetailFragment;
-import bing.com.Image;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import binggallery.chinacloudsites.cn.Image;
 import butterknife.ButterKnife;
 
-
-public class BingImageDetailActivity extends AppCompatActivity {
+/**
+ * Created by liuxue on 2015/6/24.
+ */
+public class BingGalleryImageDetailActivity extends AppCompatActivity {
 
     private static final String TAG = "BingImageDetailActivity";
 
@@ -36,7 +39,7 @@ public class BingImageDetailActivity extends AppCompatActivity {
 //    View fakeStatusBar;
 
     public static void action(Context context, String color, Image image, String resolution) {
-        Intent intent = new Intent(context, BingImageDetailActivity.class);
+        Intent intent = new Intent(context, BingGalleryImageDetailActivity.class);
         intent.putExtra(EXTRA_COLOR, color);
         intent.putExtra(EXTRA_IMAGE, image);
         intent.putExtra(EXTRA_RESOLUTION, resolution);
@@ -58,7 +61,7 @@ public class BingImageDetailActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, BingImageDetailFragment.newInstance(mColor, mImage, mResolution))
+                    .add(R.id.container, BingGalleryImageDetailFragment.newInstance(mColor, mImage, mResolution))
                     .commit();
         }
     }
@@ -105,7 +108,7 @@ public class BingImageDetailActivity extends AppCompatActivity {
                 String resolution = data.getStringExtra("resolution");
                 mResolution = resolution;
 
-                BingImageDetailFragment fragment = (BingImageDetailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
+                BingGalleryImageDetailFragment fragment = (BingGalleryImageDetailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
                 fragment.bind(mImage, mResolution);
 
                 Map<String, String> map = new HashMap<>();

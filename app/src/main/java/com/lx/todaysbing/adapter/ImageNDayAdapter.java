@@ -4,9 +4,8 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
 
-import com.lx.todaysbing.model.Image;
+import bing.com.Image;
 import com.lx.todaysbing.view.BingImageNDayItemView;
 
 import java.util.List;

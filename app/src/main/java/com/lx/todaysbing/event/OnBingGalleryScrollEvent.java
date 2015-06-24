@@ -7,16 +7,16 @@ import android.util.Log;
 /**
  * Created by liuxue on 2015/5/30.
  */
-public class OnScrollEvent {
+public class OnBingGalleryScrollEvent {
 
-    private static final String TAG = "OnScrollEvent";
+    private static final String TAG = "OnBNDayScrollEvent";
 
     public RecyclerView recyclerView;
 
     public int position;
     public int offset;
 
-    public OnScrollEvent(RecyclerView view) {
+    public OnBingGalleryScrollEvent(RecyclerView view) {
         this.recyclerView = view;
         refresh();
     }
@@ -30,10 +30,10 @@ public class OnScrollEvent {
         int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
         position = firstVisibleItemPosition;
         RecyclerView.ViewHolder viewHolderFirstVisibleItemPosition = recyclerView.findViewHolderForAdapterPosition(firstVisibleItemPosition);
-        Log.d(TAG, "OnScrollEvent() firstVisibleItemPosition:" + firstVisibleItemPosition);
+        Log.d(TAG, "OnBingImageNDayScrollEvent() firstVisibleItemPosition:" + firstVisibleItemPosition);
         if (viewHolderFirstVisibleItemPosition != null && viewHolderFirstVisibleItemPosition.itemView != null) {
             int top = viewHolderFirstVisibleItemPosition.itemView.getTop();
-            Log.d(TAG, "OnScrollEvent() viewHolderFirstVisibleItemPosition top:" + top);
+            Log.d(TAG, "OnBingImageNDayScrollEvent() viewHolderFirstVisibleItemPosition top:" + top);
             offset = top;
         }
 
@@ -48,7 +48,7 @@ public class OnScrollEvent {
 
     @Override
     public String toString() {
-        return "OnScrollEvent{" +
+        return "OnBingImageNDayScrollEvent{" +
                 "recyclerView=" + recyclerView +
                 ", position=" + position +
                 ", offset=" + offset +

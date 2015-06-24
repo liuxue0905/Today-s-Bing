@@ -1,6 +1,6 @@
 package com.lx.todaysbing.util;
 
-import com.lx.todaysbing.model.HPImageArchive;
+import bing.com.HPImageArchive;
 
 import retrofit.Callback;
 import retrofit.http.GET;

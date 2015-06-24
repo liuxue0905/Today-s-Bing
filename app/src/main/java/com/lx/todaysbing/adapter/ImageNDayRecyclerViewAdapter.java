@@ -23,7 +23,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.lx.todaysbing.model.Image;
+import bing.com.Image;
 import com.lx.todaysbing.view.BingImageNDayItemView;
 
 import java.util.List;
@@ -79,7 +79,7 @@ public class ImageNDayRecyclerViewAdapter extends RecyclerView.Adapter<ImageNDay
         ((BingImageNDayItemView) viewHolder.itemView).bind(position, mDataSet.get(position), mResolution);
 
         final ViewHolder fViewHolder = viewHolder;
-        fViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        ((BingImageNDayItemView) viewHolder.itemView).rootView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Element " + position + " clicked.");

@@ -2,7 +2,6 @@ package com.lx.todaysbing.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -21,16 +20,24 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.adapter.BingImagesPagerAdapter;
-import com.lx.todaysbing.model.HPImageArchive;
-import com.lx.todaysbing.util.API;
+import bing.com.HPImageArchive;
+
 import com.lx.todaysbing.util.APIImpl;
 import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.Utils;
 
+import org.afinal.simplecache.ACache;
+
 import java.util.Arrays;
 
+import binggallery.chinacloudsites.cn.Image;
+import binggallery.chinacloudsites.cn.ImagesRequest;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import retrofit.Callback;
@@ -145,7 +152,7 @@ public class BingImagesFragment extends Fragment {
 
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(TOTAL_COUNT);
-        mViewPager.setCurrentItem(mAdapter.getCount() / 2 - mAdapter.getCount() % 2);
+        mViewPager.setCurrentItem( (mAdapter.getCount() / 2) - ((mAdapter.getCount() / 2) % mAdapter.getRealCount()));
         mViewPager.setPageMargin(0);
         mViewPager.setOnPageChangeListener(mOnPageChangeListener);
         mViewPagerContainer.setOnTouchListener(new View.OnTouchListener() {
@@ -170,6 +177,7 @@ public class BingImagesFragment extends Fragment {
         });
 
         bind(mColor, mMkt);
+        initBingGallery();
     }
 
     private void setColor() {
@@ -278,5 +286,40 @@ public class BingImagesFragment extends Fragment {
      */
     public interface OnBingImagesFragmentInteractionListener {
         public void onFragmentInteraction(Uri uri);
+    }
+
+    private void initBingGallery() {
+        ACache aCache = ACache.get(getActivity());
+        Image[] images = (Image[]) aCache.getAsObject("ImageGallery_list");
+        Log.d("LX", "onResponse() images:" + images);
+        if (images != null && images.length != 0) {
+            mAdapter.setImages(images);
+            return;
+        }
+
+        RequestQueue mQueue = Volley.newRequestQueue(getActivity());
+
+        String url = "http://binggallery.chinacloudsites.cn/api/image/list";
+        StringRequest request = new StringRequest(
+                url, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("LX", "onResponse() response:" + response);
+                Image[] images = Image.parse(response);
+                Log.d("LX", "onResponse() images:" + images);
+                ACache aCache = ACache.get(getActivity());
+                aCache.put("ImageGallery_list", images);
+
+                mAdapter.setImages(images);
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("LX", "onErrorResponse()");
+            }
+        });
+
+        mQueue.add(request);
+//        mQueue.cancelAll();
     }
 }

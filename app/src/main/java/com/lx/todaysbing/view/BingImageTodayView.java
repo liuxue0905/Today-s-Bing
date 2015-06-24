@@ -4,8 +4,11 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -24,16 +27,14 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.BingImageDetailActivity;
 import com.lx.todaysbing.activity.MarketActivity;
-import com.lx.todaysbing.model.HPImageArchive;
-import com.lx.todaysbing.model.Image;
+import bing.com.HPImageArchive;
+import bing.com.Image;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -115,8 +116,13 @@ public class BingImageTodayView extends RelativeLayout {
 
     private void setColor() {
 
+//        Palette
+//        LayerDrawable layerDrawable = new LayerDrawable();
         Drawable d = DrawableCompat.wrap(ivMkt.getDrawable());
         DrawableCompat.setTint(d, Color.parseColor(mColor));
+//        ColorStateList colorStateList = new ColorStateList()
+//        DrawableCompat.setTintMode();
+//        PorterDuff.Mode.
         ivMkt.setImageDrawable(d);
 
         tvMkt.setTextColor(Color.parseColor(mColor));
@@ -165,13 +171,14 @@ public class BingImageTodayView extends RelativeLayout {
             return;
         }
 
-        String[] copyrightParts = Utils.splitCopyRight(image.copyright);
+        String[] copyrightParts = image.getSplitCopyright();
         tvCopyRightLeft.setText(copyrightParts[0]);
         tvCopyRightRight.setText(copyrightParts[1]);
 
         Glide.with(getContext())
-                .load(Utils.rebuildImageUrl(image, resolurtion))
+                .load(Image.rebuildImageUrl(image, resolurtion))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .placeholder(R.drawable.no_image)
                 .error(R.drawable.no_image)
                 .into(imageView);
     }

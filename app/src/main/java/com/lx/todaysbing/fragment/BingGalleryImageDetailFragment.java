@@ -9,21 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lx.todaysbing.R;
-import bing.com.Image;
+import com.lx.todaysbing.view.BingGalleryImageDetailView;
 import com.lx.todaysbing.view.BingImageDetailView;
 
+import binggallery.chinacloudsites.cn.Image;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link BingImageDetailFragment.OnBingImageDetailFragmentInteractionListener} interface
+ * {@link BingGalleryImageDetailFragment.OnBingImageDetailFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link BingImageDetailFragment#newInstance} factory method to
+ * Use the {@link BingGalleryImageDetailFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BingImageDetailFragment extends Fragment {
+public class BingGalleryImageDetailFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_COLOR = "color";
@@ -31,7 +32,7 @@ public class BingImageDetailFragment extends Fragment {
     private static final String ARG_RESOLUTION = "Resolution";
 
     @InjectView(R.id.viewBingImageDetailView)
-    BingImageDetailView mBingImageDetailView;
+    BingGalleryImageDetailView mBingImageDetailView;
 
     private String mColor;
     private Image mImage;
@@ -39,7 +40,7 @@ public class BingImageDetailFragment extends Fragment {
 
     private OnBingImageDetailFragmentInteractionListener mListener;
 
-    public BingImageDetailFragment() {
+    public BingGalleryImageDetailFragment() {
         // Required empty public constructor
     }
 
@@ -50,8 +51,8 @@ public class BingImageDetailFragment extends Fragment {
      * @param image Parameter 1.
      * @return A new instance of fragment BingImageDetailFragment.
      */
-    public static BingImageDetailFragment newInstance(String color, Image image, String resolution) {
-        BingImageDetailFragment fragment = new BingImageDetailFragment();
+    public static BingGalleryImageDetailFragment newInstance(String color, Image image, String resolution) {
+        BingGalleryImageDetailFragment fragment = new BingGalleryImageDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_COLOR, color);
         args.putSerializable(ARG_IMAGE, (java.io.Serializable) image);
@@ -74,7 +75,7 @@ public class BingImageDetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_bing_image_detail, container, false);
+        return inflater.inflate(R.layout.fragment_bing_gallery_image_detail, container, false);
     }
 
     @Override

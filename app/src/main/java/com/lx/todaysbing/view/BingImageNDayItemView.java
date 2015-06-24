@@ -1,11 +1,10 @@
 package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Resources;
-import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,7 +12,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lx.todaysbing.R;
-import com.lx.todaysbing.model.Image;
+
+import bing.com.Image;
+
 import com.lx.todaysbing.util.Utils;
 
 import butterknife.ButterKnife;
@@ -23,6 +24,9 @@ import butterknife.InjectView;
  * Created by liuxue on 2015/5/9.
  */
 public class BingImageNDayItemView extends RelativeLayout {
+
+    @InjectView(R.id.root)
+    public View rootView;
 
     @InjectView(R.id.iv)
     public ImageView imageView;
@@ -67,13 +71,18 @@ public class BingImageNDayItemView extends RelativeLayout {
         mImage = image;
         mResolution = resolution;
 
-        String[] copyrightParts = Utils.splitCopyRight(image.copyright);
+        String[] copyrightParts = image.getSplitCopyright();
         tvCopyRightLeft.setText(copyrightParts[0]);
         tvCopyRightRight.setText(copyrightParts[1]);
 
         setupTvNDaysAgo(position);
 
-        Glide.with(getContext()).load(Utils.rebuildImageUrl(image, resolution)).diskCacheStrategy(DiskCacheStrategy.ALL).error(R.drawable.no_image).into(imageView);
+        Glide.with(getContext())
+                .load(Image.rebuildImageUrl(image, resolution))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .placeholder(R.drawable.no_image)
+                .error(R.drawable.no_image)
+                .into(imageView);
     }
 
     private void setupTvNDaysAgo(int position) {

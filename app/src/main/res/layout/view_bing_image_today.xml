@@ -51,7 +51,8 @@
             android:layout_marginBottom="8dp"
             android:src="@drawable/ic_bing" />
 
-        <RelativeLayout
+        <!--<RelativeLayout-->
+        <com.lx.todaysbing.widget.ScaleRelativeLayout
             android:id="@+id/layout_copyright"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,7 +79,7 @@
                 android:textColor="#fff"
                 android:textSize="12sp" />
 
-        </RelativeLayout>
+        </com.lx.todaysbing.widget.ScaleRelativeLayout>
 
         <ImageView
             android:id="@+id/ivDownload"

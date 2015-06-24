@@ -1,4 +1,4 @@
-package com.lx.todaysbing.model;
+package bing.com;
 
 import java.io.Serializable;
 import java.util.List;

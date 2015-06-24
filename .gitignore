@@ -5,3 +5,5 @@
 .DS_Store
 /build
 /doc/apk
+hs_err_pid*.log
+replay_pid*.log

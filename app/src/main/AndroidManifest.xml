@@ -9,6 +9,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        android:name=".TodaysBingApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_tb"
         android:label="@string/app_name"
@@ -23,6 +24,9 @@
         </activity>
         <activity
             android:name=".activity.BingImageDetailActivity"
+            android:label="@string/title_activity_bing_image_detail"></activity>
+        <activity
+            android:name=".activity.BingGalleryImageDetailActivity"
             android:label="@string/title_activity_bing_image_detail"></activity>
         <activity
             android:name=".activity.ResolutionActivity"

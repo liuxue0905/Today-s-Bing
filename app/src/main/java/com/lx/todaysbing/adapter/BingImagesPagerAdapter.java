@@ -2,18 +2,18 @@ package com.lx.todaysbing.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.lx.todaysbing.event.OnScrollEvent;
-import com.lx.todaysbing.model.HPImageArchive;
+import bing.com.HPImageArchive;
+
+import com.lx.todaysbing.event.OnBingGalleryScrollEvent;
+import com.lx.todaysbing.event.OnBingImageNDayScrollEvent;
+import com.lx.todaysbing.view.BingGalleryView;
 import com.lx.todaysbing.view.BingImageNDayView;
 import com.lx.todaysbing.view.BingImageTodayView;
 
-import java.util.ArrayList;
-
+import binggallery.chinacloudsites.cn.Image;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -26,6 +26,7 @@ public class BingImagesPagerAdapter extends PagerAdapter {
     String mMkt;
     HPImageArchive mHpImageArchive;
     String mResolurtion;
+    Image[] mImages;
 
     public BingImagesPagerAdapter(Context context) {
         this.context = context;
@@ -38,7 +39,17 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         mResolurtion = resolution;
         this.notifyDataSetChanged();
 
-        EventBus.getDefault().postSticky(new OnScrollEvent(null));
+        EventBus.getDefault().postSticky(new OnBingImageNDayScrollEvent(null));
+        EventBus.getDefault().postSticky(new OnBingGalleryScrollEvent(null));
+    }
+
+    public void setImages(Image[] images) {
+        mImages = images;
+
+        this.notifyDataSetChanged();
+
+        EventBus.getDefault().postSticky(new OnBingImageNDayScrollEvent(null));
+        EventBus.getDefault().postSticky(new OnBingGalleryScrollEvent(null));
     }
 
     @Override
@@ -53,7 +64,7 @@ public class BingImagesPagerAdapter extends PagerAdapter {
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
-        int realPosition = position % 2;
+        int realPosition = position % getRealCount();
         if (realPosition == 0) {
             BingImageTodayView view = new BingImageTodayView(context);
             view.bind(mColor, mMkt, mHpImageArchive, mResolurtion);
@@ -62,6 +73,12 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         } else if (realPosition == 1) {
             BingImageNDayView view = new BingImageNDayView(context);
             view.bind(mColor, mHpImageArchive, mResolurtion);
+            container.addView(view);
+            EventBus.getDefault().registerSticky(view);
+            return view;
+        } else if (realPosition == 2) {
+            BingGalleryView view = new BingGalleryView(context);
+            view.bind(mColor, mImages, mResolurtion);
             container.addView(view);
             EventBus.getDefault().registerSticky(view);
             return view;
@@ -87,4 +104,7 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         return POSITION_NONE;
     }
 
+    public int getRealCount() {
+        return 3;
+    }
 }

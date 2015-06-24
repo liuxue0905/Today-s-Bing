@@ -24,9 +24,12 @@
 
     <string name="bing_images_failure">加载失败</string>
 
-    <string name="check_update_has_no_update">检查更新：没有更新</string>
-    <string name="check_update_none_wifi">检查更新：没有wifi连接， 只在wifi下更新</string>
-    <string name="check_update_time_out">检查更新：超时</string>
+    <!--<string name="check_update_has_no_update">检查更新：没有更新</string>-->
+    <!--<string name="check_update_none_wifi">检查更新：没有wifi连接， 只在wifi下更新</string>-->
+    <!--<string name="check_update_time_out">检查更新：超时</string>-->
+    <string name="check_update_has_no_update">检查更新：已是最新版本</string>
+    <string name="check_update_none_wifi">检查更新：请在wifi下更新</string>
+    <string name="check_update_time_out">检查更新：请检查网络</string>
 
     <string name="tips_im_coming_next_version">在下一版推出哦~</string>
 </resources>

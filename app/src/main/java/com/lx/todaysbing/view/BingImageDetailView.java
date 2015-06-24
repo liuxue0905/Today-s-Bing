@@ -1,32 +1,34 @@
 package com.lx.todaysbing.view;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.ResolutionActivity;
-import com.lx.todaysbing.model.Image;
+import bing.com.Image;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
@@ -49,16 +51,20 @@ public class BingImageDetailView extends RelativeLayout {
     View fakeStatusBar;
     @InjectView(R.id.iv)
     ImageView imageView;
+    @InjectView(R.id.progressBar)
+    ProgressBar progressBar;
     @InjectView(R.id.btnResolution)
     Button btnResolution;
+    @InjectView(R.id.tvEnabledRotation)
+    TextView tvEnabledRotation;
 //    @InjectView(R.id.btnSave)
 //    Button btnSave;
     @InjectView(R.id.btnLocation)
     Button btnLocation;
 
     private Image mImage;
-    private String mResolution;
-    private String mColor;
+    protected String mResolution;
+    protected String mColor;
 
     public BingImageDetailView(Context context) {
         super(context);
@@ -90,9 +96,12 @@ public class BingImageDetailView extends RelativeLayout {
         setupHudLayoutParams();
     }
 
-    private void setColor() {
-        mColor = "#006AC1";
+    protected void setColor() {
         btnResolution.setTextColor(Color.parseColor(mColor));
+
+        Drawable d = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+        DrawableCompat.setTint(d, Color.parseColor(mColor));
+        progressBar.setProgressDrawable(d);
     }
 
     private void setupHudLayoutParams() {
@@ -105,6 +114,9 @@ public class BingImageDetailView extends RelativeLayout {
     public void bind(String color, Image image, String resolution) {
         Log.d(TAG, "bind() image:" + image);
         Log.d(TAG, "bind() resolution:" + resolution);
+
+        tvEnabledRotation.setAlpha(1.0f);
+
         mColor = color;
         mImage = image;
         mResolution = resolution;
@@ -113,9 +125,22 @@ public class BingImageDetailView extends RelativeLayout {
         btnResolution.setText(resolution);
 
         Glide.with(getContext())
-                .load(Utils.rebuildImageUrl(image, resolution))
+                .load(Image.rebuildImageUrl(image, resolution))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.no_image)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        progressBar.setVisibility(View.GONE);
+                        return false;
+                    }
+                })
                 .into(imageView);
     }
 
@@ -123,17 +148,25 @@ public class BingImageDetailView extends RelativeLayout {
     void onClickResolution() {
         MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_RESOLUTION);
 
-        ResolutionActivity.action((Activity)getContext(), ResolutionActivity.REQUEST_CODE, mResolution);
+        ResolutionActivity.action((Activity) getContext(), ResolutionActivity.REQUEST_CODE, mResolution);
     }
 
     @OnClick(R.id.btnSave)
     void onClickSave() {
-        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_SAVE);
-
         Image image = mImage;
         String resolution = mResolution;
+        String url = Image.rebuildImageUrl(image, resolution);
+        save(url, image.copyright, image.copyright);
+    }
 
-        String url = Utils.rebuildImageUrl(image, resolution);
+    @OnClick(R.id.btnLocation)
+    void onClickLocation() {
+        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_LOCATION);
+    }
+
+    protected void save(String url, String title, String description) {
+        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_SAVE);
+
         String subPath = Utils.getSubPath(url);
 
         DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
@@ -145,8 +178,8 @@ public class BingImageDetailView extends RelativeLayout {
 
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, subPath);
-        request.setTitle(image.urlbase);
-        request.setDescription(image.copyright);
+        request.setTitle(title);
+        request.setDescription(description);
         request.allowScanningByMediaScanner();
         request.setVisibleInDownloadsUi(true);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
@@ -154,10 +187,5 @@ public class BingImageDetailView extends RelativeLayout {
         manager.enqueue(request);
 
         Toast.makeText(getContext(), getContext().getString(R.string.image_detail_download_start), Toast.LENGTH_LONG).show();
-    }
-
-    @OnClick(R.id.btnLocation)
-    void onClickLocation() {
-        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_LOCATION);
     }
 }

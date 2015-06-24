@@ -8,18 +8,17 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.BingImageDetailActivity;
-import com.lx.todaysbing.adapter.ImageNDayAdapter;
 import com.lx.todaysbing.adapter.ImageNDayRecyclerViewAdapter;
-import com.lx.todaysbing.event.OnScrollEvent;
-import com.lx.todaysbing.model.HPImageArchive;
-import com.lx.todaysbing.model.Image;
+
+import bing.com.HPImageArchive;
+import bing.com.Image;
+
+import com.lx.todaysbing.event.OnBingImageNDayScrollEvent;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.umeng.analytics.MobclickAgent;
 
@@ -41,6 +40,7 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
 
     @InjectView(R.id.recyclerView)
     public RecyclerView mRecyclerView;
+
     private ImageNDayRecyclerViewAdapter mAdapter;
 
     private String mColor;
@@ -132,11 +132,11 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
             super.onScrollStateChanged(recyclerView, newState);
 
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                if (mOnScrollEvent == null) {
-                    mOnScrollEvent = new OnScrollEvent(mRecyclerView);
+                if (mOnBingImageNDayScrollEvent == null) {
+                    mOnBingImageNDayScrollEvent = new OnBingImageNDayScrollEvent(mRecyclerView);
                 }
-                mOnScrollEvent.refresh();
-                EventBus.getDefault().postSticky(mOnScrollEvent);
+                mOnBingImageNDayScrollEvent.refresh();
+                EventBus.getDefault().postSticky(mOnBingImageNDayScrollEvent);
             }
         }
 
@@ -146,9 +146,9 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
         }
     };
 
-    OnScrollEvent mOnScrollEvent;
+    OnBingImageNDayScrollEvent mOnBingImageNDayScrollEvent;
 
-    public void onEvent(OnScrollEvent event) {
+    public void onEvent(OnBingImageNDayScrollEvent event) {
         Log.d(TAG, "onEvent() event:" + event);
 
         if (event.recyclerView != mRecyclerView) {
