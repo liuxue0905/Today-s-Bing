@@ -30,10 +30,10 @@ public class OnBingGalleryScrollEvent {
         int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
         position = firstVisibleItemPosition;
         RecyclerView.ViewHolder viewHolderFirstVisibleItemPosition = recyclerView.findViewHolderForAdapterPosition(firstVisibleItemPosition);
-        Log.d(TAG, "OnBingImageNDayScrollEvent() firstVisibleItemPosition:" + firstVisibleItemPosition);
+//        Log.d(TAG, "OnBingImageNDayScrollEvent() firstVisibleItemPosition:" + firstVisibleItemPosition);
         if (viewHolderFirstVisibleItemPosition != null && viewHolderFirstVisibleItemPosition.itemView != null) {
             int top = viewHolderFirstVisibleItemPosition.itemView.getTop();
-            Log.d(TAG, "OnBingImageNDayScrollEvent() viewHolderFirstVisibleItemPosition top:" + top);
+//            Log.d(TAG, "OnBingImageNDayScrollEvent() viewHolderFirstVisibleItemPosition top:" + top);
             offset = top;
         }
 

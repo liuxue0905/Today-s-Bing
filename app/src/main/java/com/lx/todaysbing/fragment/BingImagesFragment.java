@@ -28,6 +28,10 @@ import com.lx.todaysbing.R;
 import com.lx.todaysbing.adapter.BingImagesPagerAdapter;
 import bing.com.HPImageArchive;
 
+import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
+import com.lx.todaysbing.event.OnBingGalleryListOnResponseEvent;
+import com.lx.todaysbing.event.OnBingGalleryListEvent;
+import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
 import com.lx.todaysbing.util.APIImpl;
 import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.Utils;
@@ -37,9 +41,9 @@ import org.afinal.simplecache.ACache;
 import java.util.Arrays;
 
 import binggallery.chinacloudsites.cn.Image;
-import binggallery.chinacloudsites.cn.ImagesRequest;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -132,6 +136,8 @@ public class BingImagesFragment extends Fragment {
 //            mResolution = getArguments().getString(ARG_RESOLUTION);//Utils.getSuggestResolution(getActivity());
             mResolution = Utils.getSuggestResolution(getActivity());
         }
+
+        EventBus.getDefault().register(this);
     }
 
     @Override
@@ -177,7 +183,7 @@ public class BingImagesFragment extends Fragment {
         });
 
         bind(mColor, mMkt);
-        initBingGallery();
+        initBingGalleryList(false);
     }
 
     private void setColor() {
@@ -227,6 +233,9 @@ public class BingImagesFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+        EventBus.getDefault().unregister(this);
+
         if (api != null) {
             api.cancel();
         }
@@ -288,20 +297,26 @@ public class BingImagesFragment extends Fragment {
         public void onFragmentInteraction(Uri uri);
     }
 
-    private void initBingGallery() {
-        ACache aCache = ACache.get(getActivity());
-        Image[] images = (Image[]) aCache.getAsObject("ImageGallery_list");
-        Log.d("LX", "onResponse() images:" + images);
-        if (images != null && images.length != 0) {
-            mAdapter.setImages(images);
-            return;
+    private void initBingGalleryList(boolean isNeedRefresh) {
+        Log.d("LX", "initBingGalleryList() isNeedRefresh:" + isNeedRefresh);
+
+        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
+
+        if (!isNeedRefresh) {
+            ACache aCache = ACache.get(getActivity());
+            Image[] images = (Image[]) aCache.getAsObject("ImageGallery_list");
+            Log.d("LX", "ACache images:" + images);
+            if (images != null && images.length != 0) {
+//            mAdapter.setImages(images);
+                EventBus.getDefault().postSticky(new OnBingGalleryListOnResponseEvent(images));
+                return;
+            }
         }
 
         RequestQueue mQueue = Volley.newRequestQueue(getActivity());
 
-        String url = "http://binggallery.chinacloudsites.cn/api/image/list";
         StringRequest request = new StringRequest(
-                url, new com.android.volley.Response.Listener<String>() {
+                Image.API_LIST, new com.android.volley.Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("LX", "onResponse() response:" + response);
@@ -310,16 +325,22 @@ public class BingImagesFragment extends Fragment {
                 ACache aCache = ACache.get(getActivity());
                 aCache.put("ImageGallery_list", images);
 
-                mAdapter.setImages(images);
+//                mAdapter.setImages(images);
+                EventBus.getDefault().postSticky(new OnBingGalleryListOnResponseEvent(images));
             }
         }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("LX", "onErrorResponse()");
+                EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(error));
             }
         });
 
         mQueue.add(request);
 //        mQueue.cancelAll();
+    }
+
+    public void onEvent(OnBingGalleryListEvent event) {
+        initBingGalleryList(true);
     }
 }

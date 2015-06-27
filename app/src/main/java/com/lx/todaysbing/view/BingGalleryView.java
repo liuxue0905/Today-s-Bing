@@ -2,7 +2,6 @@ package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,12 +10,17 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.android.swiperefreshmultipleviews.MultiSwipeRefreshLayout;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.BingGalleryImageDetailActivity;
 import com.lx.todaysbing.adapter.BingGalleryRecyclerViewAdapter;
+import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
+import com.lx.todaysbing.event.OnBingGalleryListOnResponseEvent;
+import com.lx.todaysbing.event.OnBingGalleryListEvent;
 import com.lx.todaysbing.event.OnBingGalleryScrollEvent;
+import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
 
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.ButterKnife;
@@ -77,41 +81,52 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
     }
 
     private void initiateRefresh() {
-        new DummyBackgroundTask().execute();
+//        new DummyBackgroundTask().execute();
+        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
+        EventBus.getDefault().post(new OnBingGalleryListEvent());
     }
 
     private void onRefreshComplete(Image[] result) {
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
+//        mSwipeRefreshLayout.setRefreshing(false);
 
-    /**
-     * Dummy {@link AsyncTask} which simulates a long running task to fetch new cheeses.
-     */
-    private class DummyBackgroundTask extends AsyncTask<Void, Void, Image[]> {
-
-        static final int TASK_DURATION = 3 * 1000; // 3 seconds
-
-        @Override
-        protected Image[] doInBackground(Void... params) {
-            // Sleep for a small amount of time to simulate a background-task
-            try {
-                Thread.sleep(TASK_DURATION);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
             }
+        });
 
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Image[] result) {
-            super.onPostExecute(result);
-
-            // Tell the Fragment that the refresh has completed
-            onRefreshComplete(result);
-        }
-
+        bind(mColor, result, mResolution);
     }
+
+//    /**
+//     * Dummy {@link AsyncTask} which simulates a long running task to fetch new cheeses.
+//     */
+//    private class DummyBackgroundTask extends AsyncTask<Void, Void, Image[]> {
+//
+//        static final int TASK_DURATION = 3 * 1000; // 3 seconds
+//
+//        @Override
+//        protected Image[] doInBackground(Void... params) {
+//            // Sleep for a small amount of time to simulate a background-task
+//            try {
+//                Thread.sleep(TASK_DURATION);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Image[] result) {
+//            super.onPostExecute(result);
+//
+//            // Tell the Fragment that the refresh has completed
+//            onRefreshComplete(result);
+//        }
+//
+//    }
 
     public void setRecyclerViewLayoutManager() {
 //        int scrollPosition = 0;
@@ -174,12 +189,34 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
     OnBingGalleryScrollEvent mOnBingGalleryScrollEvent;
 
     public void onEvent(OnBingGalleryScrollEvent event) {
-        Log.d(TAG, "onEvent() event:" + event);
+//        Log.d(TAG, "onEvent() event:" + event);
 
         if (event.recyclerView != mRecyclerView) {
             GridLayoutManager gridLayoutManager = ((GridLayoutManager) mRecyclerView.getLayoutManager());
             gridLayoutManager.scrollToPositionWithOffset(event.position, event.offset);
         }
         //        mLayoutManager.scrollToPositionWithOffset();
+    }
+
+    public void onEvent(final OnBingGallerySwipeRefreshLayoutRefreshingEvent event) {
+        Log.d(TAG, "onEvent() event:" + event);
+
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(event.refreshing);
+            }
+        });
+    }
+
+    public void onEvent(OnBingGalleryListOnResponseEvent event) {
+        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
+        onRefreshComplete(event.images);
+
+    }
+
+    public void onEvent(OnBingGalleryListOnErrorResponseEvent event) {
+        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
+        Toast.makeText(getContext(), "OnBingGalleryListOnErrorResponseEvent", Toast.LENGTH_SHORT).show();
     }
 }

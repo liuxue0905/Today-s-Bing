@@ -131,7 +131,6 @@ public class ScaleRelativeLayout extends RelativeLayout {
 //        return super.onTouchEvent(event);
     }
 
-//    //按下的点是否在View内
 //    protected boolean innerImageView(float x, float y) {
 //
 //        if (x >= mX && y <= mX + mWidth) {

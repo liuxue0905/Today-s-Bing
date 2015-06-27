@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * <p>
  * http://binggallery.chinacloudsites.cn/api/image/list
  * <br/>
- * 397926db-ff87-4bb7-7713-c13d0e97ed94~s~w~¿ÏÄáÑÇÂíÈüÂíÀ­¹ú¼Ò¹«Ô°£¬Ò»ÈººÚ°ßÁç (? Jonathan & Angela Scott/Getty Images)~ÈË¾²¶øºó°²£¬°²¶øÄÜºó¶¨£¬¶¨¶øÄÜºó»Û£¬»Û¶øÄÜºóÎò£¬Îò¶øÄÜºóµÃ¡£¡ª¡ª×ª×ÔÍøÂç
+ * 397926db-ff87-4bb7-7713-c13d0e97ed94~s~w~è‚¯å°¼äºšé©¬èµ›é©¬æ‹‰å›½å®¶å…¬å›­ï¼Œä¸€ç¾¤é»‘æ–‘ç¾š (? Jonathan & Angela Scott/Getty Images)~äººé™è€Œåå®‰ï¼Œå®‰è€Œèƒ½åå®šï¼Œå®šè€Œèƒ½åæ…§ï¼Œæ…§è€Œèƒ½åæ‚Ÿï¼Œæ‚Ÿè€Œèƒ½åå¾—ã€‚â€”â€”è½¬è‡ªç½‘ç»œ
  * </p>
  * s:320x180
  * w:1920x1200
@@ -24,6 +24,8 @@ import java.util.regex.Pattern;
 public class Image implements Serializable {
 
     private static final long serialVersionUID = 0L;
+
+    public static final String API_LIST = "http://binggallery.chinacloudsites.cn/api/image/list";
 
     public static final String RESOLUTION_CEDE_S = "s";
     public static final String RESOLUTION_CEDE_L = "l";
