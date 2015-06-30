@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -172,7 +173,10 @@ public class BingImageDetailView extends RelativeLayout {
         DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
         boolean has = Utils.hasExternalStoragePublicPicture(subPath);
         if (has) {
-            Toast.makeText(getContext(), R.string.image_detail_downloaded, Toast.LENGTH_LONG).show();
+//            Toast.makeText(getContext(), R.string.image_detail_downloaded, Toast.LENGTH_LONG).show();
+            Snackbar.make(this, R.string.image_detail_downloaded, Snackbar.LENGTH_LONG)
+                    .setAction(android.R.string.ok, null)
+                    .show();
             return;
         }
 
@@ -186,6 +190,9 @@ public class BingImageDetailView extends RelativeLayout {
 
         manager.enqueue(request);
 
-        Toast.makeText(getContext(), getContext().getString(R.string.image_detail_download_start), Toast.LENGTH_LONG).show();
+//        Toast.makeText(getContext(), getContext().getString(R.string.image_detail_download_start), Toast.LENGTH_LONG).show();
+        Snackbar.make(this, R.string.image_detail_download_start, Snackbar.LENGTH_LONG)
+                .setAction(android.R.string.ok, null)
+                .show();
     }
 }

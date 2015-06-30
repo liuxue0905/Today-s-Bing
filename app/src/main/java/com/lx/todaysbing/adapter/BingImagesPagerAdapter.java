@@ -69,6 +69,7 @@ public class BingImagesPagerAdapter extends PagerAdapter {
             BingImageTodayView view = new BingImageTodayView(context);
             view.bind(mColor, mMkt, mHpImageArchive, mResolurtion);
             container.addView(view);
+            EventBus.getDefault().registerSticky(view);
             return view;
         } else if (realPosition == 1) {
             BingImageNDayView view = new BingImageNDayView(context);

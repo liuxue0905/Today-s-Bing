@@ -2,6 +2,7 @@ package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +10,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.swiperefreshmultipleviews.MultiSwipeRefreshLayout;
@@ -25,6 +30,7 @@ import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -41,6 +47,10 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
     MultiSwipeRefreshLayout mSwipeRefreshLayout;
     @InjectView(R.id.recyclerView)
     public RecyclerView mRecyclerView;
+    @InjectView(R.id.btnRefresh)
+    ImageButton btnRefresh;
+    @InjectView(R.id.layoutSnackbar)
+    FrameLayout layoutSnackbar;
 
     private BingGalleryRecyclerViewAdapter mAdapter;
 
@@ -65,6 +75,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         init(context);
     }
 
+
     public void init(Context context) {
         inflate(context, R.layout.view_bing_gallery, this);
         ButterKnife.inject(this);
@@ -82,7 +93,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
     private void initiateRefresh() {
 //        new DummyBackgroundTask().execute();
-        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
+//        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
         EventBus.getDefault().post(new OnBingGalleryListEvent());
     }
 
@@ -152,6 +163,19 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
+
+        btnRefresh.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+
+        if (images == null || images.length == 0) {
+            btnRefresh.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }
+    }
+
+    @OnClick(R.id.btnRefresh)
+    public void onClickRefresh() {
+        EventBus.getDefault().post(new OnBingGalleryListEvent());
     }
 
     @Override
@@ -217,6 +241,28 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
     public void onEvent(OnBingGalleryListOnErrorResponseEvent event) {
         EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-        Toast.makeText(getContext(), "OnBingGalleryListOnErrorResponseEvent", Toast.LENGTH_SHORT).show();
+        if (event.error != null) {
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    Snackbar snackbar = Snackbar.make(layoutSnackbar, "加载失败", Snackbar.LENGTH_LONG)
+                            .setAction("重新加载", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    EventBus.getDefault().post(new OnBingGalleryListEvent());
+                                    layoutSnackbar.removeAllViews();
+                                }
+                            });
+                    layoutSnackbar.addView(snackbar.getView());
+                }
+            });
+        } else {
+            mSwipeRefreshLayout.post(new Runnable() {
+                @Override
+                public void run() {
+                    layoutSnackbar.removeAllViews();
+                }
+            });
+        }
     }
 }

@@ -12,5 +12,21 @@
         android:layout_height="match_parent"
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical" />
+
+    <FrameLayout
+        android:id="@+id/layoutSnackbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+    </FrameLayout>
+
+    <ImageButton
+        android:id="@+id/btnRefresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/appbar_refresh_dark"
+        android:visibility="gone"/>
+
 </RelativeLayout>
 </com.example.android.swiperefreshmultipleviews.MultiSwipeRefreshLayout>

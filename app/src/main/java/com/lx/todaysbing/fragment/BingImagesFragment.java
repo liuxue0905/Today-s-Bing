@@ -2,13 +2,10 @@ package com.lx.todaysbing.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,14 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.lx.todaysbing.R;
+import com.lx.todaysbing.TodaysBingApplication;
 import com.lx.todaysbing.adapter.BingImagesPagerAdapter;
 import bing.com.HPImageArchive;
 
@@ -32,21 +24,27 @@ import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
 import com.lx.todaysbing.event.OnBingGalleryListOnResponseEvent;
 import com.lx.todaysbing.event.OnBingGalleryListEvent;
 import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
-import com.lx.todaysbing.util.APIImpl;
+import com.lx.todaysbing.event.OnHPImageArchiveEvent;
+import com.lx.todaysbing.event.OnHPImageArchiveFailureEvent;
+import com.lx.todaysbing.event.OnHPImageArchivePreLoadEvent;
+import com.lx.todaysbing.event.OnHPImageArchiveSuccessEvent;
+import bing.com.BingAPI;
 import com.lx.todaysbing.util.ResolutionUtils;
+import com.lx.todaysbing.util.RetrofitCallback;
 import com.lx.todaysbing.util.Utils;
 
 import org.afinal.simplecache.ACache;
 
 import java.util.Arrays;
 
+import binggallery.chinacloudsites.cn.BingGalleryAPI;
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
-import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import uk.co.senab.photoview.sample.HackyViewPager;
 
 
 /**
@@ -74,9 +72,10 @@ public class BingImagesFragment extends Fragment {
     @InjectView(R.id.viewPagerContainer)
     ViewGroup mViewPagerContainer;
     @InjectView(R.id.viewPager)
-    ViewPager mViewPager;
-    @InjectView(R.id.progressBar)
-    ProgressBar progressBar;
+    HackyViewPager mViewPager;
+//    @InjectView(R.id.progressBar)
+//    ProgressBar progressBar;
+
 
     BingImagesPagerAdapter mAdapter;
     ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
@@ -138,6 +137,9 @@ public class BingImagesFragment extends Fragment {
         }
 
         EventBus.getDefault().register(this);
+
+//        api = new APIImpl();
+        api = TodaysBingApplication.getInstance().getBingAPI();
     }
 
     @Override
@@ -152,15 +154,17 @@ public class BingImagesFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
 
+        mViewPager.setLocked(true);
+
         setColor();
 
         mAdapter = new BingImagesPagerAdapter(getActivity());
 
         mViewPager.setAdapter(mAdapter);
         mViewPager.setOffscreenPageLimit(TOTAL_COUNT);
-        mViewPager.setCurrentItem( (mAdapter.getCount() / 2) - ((mAdapter.getCount() / 2) % mAdapter.getRealCount()));
+        mViewPager.setCurrentItem((mAdapter.getCount() / 2) - ((mAdapter.getCount() / 2) % mAdapter.getRealCount()));
         mViewPager.setPageMargin(0);
-        mViewPager.setOnPageChangeListener(mOnPageChangeListener);
+        mViewPager.addOnPageChangeListener(mOnPageChangeListener);
         mViewPagerContainer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -183,13 +187,24 @@ public class BingImagesFragment extends Fragment {
         });
 
         bind(mColor, mMkt);
-        initBingGalleryList(false);
+
+//        initBingGalleryList(false);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     private void setColor() {
-        Drawable d = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
-        DrawableCompat.setTint(d, Color.parseColor(mColor));
-        progressBar.setProgressDrawable(d);
+//        Drawable d = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+//        DrawableCompat.setTint(d, Color.parseColor(mColor));
+//        progressBar.setProgressDrawable(d);
     }
 
     private void setupViewPagerLayoutParams() {
@@ -234,16 +249,20 @@ public class BingImagesFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
 
+        EventBus.getDefault().removeAllStickyEvents();
         EventBus.getDefault().unregister(this);
 
-        if (api != null) {
-            api.cancel();
+
+        if (mRetrofitCallback != null) {
+            mRetrofitCallback.cancel();
         }
     }
 
-    APIImpl api;
+//    APIImpl api;
+    BingAPI api;
+    RetrofitCallback<HPImageArchive> mRetrofitCallback;
 
-    public void bind(String color, String mkt) {
+    public void bind(String color, final String mkt) {
         mColor = color;
         mMkt = mkt;
         mResolution = mResolution;
@@ -257,30 +276,46 @@ public class BingImagesFragment extends Fragment {
 
         setColor();
 
-        if (api != null) {
-            api.cancel();
+        if (mRetrofitCallback != null) {
+            mRetrofitCallback.cancel();
         }
-        api = new APIImpl();
-        progressBar.setVisibility(View.VISIBLE);
-        api.getHPImageArchive("js", 0, 7, mkt, 1, new Callback<HPImageArchive>() {
+
+        EventBus.getDefault().removeStickyEvent(OnHPImageArchiveFailureEvent.class);
+        EventBus.getDefault().postSticky(new OnHPImageArchivePreLoadEvent());
+
+        mRetrofitCallback = new RetrofitCallback<HPImageArchive>() {
             @Override
             public void success(HPImageArchive hpImageArchive, Response response) {
-                progressBar.setVisibility(View.GONE);
-                if (api.isCanceld()) {
+                if (isCanceld()) {
                     return;
                 }
+
+                EventBus.getDefault().removeStickyEvent(OnHPImageArchivePreLoadEvent.class);
+                EventBus.getDefault().postSticky(new OnHPImageArchiveSuccessEvent(hpImageArchive));
+
                 mAdapter.changeData(mColor, mMkt, hpImageArchive, mResolution);
+
+                mViewPager.setLocked(false);
+
+                initBingGalleryList(false);
             }
 
             @Override
             public void failure(RetrofitError error) {
-                progressBar.setVisibility(View.GONE);
-                if (api.isCanceld()) {
+                if (isCanceld()) {
                     return;
                 }
-                Toast.makeText(getActivity(), R.string.bing_images_failure, Toast.LENGTH_SHORT).show();
+
+                EventBus.getDefault().removeStickyEvent(OnHPImageArchivePreLoadEvent.class);
+                EventBus.getDefault().postSticky(new OnHPImageArchiveFailureEvent(error));
+
+                mViewPager.setLocked(true);
+
+//                Snackbar.make(getView(), R.string.bing_images_failure, Snackbar.LENGTH_SHORT)
+//                        .show();
             }
-        });
+        };
+        api.getHPImageArchive("js", 0, 7, mkt, 1, mRetrofitCallback);
     }
 
     /**
@@ -300,6 +335,8 @@ public class BingImagesFragment extends Fragment {
     private void initBingGalleryList(boolean isNeedRefresh) {
         Log.d("LX", "initBingGalleryList() isNeedRefresh:" + isNeedRefresh);
 
+        EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(null));
+//        EventBus.getDefault().removeStickyEvent(OnBingGalleryListOnErrorResponseEvent.class);
         EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
 
         if (!isNeedRefresh) {
@@ -313,34 +350,62 @@ public class BingImagesFragment extends Fragment {
             }
         }
 
-        RequestQueue mQueue = Volley.newRequestQueue(getActivity());
 
-        StringRequest request = new StringRequest(
-                Image.API_LIST, new com.android.volley.Response.Listener<String>() {
+        BingGalleryAPI api = TodaysBingApplication.getInstance().getBingGalleryAPI();
+        RetrofitCallback<Image[]> cb = new RetrofitCallback<Image[]>(){
             @Override
-            public void onResponse(String response) {
-                Log.d("LX", "onResponse() response:" + response);
-                Image[] images = Image.parse(response);
-                Log.d("LX", "onResponse() images:" + images);
-                ACache aCache = ACache.get(getActivity());
-                aCache.put("ImageGallery_list", images);
-
-//                mAdapter.setImages(images);
+            public void success(Image[] images, Response response) {
+                Log.d("LX", "success() images:" + images);
                 EventBus.getDefault().postSticky(new OnBingGalleryListOnResponseEvent(images));
+
+                ACache aCache = ACache.get(getActivity());
             }
-        }, new com.android.volley.Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("LX", "onErrorResponse()");
+            public void failure(RetrofitError error) {
+                Log.d("LX", "failure() error:" + error);
+                EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
+//                Snackbar.make(getView(), "加载失败", Snackbar.LENGTH_SHORT)
+//                        .show();
                 EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(error));
             }
-        });
+        };
+        api.list(cb);
 
-        mQueue.add(request);
+
+
+//        RequestQueue mQueue = Volley.newRequestQueue(getActivity());
+//        ImagesRequest request = new ImagesRequest(
+//                Image.API_LIST, new com.android.volley.Response.Listener<Image[]>() {
+//            @Override
+//            public void onResponse(Image[] response) {
+//                Log.d("LX", "onResponse() images:" + response);
+//
+//                EventBus.getDefault().postSticky(new OnBingGalleryListOnResponseEvent(response));
+//
+//                ACache aCache = ACache.get(getActivity());
+//                aCache.put("ImageGallery_list", response);
+//            }
+//        }, new com.android.volley.Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.d("LX", "onErrorResponse()");
+//                EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
+////                Snackbar.make(getView(), "加载失败", Snackbar.LENGTH_SHORT)
+////                        .show();
+//                EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(error));
+//            }
+//        });
+//        mQueue.add(request);
+
 //        mQueue.cancelAll();
+//        request.cancel();
     }
 
     public void onEvent(OnBingGalleryListEvent event) {
         initBingGalleryList(true);
+    }
+
+    public void onEvent(OnHPImageArchiveEvent event) {
+        bind(mColor, mMkt);
     }
 }

@@ -11,9 +11,9 @@ android {
         versionCode 2
         versionName "1.0.2"
 
-        // dexÍ»ÆÆ65535µÄÏÞÖÆ
+        // dexÍ»ï¿½ï¿½65535ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         multiDexEnabled true
-        // Ä¬ÈÏÊÇumengµÄÇþµÀ
+        // Ä¬ï¿½ï¿½ï¿½ï¿½umengï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "umeng"]
     }
     buildTypes {
@@ -21,17 +21,17 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 
-            // ²»ÏÔÊ¾Log
+            // ï¿½ï¿½ï¿½ï¿½Ê¾Log
             buildConfigField "boolean", "LOG_DEBUG", "false"
             zipAlignEnabled true
-            // ÒÆ³ýÎÞÓÃµÄresourceÎÄ¼þ
+            // ï¿½Æ³ï¿½ï¿½ï¿½ï¿½Ãµï¿½resourceï¿½Ä¼ï¿½
 //            shrinkResources true
 
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        // Êä³öapkÃû³ÆÎªBingWallpaper_v1.0_d2015-01-15_wandoujia.apk
+                        // ï¿½ï¿½ï¿½apkï¿½ï¿½ï¿½ï¿½ÎªBingWallpaper_v1.0_d2015-01-15_wandoujia.apk
                         def fileName = "Today's_Bing_v${defaultConfig.versionName}(${defaultConfig.versionCode})_${releaseTime()}_${variant.productFlavors[0].name}.apk"
                         output.outputFile = new File(outputFile.parent, fileName)
                     }
@@ -40,7 +40,7 @@ android {
         }
 
         debug {
-            // ÏÔÊ¾Log
+            // ï¿½ï¿½Ê¾Log
             buildConfigField "boolean", "LOG_DEBUG", "true"
 
             versionNameSuffix "-debug"
@@ -71,6 +71,7 @@ def releaseTime() {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:design:22.2.0'
     compile 'com.squareup.retrofit:retrofit:1.9.0'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
@@ -80,6 +81,6 @@ dependencies {
     //    compile 'com.google.guava:guava:18.0'
     compile 'com.umeng.analytics:analytics:5.5.3'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.mcxiaoke.volley:library:1.0.16'
+//    compile 'com.mcxiaoke.volley:library:1.0.16'
     compile 'de.greenrobot:greendao:1.3.7'
 }

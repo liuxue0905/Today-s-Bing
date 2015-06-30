@@ -157,7 +157,7 @@ public class Image implements Serializable {
     }
 
     public static Image[] parse(String parsed) {
-        Log.d("LX", "parse()");
+//        Log.d("LX", "parse()");
         Image[] parsedImages = null;
         Pattern pattern = Pattern.compile("(\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12})~(s)~([lw])~([^~]*)(~([^~]*))?((?=\\r\\n)|$)", Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(parsed);
@@ -166,14 +166,14 @@ public class Image implements Serializable {
 
         while (matcher.find()) {
 
-            Log.d("LX", "parse() matcher.group():" + matcher.group());
+//            Log.d("LX", "parse() matcher.group():" + matcher.group());
             images.add(new Image(matcher.group(0)));
 
-            int groupCount = matcher.groupCount();
-            Log.d("LX", "parse() groupCount:" + groupCount);
-            for (int i = 0; i < groupCount; i++) {
-                Log.d("LX", "parse() matcher.group(" + i + "):" + matcher.group(i));
-            }
+//            int groupCount = matcher.groupCount();
+//            Log.d("LX", "parse() groupCount:" + groupCount);
+//            for (int i = 0; i < groupCount; i++) {
+//                Log.d("LX", "parse() matcher.group(" + i + "):" + matcher.group(i));
+//            }
         }
 
         parsedImages = images.toArray(new Image[]{});

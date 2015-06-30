@@ -18,7 +18,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,6 +31,11 @@ import com.lx.todaysbing.activity.BingImageDetailActivity;
 import com.lx.todaysbing.activity.MarketActivity;
 import bing.com.HPImageArchive;
 import bing.com.Image;
+
+import com.lx.todaysbing.event.OnHPImageArchiveEvent;
+import com.lx.todaysbing.event.OnHPImageArchiveFailureEvent;
+import com.lx.todaysbing.event.OnHPImageArchivePreLoadEvent;
+import com.lx.todaysbing.event.OnHPImageArchiveSuccessEvent;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.Utils;
@@ -39,6 +46,7 @@ import java.util.Arrays;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by liuxue on 2015/5/8.
@@ -64,6 +72,10 @@ public class BingImageTodayView extends RelativeLayout {
     ImageView ivMkt;
     @InjectView(R.id.tv_mkt)
     TextView tvMkt;
+    @InjectView(R.id.progressBar)
+    ProgressBar progressBar;
+    @InjectView(R.id.btnRefresh)
+    ImageButton btnRefresh;
 
     public BingImageTodayView(Context context) {
         super(context);
@@ -126,6 +138,10 @@ public class BingImageTodayView extends RelativeLayout {
         ivMkt.setImageDrawable(d);
 
         tvMkt.setTextColor(Color.parseColor(mColor));
+
+        Drawable dd = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
+        DrawableCompat.setTint(dd, Color.parseColor(mColor));
+        progressBar.setProgressDrawable(dd);
     }
 
     private void setupImageViewLayoutParams() {
@@ -181,6 +197,8 @@ public class BingImageTodayView extends RelativeLayout {
 //                .placeholder(R.drawable.no_image)
                 .error(R.drawable.no_image)
                 .into(imageView);
+
+        btnRefresh.setVisibility(View.GONE);
     }
 
     @OnClick(R.id.layout_copyright)
@@ -197,5 +215,36 @@ public class BingImageTodayView extends RelativeLayout {
         MarketActivity.action((Activity)getContext(), MarketActivity.REQUEST_CODE, mMkt);
 
         MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_MKT);
+    }
+
+    @OnClick(R.id.btnRefresh)
+    void onClickRefresh() {
+        EventBus.getDefault().post(new OnHPImageArchiveEvent());
+    }
+
+    public void onEvent(OnHPImageArchivePreLoadEvent event) {
+        btnRefresh.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void onEvent(OnHPImageArchiveSuccessEvent event) {
+
+        bind(mColor, mMkt, event.getHPImageArchive(), mResolution);
+
+        HPImageArchive hpImageArchive = event.getHPImageArchive();
+        if (hpImageArchive == null
+                || hpImageArchive.images == null
+                || hpImageArchive.images.size() == 0) {
+            btnRefresh.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.GONE);
+        } else {
+            btnRefresh.setVisibility(View.GONE);
+            progressBar.setVisibility(View.GONE);
+        }
+    }
+
+    public void onEvent(OnHPImageArchiveFailureEvent event) {
+        btnRefresh.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 }

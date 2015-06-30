@@ -1,4 +1,4 @@
-package com.lx.todaysbing.util;
+package bing.com;
 
 import bing.com.HPImageArchive;
 
@@ -9,7 +9,7 @@ import retrofit.http.Query;
 /**
  * Created by liuxue on 2015/5/8.
  */
-public interface API {
+public interface BingAPI {
 
 //    public static final String END_POINT = "http://www.bing.com";
     public static final String END_POINT = "http://global.bing.com";
