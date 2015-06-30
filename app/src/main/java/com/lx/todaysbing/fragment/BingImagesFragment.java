@@ -350,7 +350,6 @@ public class BingImagesFragment extends Fragment {
             }
         }
 
-
         BingGalleryAPI api = TodaysBingApplication.getInstance().getBingGalleryAPI();
         RetrofitCallback<Image[]> cb = new RetrofitCallback<Image[]>(){
             @Override
