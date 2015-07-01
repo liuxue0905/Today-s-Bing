@@ -36,9 +36,13 @@ import com.lx.todaysbing.util.Utils;
 import org.afinal.simplecache.ACache;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import binggallery.chinacloudsites.cn.BingGalleryAPI;
+import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.Image;
+import binggallery.chinacloudsites.cn.BingGalleryImageDao;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
@@ -336,16 +340,14 @@ public class BingImagesFragment extends Fragment {
         Log.d("LX", "initBingGalleryList() isNeedRefresh:" + isNeedRefresh);
 
         EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(null));
-//        EventBus.getDefault().removeStickyEvent(OnBingGalleryListOnErrorResponseEvent.class);
         EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
 
         if (!isNeedRefresh) {
-            ACache aCache = ACache.get(getActivity());
-            Image[] images = (Image[]) aCache.getAsObject("ImageGallery_list");
-            Log.d("LX", "ACache images:" + images);
-            if (images != null && images.length != 0) {
-//            mAdapter.setImages(images);
-                EventBus.getDefault().postSticky(new OnBingGalleryListOnResponseEvent(images));
+            BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
+            List<Image> imageList = bingGalleryImageDao.loadAll();
+
+            Log.d("LX", "initBingGalleryList() images:" + imageList);
+            if (imageList != null && imageList.size() != 0) {
                 return;
             }
         }
@@ -355,9 +357,14 @@ public class BingImagesFragment extends Fragment {
             @Override
             public void success(Image[] images, Response response) {
                 Log.d("LX", "success() images:" + images);
-                EventBus.getDefault().postSticky(new OnBingGalleryListOnResponseEvent(images));
 
-                ACache aCache = ACache.get(getActivity());
+                if (images != null && images.length != 0) {
+                    BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
+                    bingGalleryImageDao.deleteAll();
+                    bingGalleryImageDao.insertInTx(images);
+
+                    getActivity().getContentResolver().notifyChange(BingGalleryImageProvider.CONTENT_URI, null);
+                }
             }
             @Override
             public void failure(RetrofitError error) {
@@ -369,35 +376,6 @@ public class BingImagesFragment extends Fragment {
             }
         };
         api.list(cb);
-
-
-
-//        RequestQueue mQueue = Volley.newRequestQueue(getActivity());
-//        ImagesRequest request = new ImagesRequest(
-//                Image.API_LIST, new com.android.volley.Response.Listener<Image[]>() {
-//            @Override
-//            public void onResponse(Image[] response) {
-//                Log.d("LX", "onResponse() images:" + response);
-//
-//                EventBus.getDefault().postSticky(new OnBingGalleryListOnResponseEvent(response));
-//
-//                ACache aCache = ACache.get(getActivity());
-//                aCache.put("ImageGallery_list", response);
-//            }
-//        }, new com.android.volley.Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                Log.d("LX", "onErrorResponse()");
-//                EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-////                Snackbar.make(getView(), "加载失败", Snackbar.LENGTH_SHORT)
-////                        .show();
-//                EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(error));
-//            }
-//        });
-//        mQueue.add(request);
-
-//        mQueue.cancelAll();
-//        request.cancel();
     }
 
     public void onEvent(OnBingGalleryListEvent event) {

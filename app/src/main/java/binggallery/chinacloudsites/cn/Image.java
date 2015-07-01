@@ -36,8 +36,11 @@ public class Image implements Serializable {
     public static final String RESOLUTION_VALUE_L = "958x512";
     public static final String RESOLUTION_VALUE_W = "1920x1200";
 
-    private String raw;
+//    private String raw;
 
+    /** db. */
+    private Long id;
+    /** Not-null value. */
     private String uid;
     private String minpix;
     private String maxpix;
@@ -47,7 +50,7 @@ public class Image implements Serializable {
     public Image(String raw) {
 //        setRaw(raw);
 
-        this.raw = raw;
+//        this.raw = raw;
         String[] splitRaw = raw.split("~");
 
         this.uid = arrayIndex(splitRaw, 0);
@@ -57,31 +60,69 @@ public class Image implements Serializable {
         this.desc = arrayIndex(splitRaw, 4);
     }
 
+    public Image(Long id, String uid, String minpix, String maxpix, String copyright, String desc) {
+        this.id = id;
+        this.uid = uid;
+        this.minpix = minpix;
+        this.maxpix = maxpix;
+        this.copyright = copyright;
+        this.desc = desc;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    /** Not-null value. */
     public String getUid() {
         return uid;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getMinpix() {
         return minpix;
     }
 
+    public void setMinpix(String minpix) {
+        this.minpix = minpix;
+    }
+
     public String getMaxpix() {
         return maxpix;
+    }
+
+    public void setMaxpix(String maxpix) {
+        this.maxpix = maxpix;
     }
 
     public String getCopyright() {
         return copyright;
     }
 
+    public void setCopyright(String copyright) {
+        this.copyright = copyright;
+    }
+
     public String getDesc() {
         return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     @Override
     public String toString() {
         return "Image{" +
-                "raw='" + raw + '\'' +
-                ", uid='" + uid + '\'' +
+                "uid='" + uid + '\'' +
                 ", minpix='" + minpix + '\'' +
                 ", maxpix='" + maxpix + '\'' +
                 ", copyright='" + copyright + '\'' +

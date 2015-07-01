@@ -2,31 +2,37 @@ package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.database.ContentObserver;
+import android.net.Uri;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.swiperefreshmultipleviews.MultiSwipeRefreshLayout;
 import com.lx.todaysbing.R;
+import com.lx.todaysbing.TodaysBingApplication;
 import com.lx.todaysbing.activity.BingGalleryImageDetailActivity;
 import com.lx.todaysbing.adapter.BingGalleryRecyclerViewAdapter;
+import com.lx.todaysbing.event.OnBingGalleryListEvent;
 import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
 import com.lx.todaysbing.event.OnBingGalleryListOnResponseEvent;
-import com.lx.todaysbing.event.OnBingGalleryListEvent;
 import com.lx.todaysbing.event.OnBingGalleryScrollEvent;
 import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
 
+import java.util.List;
+
+import binggallery.chinacloudsites.cn.BingGalleryImageDao;
+import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -36,7 +42,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by liuxue on 2015/6/15.
  */
-public class BingGalleryView extends RelativeLayout implements AdapterView.OnItemClickListener {
+public class BingGalleryView extends RelativeLayout implements AdapterView.OnItemClickListener/*, LoaderManager.LoaderCallbacks<Cursor>*/ {
 
     private static final String TAG = "BingGalleryView";
 
@@ -75,6 +81,27 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         init(context);
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        Log.d(TAG, "onAttachedToWindow()");
+        super.onAttachedToWindow();
+
+//        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
+//        appCompatActivity.getSupportLoaderManager().initLoader(0, null, this);
+
+        getContext().getContentResolver().registerContentObserver(BingGalleryImageProvider.CONTENT_URI, true, mContentObserver);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        Log.d(TAG, "onDetachedFromWindow()");
+        super.onDetachedFromWindow();
+
+//        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
+//        appCompatActivity.getSupportLoaderManager().destroyLoader(0);
+
+        getContext().getContentResolver().unregisterContentObserver(mContentObserver);
+    }
 
     public void init(Context context) {
         inflate(context, R.layout.view_bing_gallery, this);
@@ -89,6 +116,21 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         });
 
         setRecyclerViewLayoutManager();
+
+        mAdapter = new BingGalleryRecyclerViewAdapter(getContext(), null);
+        mAdapter.setOnItemClickListener(this);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.addOnScrollListener(mOnScrollListener);
+
+        BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
+        List<Image> imageList = bingGalleryImageDao.loadAll();
+        Image[] images = imageList != null ? imageList.toArray(new Image[]{}) : null;
+        Log.d(TAG, "onChange() images:" + images);
+        mAdapter.changeData(images);
+        if (images == null || images.length == 0) {
+            btnRefresh.setVisibility(View.VISIBLE);
+            mRecyclerView.setVisibility(View.GONE);
+        }
     }
 
     private void initiateRefresh() {
@@ -97,7 +139,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         EventBus.getDefault().post(new OnBingGalleryListEvent());
     }
 
-    private void onRefreshComplete(Image[] result) {
+    private void onRefreshComplete(/*Image[] result*/) {
 //        mSwipeRefreshLayout.setRefreshing(false);
 
         mSwipeRefreshLayout.post(new Runnable() {
@@ -107,7 +149,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
             }
         });
 
-        bind(mColor, result, mResolution);
+//        bind(mColor, result, mResolution);
     }
 
 //    /**
@@ -154,24 +196,25 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 //        mRecyclerView.scrollToPosition(scrollPosition);
     }
 
-    public void bind(String color, Image[] images, String resolution) {
+    public void bind(String color, String resolution) {
         mColor = color;
         mResolution = resolution;
 
-        Log.d(TAG, "bind() images:" + images);
-        mAdapter = new BingGalleryRecyclerViewAdapter(getContext(), images);
-        mAdapter.setOnItemClickListener(this);
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.addOnScrollListener(mOnScrollListener);
-
         btnRefresh.setVisibility(View.GONE);
         mRecyclerView.setVisibility(View.VISIBLE);
-
-        if (images == null || images.length == 0) {
-            btnRefresh.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
-        }
     }
+
+//    public void bind(String color, Image[] images, String resolution) {
+//        bind(color, resolution);
+//
+//        Log.d(TAG, "bind() images:" + images);
+//
+////        mAdapter.changeData(images);
+////        if (images == null || images.length == 0) {
+////            btnRefresh.setVisibility(View.VISIBLE);
+////            mRecyclerView.setVisibility(View.GONE);
+////        }
+//    }
 
     @OnClick(R.id.btnRefresh)
     public void onClickRefresh() {
@@ -233,12 +276,6 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         });
     }
 
-    public void onEvent(OnBingGalleryListOnResponseEvent event) {
-        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-        onRefreshComplete(event.images);
-
-    }
-
     public void onEvent(OnBingGalleryListOnErrorResponseEvent event) {
         EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
         if (event.error != null) {
@@ -265,4 +302,32 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
             });
         }
     }
+
+    ContentObserver mContentObserver = new ContentObserver(new Handler()) {
+        @Override
+        public boolean deliverSelfNotifications() {
+            return super.deliverSelfNotifications();
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+        }
+
+        @Override
+        public void onChange(boolean selfChange, Uri uri) {
+            super.onChange(selfChange, uri);
+
+            BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
+            List<Image> imageList = bingGalleryImageDao.loadAll();
+            Image[] images = imageList != null ? imageList.toArray(new Image[]{}) : null;
+            Log.d(TAG, "onChange() images:" + images);
+            mAdapter.changeData(images);
+            if (images == null || images.length == 0) {
+                btnRefresh.setVisibility(View.VISIBLE);
+                mRecyclerView.setVisibility(View.GONE);
+            }
+        }
+    };
+
 }

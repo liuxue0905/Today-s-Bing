@@ -1,5 +1,6 @@
 package com.lx.todaysbing;
 
+import de.greenrobot.daogenerator.ContentProvider;
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
 import de.greenrobot.daogenerator.Index;
@@ -51,16 +52,23 @@ public class ExampleDaoGenerator {
     }
 
     public static void main(String[] args) throws Exception {
-        Schema schema = new Schema(1000, "com.lx.iruanmi.bingwallpaper.db");
+        Schema schema = new Schema(/*1000*/1, "binggallery.chinacloudsites.cn");
 
-        addImage(schema);
+        addBingGalleryImage(schema);
+
+        java.io.File file = new java.io.File("greendaogenerator/src-gen");
+        System.out.println(file.getAbsolutePath());
+        if (!file.exists()) {
+            file.mkdir();
+        }
 
 //        new DaoGenerator().generateAll(schema, "../greendaogenerator/src-gen");
-        new DaoGenerator().generateAll(schema, "E:/Users/liuxue/AndroidStudioProjects/BingWallpaper/greendaogenerator/src-gen");
+//        new DaoGenerator().generateAll(schema, "E:/Users/liuxue/AndroidStudioProjects/BingWallpaper/greendaogenerator/src-gen");
+        new DaoGenerator().generateAll(schema, "greendaogenerator/src-gen");
     }
 
-    private static void addImage(Schema schema) {
-        Entity customer = schema.addEntity("Image");
+    private static void addBingGalleryImage(Schema schema) {
+        Entity customer = schema.addEntity("BingGalleryImage");
         customer.addIdProperty().autoincrement();
         Property uidProperty =  customer.addStringProperty("uid").notNull().getProperty();
         customer.addStringProperty("minpix");
@@ -72,6 +80,12 @@ public class ExampleDaoGenerator {
         index.addPropertyAsc(uidProperty);
         index.makeUnique();
         customer.addIndex(index);
+
+        ContentProvider cp = customer.addContentProvider();
+        cp.setJavaPackage("binggallery.chinacloudsites.cn");
+        cp.setClassName("BingGalleryImageProvider");
+        cp.setAuthority("binggallery.chinacloudsites.cn.BingGalleryImage");
+        cp.setBasePath("BingGalleryImage");
     }
 
 }

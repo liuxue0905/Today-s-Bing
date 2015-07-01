@@ -1,11 +1,15 @@
 package com.lx.todaysbing;
 
 import android.app.Application;
+import android.database.sqlite.SQLiteDatabase;
 
 import bing.com.BingAPI;
 
 import binggallery.chinacloudsites.cn.BingGalleryAPI;
 import binggallery.chinacloudsites.cn.ImageConverter;
+import binggallery.chinacloudsites.cn.BingGalleryImageDao;
+import binggallery.chinacloudsites.cn.DaoMaster;
+import binggallery.chinacloudsites.cn.DaoSession;
 import retrofit.RestAdapter;
 
 /**
@@ -15,8 +19,15 @@ public class TodaysBingApplication extends Application {
 
     private static TodaysBingApplication sInstance;
 
+    private SQLiteDatabase db;
+    private DaoMaster daoMaster;
+    private DaoSession daoSession;
+    private BingGalleryImageDao bingGalleryImageDao;
+
     private BingAPI mBingAPI;
     private BingGalleryAPI mBingGalleryAPI;
+
+
 
     public static TodaysBingApplication getInstance() {
         return sInstance;
@@ -27,6 +38,12 @@ public class TodaysBingApplication extends Application {
         super.onCreate();
 
         sInstance = this;
+
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "bing-db", null);
+        db = helper.getWritableDatabase();
+        daoMaster = new DaoMaster(db);
+        daoSession = daoMaster.newSession();
+        bingGalleryImageDao = daoSession.getBingGalleryImageDao();
 
         RestAdapter adapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(BingAPI.END_POINT).build();
         mBingAPI = adapter.create(BingAPI.class);
@@ -42,6 +59,10 @@ public class TodaysBingApplication extends Application {
         super.onTerminate();
 
         sInstance = null;
+    }
+
+    public BingGalleryImageDao getBingGalleryImageDao() {
+        return bingGalleryImageDao;
     }
 
     public BingAPI getBingAPI() {

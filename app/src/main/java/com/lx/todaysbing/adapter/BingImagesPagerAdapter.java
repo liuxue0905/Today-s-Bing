@@ -26,7 +26,6 @@ public class BingImagesPagerAdapter extends PagerAdapter {
     String mMkt;
     HPImageArchive mHpImageArchive;
     String mResolurtion;
-    Image[] mImages;
 
     public BingImagesPagerAdapter(Context context) {
         this.context = context;
@@ -37,15 +36,6 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         mMkt = mkt;
         mHpImageArchive = hpImageArchive;
         mResolurtion = resolution;
-        this.notifyDataSetChanged();
-
-        EventBus.getDefault().postSticky(new OnBingImageNDayScrollEvent(null));
-        EventBus.getDefault().postSticky(new OnBingGalleryScrollEvent(null));
-    }
-
-    public void setImages(Image[] images) {
-        mImages = images;
-
         this.notifyDataSetChanged();
 
         EventBus.getDefault().postSticky(new OnBingImageNDayScrollEvent(null));
@@ -79,7 +69,7 @@ public class BingImagesPagerAdapter extends PagerAdapter {
             return view;
         } else if (realPosition == 2) {
             BingGalleryView view = new BingGalleryView(context);
-            view.bind(mColor, mImages, mResolurtion);
+            view.bind(mColor, mResolurtion);
             container.addView(view);
             EventBus.getDefault().registerSticky(view);
             return view;

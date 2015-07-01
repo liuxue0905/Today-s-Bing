@@ -75,6 +75,11 @@ public class BingGalleryRecyclerViewAdapter extends RecyclerView.Adapter<BingGal
         return images[position];
     }
 
+    public void changeData(Image[] images) {
+        this.images = images;
+        this.notifyDataSetChanged();
+    }
+
     /**
      * Provide a reference to the type of views that you are using (custom ViewHolder)
      */
