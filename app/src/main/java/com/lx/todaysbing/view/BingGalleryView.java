@@ -122,10 +122,15 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
 
+        Log.d(TAG, "init() fillData()");
+        fillData();
+    }
+
+    private void fillData() {
         BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
         List<Image> imageList = bingGalleryImageDao.loadAll();
         Image[] images = imageList != null ? imageList.toArray(new Image[]{}) : null;
-        Log.d(TAG, "onChange() images:" + images);
+        Log.d(TAG, "fillData() images:" + images);
         mAdapter.changeData(images);
         if (images == null || images.length == 0) {
             btnRefresh.setVisibility(View.VISIBLE);
@@ -303,7 +308,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         }
     }
 
-    ContentObserver mContentObserver = new ContentObserver(new Handler()) {
+    private ContentObserver mContentObserver = new ContentObserver(new Handler()) {
         @Override
         public boolean deliverSelfNotifications() {
             return super.deliverSelfNotifications();
@@ -318,15 +323,8 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         public void onChange(boolean selfChange, Uri uri) {
             super.onChange(selfChange, uri);
 
-            BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
-            List<Image> imageList = bingGalleryImageDao.loadAll();
-            Image[] images = imageList != null ? imageList.toArray(new Image[]{}) : null;
-            Log.d(TAG, "onChange() images:" + images);
-            mAdapter.changeData(images);
-            if (images == null || images.length == 0) {
-                btnRefresh.setVisibility(View.VISIBLE);
-                mRecyclerView.setVisibility(View.GONE);
-            }
+            Log.d(TAG, "onChange() fillData()");
+            fillData();
         }
     };
 
