@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -15,7 +14,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.example.android.swiperefreshmultipleviews.MultiSwipeRefreshLayout;
@@ -25,7 +23,6 @@ import com.lx.todaysbing.activity.BingGalleryImageDetailActivity;
 import com.lx.todaysbing.adapter.BingGalleryRecyclerViewAdapter;
 import com.lx.todaysbing.event.OnBingGalleryListEvent;
 import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
-import com.lx.todaysbing.event.OnBingGalleryListOnResponseEvent;
 import com.lx.todaysbing.event.OnBingGalleryScrollEvent;
 import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
 
@@ -36,7 +33,6 @@ import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -53,8 +49,8 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
     MultiSwipeRefreshLayout mSwipeRefreshLayout;
     @InjectView(R.id.recyclerView)
     public RecyclerView mRecyclerView;
-    @InjectView(R.id.btnRefresh)
-    ImageButton btnRefresh;
+//    @InjectView(R.id.btnRefresh)
+//    ImageButton btnRefresh;
     @InjectView(R.id.layoutSnackbar)
     FrameLayout layoutSnackbar;
 
@@ -83,7 +79,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
     @Override
     protected void onAttachedToWindow() {
-        Log.d(TAG, "onAttachedToWindow()");
+//        Log.d(TAG, "onAttachedToWindow()");
         super.onAttachedToWindow();
 
 //        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
@@ -94,7 +90,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
     @Override
     protected void onDetachedFromWindow() {
-        Log.d(TAG, "onDetachedFromWindow()");
+//        Log.d(TAG, "onDetachedFromWindow()");
         super.onDetachedFromWindow();
 
 //        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
@@ -132,10 +128,16 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         Image[] images = imageList != null ? imageList.toArray(new Image[]{}) : null;
         Log.d(TAG, "fillData() images:" + images);
         mAdapter.changeData(images);
-        if (images == null || images.length == 0) {
-            btnRefresh.setVisibility(View.VISIBLE);
-            mRecyclerView.setVisibility(View.GONE);
-        }
+
+//        onRefreshComplete();
+
+//        if (images == null || images.length == 0) {
+//            btnRefresh.setVisibility(View.VISIBLE);
+////            mRecyclerView.setVisibility(View.GONE);
+//        } else {
+//            btnRefresh.setVisibility(View.GONE);
+////            mRecyclerView.setVisibility(View.VISIBLE);
+//        }
     }
 
     private void initiateRefresh() {
@@ -205,8 +207,8 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         mColor = color;
         mResolution = resolution;
 
-        btnRefresh.setVisibility(View.GONE);
-        mRecyclerView.setVisibility(View.VISIBLE);
+//        btnRefresh.setVisibility(View.GONE);
+//        mRecyclerView.setVisibility(View.VISIBLE);
     }
 
 //    public void bind(String color, Image[] images, String resolution) {
@@ -221,10 +223,10 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 ////        }
 //    }
 
-    @OnClick(R.id.btnRefresh)
-    public void onClickRefresh() {
-        EventBus.getDefault().post(new OnBingGalleryListEvent());
-    }
+//    @OnClick(R.id.btnRefresh)
+//    public void onClickRefresh() {
+//        EventBus.getDefault().post(new OnBingGalleryListEvent());
+//    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -276,15 +278,14 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         mSwipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                mSwipeRefreshLayout.setRefreshing(event.refreshing);
+                mSwipeRefreshLayout.setRefreshing(event.isRefreshing());
             }
         });
     }
 
     public void onEvent(OnBingGalleryListOnErrorResponseEvent event) {
-        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
         if (event.error != null) {
-            mSwipeRefreshLayout.post(new Runnable() {
+            layoutSnackbar.post(new Runnable() {
                 @Override
                 public void run() {
                     Snackbar snackbar = Snackbar.make(layoutSnackbar, "加载失败", Snackbar.LENGTH_LONG)
@@ -298,8 +299,16 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
                     layoutSnackbar.addView(snackbar.getView());
                 }
             });
+
+//            if (mAdapter.getItemCount() == 0) {
+//                btnRefresh.setVisibility(View.VISIBLE);
+//            } else {
+//                btnRefresh.setVisibility(View.GONE);
+//            }
+
         } else {
-            mSwipeRefreshLayout.post(new Runnable() {
+//            btnRefresh.setVisibility(View.GONE);
+            layoutSnackbar.post(new Runnable() {
                 @Override
                 public void run() {
                     layoutSnackbar.removeAllViews();

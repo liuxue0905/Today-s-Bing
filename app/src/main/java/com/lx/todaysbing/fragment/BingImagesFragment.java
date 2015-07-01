@@ -32,6 +32,7 @@ import bing.com.BingAPI;
 import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.RetrofitCallback;
 import com.lx.todaysbing.util.Utils;
+import com.lx.todaysbing.view.BingGalleryView;
 
 import org.afinal.simplecache.ACache;
 
@@ -260,11 +261,16 @@ public class BingImagesFragment extends Fragment {
         if (mRetrofitCallback != null) {
             mRetrofitCallback.cancel();
         }
+
+        if (mRetrofitCallback2 != null) {
+            mRetrofitCallback2.cancel();
+        }
     }
 
 //    APIImpl api;
     BingAPI api;
     RetrofitCallback<HPImageArchive> mRetrofitCallback;
+    RetrofitCallback<Image[]> mRetrofitCallback2;
 
     public void bind(String color, final String mkt) {
         mColor = color;
@@ -340,20 +346,22 @@ public class BingImagesFragment extends Fragment {
         Log.d("LX", "initBingGalleryList() isNeedRefresh:" + isNeedRefresh);
 
         EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(null));
-        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
 
         if (!isNeedRefresh) {
             BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
-            List<Image> imageList = bingGalleryImageDao.loadAll();
+//            List<Image> imageList = bingGalleryImageDao.loadAll();
+            long count = bingGalleryImageDao.count();
 
-            Log.d("LX", "initBingGalleryList() images:" + imageList);
-            if (imageList != null && imageList.size() != 0) {
+            Log.d("LX", "initBingGalleryList() db count:" + count);
+            if (count != 0) {
                 return;
             }
         }
 
+        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
+
         BingGalleryAPI api = TodaysBingApplication.getInstance().getBingGalleryAPI();
-        RetrofitCallback<Image[]> cb = new RetrofitCallback<Image[]>(){
+        mRetrofitCallback2 = new RetrofitCallback<Image[]>(){
             @Override
             public void success(Image[] images, Response response) {
                 Log.d("LX", "success() images:" + images);
@@ -364,18 +372,22 @@ public class BingImagesFragment extends Fragment {
                     bingGalleryImageDao.insertInTx(images);
 
                     getActivity().getContentResolver().notifyChange(BingGalleryImageProvider.CONTENT_URI, null);
+
+                    EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
+                    EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(null));
                 }
             }
             @Override
             public void failure(RetrofitError error) {
                 Log.d("LX", "failure() error:" + error);
-                EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
 //                Snackbar.make(getView(), "加载失败", Snackbar.LENGTH_SHORT)
 //                        .show();
+
+                EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
                 EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(error));
             }
         };
-        api.list(cb);
+        api.list(mRetrofitCallback2);
     }
 
     public void onEvent(OnBingGalleryListEvent event) {
