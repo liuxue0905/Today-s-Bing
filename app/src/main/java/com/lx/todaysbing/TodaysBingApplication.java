@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import bing.com.BingAPI;
 
 import binggallery.chinacloudsites.cn.BingGalleryAPI;
+import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.ImageConverter;
 import binggallery.chinacloudsites.cn.BingGalleryImageDao;
 import binggallery.chinacloudsites.cn.DaoMaster;
@@ -43,6 +44,7 @@ public class TodaysBingApplication extends Application {
         db = helper.getWritableDatabase();
         daoMaster = new DaoMaster(db);
         daoSession = daoMaster.newSession();
+        BingGalleryImageProvider.daoSession = daoSession;
         bingGalleryImageDao = daoSession.getBingGalleryImageDao();
 
         RestAdapter adapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(BingAPI.END_POINT).build();

@@ -1,12 +1,13 @@
 package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.content.Context;
-import android.database.ContentObserver;
-import android.net.Uri;
-import android.os.Handler;
+import android.database.Cursor;
+import android.os.Build;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -18,17 +19,13 @@ import android.widget.RelativeLayout;
 
 import com.example.android.swiperefreshmultipleviews.MultiSwipeRefreshLayout;
 import com.lx.todaysbing.R;
-import com.lx.todaysbing.TodaysBingApplication;
 import com.lx.todaysbing.activity.BingGalleryImageDetailActivity;
-import com.lx.todaysbing.adapter.BingGalleryRecyclerViewAdapter;
+import com.lx.todaysbing.adapter.BingGalleryRVCursorAdapter;
 import com.lx.todaysbing.event.OnBingGalleryListEvent;
 import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
 import com.lx.todaysbing.event.OnBingGalleryScrollEvent;
 import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
 
-import java.util.List;
-
-import binggallery.chinacloudsites.cn.BingGalleryImageDao;
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.ButterKnife;
@@ -54,7 +51,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
     @InjectView(R.id.layoutSnackbar)
     FrameLayout layoutSnackbar;
 
-    private BingGalleryRecyclerViewAdapter mAdapter;
+    private BingGalleryRVCursorAdapter mAdapter;
 
     public BingGalleryView(Context context) {
         super(context);
@@ -85,7 +82,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 //        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
 //        appCompatActivity.getSupportLoaderManager().initLoader(0, null, this);
 
-        getContext().getContentResolver().registerContentObserver(BingGalleryImageProvider.CONTENT_URI, true, mContentObserver);
+//        getContext().getContentResolver().registerContentObserver(BingGalleryImageProvider.CONTENT_URI, true, mContentObserver);
     }
 
     @Override
@@ -96,7 +93,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 //        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
 //        appCompatActivity.getSupportLoaderManager().destroyLoader(0);
 
-        getContext().getContentResolver().unregisterContentObserver(mContentObserver);
+//        getContext().getContentResolver().unregisterContentObserver(mContentObserver);
     }
 
     public void init(Context context) {
@@ -113,7 +110,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
         setRecyclerViewLayoutManager();
 
-        mAdapter = new BingGalleryRecyclerViewAdapter(getContext(), null);
+        mAdapter = new BingGalleryRVCursorAdapter(getContext(), null, true);
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
@@ -122,22 +119,24 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         fillData();
     }
 
+    @TargetApi(Build.VERSION_CODES.KITKAT)
     private void fillData() {
-        BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
-        List<Image> imageList = bingGalleryImageDao.loadAll();
-        Image[] images = imageList != null ? imageList.toArray(new Image[]{}) : null;
-        Log.d(TAG, "fillData() images:" + images);
-        mAdapter.changeData(images);
+//        BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
+//        List<Image> imageList = bingGalleryImageDao.loadAll();
+//        Image[] images = imageList != null ? imageList.toArray(new Image[]{}) : null;
+//        Log.d(TAG, "fillData() images:" + images);
+//        mAdapter.changeData(images);
 
-//        onRefreshComplete();
+        Cursor cursor = getContext().getContentResolver().query(BingGalleryImageProvider.CONTENT_URI, null, null, null, null);
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
+        appCompatActivity.startManagingCursor(cursor);
 
-//        if (images == null || images.length == 0) {
-//            btnRefresh.setVisibility(View.VISIBLE);
-////            mRecyclerView.setVisibility(View.GONE);
-//        } else {
-//            btnRefresh.setVisibility(View.GONE);
-////            mRecyclerView.setVisibility(View.VISIBLE);
-//        }
+        Log.d(TAG, "fillData() cursor:" + cursor);
+        if (cursor != null) {
+            Log.d(TAG, "fillData() cursor.getCount():" + cursor.getCount());
+        }
+
+        mAdapter.swapCursor(cursor);
     }
 
     private void initiateRefresh() {
@@ -158,35 +157,6 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
 //        bind(mColor, result, mResolution);
     }
-
-//    /**
-//     * Dummy {@link AsyncTask} which simulates a long running task to fetch new cheeses.
-//     */
-//    private class DummyBackgroundTask extends AsyncTask<Void, Void, Image[]> {
-//
-//        static final int TASK_DURATION = 3 * 1000; // 3 seconds
-//
-//        @Override
-//        protected Image[] doInBackground(Void... params) {
-//            // Sleep for a small amount of time to simulate a background-task
-//            try {
-//                Thread.sleep(TASK_DURATION);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Image[] result) {
-//            super.onPostExecute(result);
-//
-//            // Tell the Fragment that the refresh has completed
-//            onRefreshComplete(result);
-//        }
-//
-//    }
 
     public void setRecyclerViewLayoutManager() {
 //        int scrollPosition = 0;
@@ -316,25 +286,4 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
             });
         }
     }
-
-    private ContentObserver mContentObserver = new ContentObserver(new Handler()) {
-        @Override
-        public boolean deliverSelfNotifications() {
-            return super.deliverSelfNotifications();
-        }
-
-        @Override
-        public void onChange(boolean selfChange) {
-            super.onChange(selfChange);
-        }
-
-        @Override
-        public void onChange(boolean selfChange, Uri uri) {
-            super.onChange(selfChange, uri);
-
-            Log.d(TAG, "onChange() fillData()");
-            fillData();
-        }
-    };
-
 }
