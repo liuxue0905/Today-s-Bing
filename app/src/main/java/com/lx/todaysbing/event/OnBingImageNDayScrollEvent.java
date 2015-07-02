@@ -54,4 +54,14 @@ public class OnBingImageNDayScrollEvent {
                 ", offset=" + offset +
                 '}';
     }
+
+    public static void scrollToPositionWithOffset(OnBingImageNDayScrollEvent event, RecyclerView recyclerView) {
+        if (event == null) {
+            return;
+        }
+        if (event.recyclerView != recyclerView) {
+            LinearLayoutManager linearLayoutManager2 = ((LinearLayoutManager) recyclerView.getLayoutManager());
+            linearLayoutManager2.scrollToPositionWithOffset(event.position, event.offset);
+        }
+    }
 }

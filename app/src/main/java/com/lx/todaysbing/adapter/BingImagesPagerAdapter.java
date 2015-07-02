@@ -69,7 +69,7 @@ public class BingImagesPagerAdapter extends PagerAdapter {
             return view;
         } else if (realPosition == 2) {
             BingGalleryView view = new BingGalleryView(context);
-            view.bind(mColor, mResolurtion);
+            view.bind(position, mColor, mResolurtion);
             container.addView(view);
             EventBus.getDefault().registerSticky(view);
             return view;

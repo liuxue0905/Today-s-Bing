@@ -1,11 +1,13 @@
 package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,6 +28,8 @@ import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
 import com.lx.todaysbing.event.OnBingGalleryScrollEvent;
 import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
 
+import java.util.Random;
+
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.ButterKnife;
@@ -35,7 +39,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by liuxue on 2015/6/15.
  */
-public class BingGalleryView extends RelativeLayout implements AdapterView.OnItemClickListener/*, LoaderManager.LoaderCallbacks<Cursor>*/ {
+public class BingGalleryView extends RelativeLayout implements AdapterView.OnItemClickListener {
 
     private static final String TAG = "BingGalleryView";
 
@@ -74,26 +78,21 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         init(context);
     }
 
+    private int mPosition;
+
     @Override
     protected void onAttachedToWindow() {
-//        Log.d(TAG, "onAttachedToWindow()");
         super.onAttachedToWindow();
 
-//        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
-//        appCompatActivity.getSupportLoaderManager().initLoader(0, null, this);
-
-//        getContext().getContentResolver().registerContentObserver(BingGalleryImageProvider.CONTENT_URI, true, mContentObserver);
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
+        appCompatActivity.getSupportLoaderManager().initLoader(mPosition, null, mLoaderCallbacks);
     }
 
     @Override
     protected void onDetachedFromWindow() {
-//        Log.d(TAG, "onDetachedFromWindow()");
         super.onDetachedFromWindow();
-
-//        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
-//        appCompatActivity.getSupportLoaderManager().destroyLoader(0);
-
-//        getContext().getContentResolver().unregisterContentObserver(mContentObserver);
+        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
+        appCompatActivity.getSupportLoaderManager().destroyLoader(mPosition);
     }
 
     public void init(Context context) {
@@ -114,30 +113,30 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
-
-        Log.d(TAG, "init() fillData()");
-        fillData();
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
-    private void fillData() {
-//        BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
-//        List<Image> imageList = bingGalleryImageDao.loadAll();
-//        Image[] images = imageList != null ? imageList.toArray(new Image[]{}) : null;
-//        Log.d(TAG, "fillData() images:" + images);
-//        mAdapter.changeData(images);
+    private LoaderManager.LoaderCallbacks<Cursor> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>(){
 
-        Cursor cursor = getContext().getContentResolver().query(BingGalleryImageProvider.CONTENT_URI, null, null, null, null);
-        AppCompatActivity appCompatActivity = (AppCompatActivity) getContext();
-        appCompatActivity.startManagingCursor(cursor);
-
-        Log.d(TAG, "fillData() cursor:" + cursor);
-        if (cursor != null) {
-            Log.d(TAG, "fillData() cursor.getCount():" + cursor.getCount());
+        @Override
+        public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+            return new CursorLoader(getContext(), BingGalleryImageProvider.CONTENT_URI, null, null, null, null);
         }
 
-        mAdapter.swapCursor(cursor);
-    }
+        @Override
+        public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+            Log.d(TAG, "onLoadFinished() data:" + data);
+            if (data != null) {
+                Log.d(TAG, "onLoadFinished() data.getCount():" + data.getCount());
+            }
+            mAdapter.swapCursor(data);
+            OnBingGalleryScrollEvent.scrollToPositionWithOffset(mOnBingGalleryScrollEventReceived, mRecyclerView);
+        }
+
+        @Override
+        public void onLoaderReset(Loader<Cursor> loader) {
+            mAdapter.swapCursor(null);
+        }
+    };
 
     private void initiateRefresh() {
 //        new DummyBackgroundTask().execute();
@@ -173,7 +172,8 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 //        mRecyclerView.scrollToPosition(scrollPosition);
     }
 
-    public void bind(String color, String resolution) {
+    public void bind(int position, String color, String resolution) {
+        mPosition = position;
         mColor = color;
         mResolution = resolution;
 
@@ -232,14 +232,11 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
     OnBingGalleryScrollEvent mOnBingGalleryScrollEvent;
 
+    OnBingGalleryScrollEvent mOnBingGalleryScrollEventReceived;
     public void onEvent(OnBingGalleryScrollEvent event) {
 //        Log.d(TAG, "onEvent() event:" + event);
-
-        if (event.recyclerView != mRecyclerView) {
-            GridLayoutManager gridLayoutManager = ((GridLayoutManager) mRecyclerView.getLayoutManager());
-            gridLayoutManager.scrollToPositionWithOffset(event.position, event.offset);
-        }
-        //        mLayoutManager.scrollToPositionWithOffset();
+        mOnBingGalleryScrollEventReceived = event;
+        OnBingGalleryScrollEvent.scrollToPositionWithOffset(mOnBingGalleryScrollEventReceived, mRecyclerView);
     }
 
     public void onEvent(final OnBingGallerySwipeRefreshLayoutRefreshingEvent event) {

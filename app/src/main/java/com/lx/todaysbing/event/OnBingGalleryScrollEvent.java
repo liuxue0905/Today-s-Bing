@@ -1,5 +1,6 @@
 package com.lx.todaysbing.event;
 
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -53,5 +54,15 @@ public class OnBingGalleryScrollEvent {
                 ", position=" + position +
                 ", offset=" + offset +
                 '}';
+    }
+
+    public static void scrollToPositionWithOffset(OnBingGalleryScrollEvent event, RecyclerView recyclerView) {
+        if (event == null) {
+            return;
+        }
+        if (event.recyclerView != recyclerView) {
+            GridLayoutManager gridLayoutManager = ((GridLayoutManager) recyclerView.getLayoutManager());
+            gridLayoutManager.scrollToPositionWithOffset(event.position, event.offset);
+        }
     }
 }

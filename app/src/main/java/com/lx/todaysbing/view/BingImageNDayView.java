@@ -150,11 +150,6 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
 
     public void onEvent(OnBingImageNDayScrollEvent event) {
         Log.d(TAG, "onEvent() event:" + event);
-
-        if (event.recyclerView != mRecyclerView) {
-            LinearLayoutManager linearLayoutManager2 = ((LinearLayoutManager) mRecyclerView.getLayoutManager());
-            linearLayoutManager2.scrollToPositionWithOffset(event.position, event.offset);
-        }
-        //        mLayoutManager.scrollToPositionWithOffset();
+        OnBingImageNDayScrollEvent.scrollToPositionWithOffset(event, mRecyclerView);
     }
 }
