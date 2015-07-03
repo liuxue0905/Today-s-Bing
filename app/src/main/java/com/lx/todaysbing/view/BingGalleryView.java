@@ -12,6 +12,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -167,6 +168,8 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 //        }
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
+
+//        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
         mRecyclerView.setLayoutManager(mLayoutManager);
 //        mRecyclerView.scrollToPosition(scrollPosition);

@@ -1,9 +1,7 @@
 package com.lx.todaysbing.event;
 
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 /**
  * Created by liuxue on 2015/5/30.
@@ -26,9 +24,9 @@ public class OnBingGalleryScrollEvent {
         if (recyclerView == null) {
             return;
         }
-        LinearLayoutManager linearLayoutManager = ((LinearLayoutManager) recyclerView.getLayoutManager());
+        GridLayoutManager layoutManager = ((GridLayoutManager) recyclerView.getLayoutManager());
 
-        int firstVisibleItemPosition = linearLayoutManager.findFirstVisibleItemPosition();
+        int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
         position = firstVisibleItemPosition;
         RecyclerView.ViewHolder viewHolderFirstVisibleItemPosition = recyclerView.findViewHolderForAdapterPosition(firstVisibleItemPosition);
 //        Log.d(TAG, "OnBingImageNDayScrollEvent() firstVisibleItemPosition:" + firstVisibleItemPosition);
@@ -61,8 +59,8 @@ public class OnBingGalleryScrollEvent {
             return;
         }
         if (event.recyclerView != recyclerView) {
-            GridLayoutManager gridLayoutManager = ((GridLayoutManager) recyclerView.getLayoutManager());
-            gridLayoutManager.scrollToPositionWithOffset(event.position, event.offset);
+            GridLayoutManager layoutManager = ((GridLayoutManager) recyclerView.getLayoutManager());
+            layoutManager.scrollToPositionWithOffset(event.position, event.offset);
         }
     }
 }
