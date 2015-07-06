@@ -3,6 +3,8 @@ package com.lx.todaysbing.view;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -11,6 +13,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.app.NotificationCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -125,6 +128,7 @@ public class BingImageDetailView extends RelativeLayout {
         setColor();
         btnResolution.setText(resolution);
 
+        progressBar.setVisibility(View.VISIBLE);
         Glide.with(getContext())
                 .load(Image.rebuildImageUrl(image, resolution))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -194,5 +198,19 @@ public class BingImageDetailView extends RelativeLayout {
         Snackbar.make(this, R.string.image_detail_download_start, Snackbar.LENGTH_LONG)
                 .setAction(android.R.string.ok, null)
                 .show();
+
+//        NotificationManager mNotificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//        android.support.v4.app.NotificationCompat v4NotificationCompat;
+//        android.support.v7.app.NotificationCompat v7NotificationCompat;
+//
+//        Notification notification = new NotificationCompat.Builder(getContext())
+//                .setAutoCancel(false)
+//                .setContentTitle(null)
+//                .setContentText(null)
+//                .setContentInfo(null)
+//                .build();
+//
+//        mNotificationManager.notify(null, 0, notification);
     }
 }

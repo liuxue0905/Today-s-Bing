@@ -59,6 +59,7 @@ public class BingGalleryImageDetailView extends BingImageDetailView {
         }
         btnResolution.setText(resolutionStr);
 
+        progressBar.setVisibility(View.VISIBLE);
         Glide.with(getContext())
                 .load(image.getMaxpixUrl())
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
