@@ -29,6 +29,7 @@ public class BingImageDetailFragment extends Fragment {
     private static final String ARG_COLOR = "color";
     private static final String ARG_IMAGE = "Image";
     private static final String ARG_RESOLUTION = "Resolution";
+    private static final String ARG_IMAGE_RESOLUTION = "ImageResolution";
 
     @InjectView(R.id.viewBingImageDetailView)
     BingImageDetailView mBingImageDetailView;
@@ -36,6 +37,7 @@ public class BingImageDetailFragment extends Fragment {
     private String mColor;
     private Image mImage;
     private String mResolution;
+    private String mImageResolution;
 
     private OnBingImageDetailFragmentInteractionListener mListener;
 
@@ -50,12 +52,13 @@ public class BingImageDetailFragment extends Fragment {
      * @param image Parameter 1.
      * @return A new instance of fragment BingImageDetailFragment.
      */
-    public static BingImageDetailFragment newInstance(String color, Image image, String resolution) {
+    public static BingImageDetailFragment newInstance(String color, Image image, String resolution, String imageResolution) {
         BingImageDetailFragment fragment = new BingImageDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_COLOR, color);
         args.putSerializable(ARG_IMAGE, (java.io.Serializable) image);
         args.putString(ARG_RESOLUTION, resolution);
+        args.putString(ARG_IMAGE_RESOLUTION, imageResolution);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,6 +70,7 @@ public class BingImageDetailFragment extends Fragment {
             mColor = getArguments().getString(ARG_COLOR);
             mImage = (Image) getArguments().getSerializable(ARG_IMAGE);
             mResolution = getArguments().getString(ARG_RESOLUTION);
+            mImageResolution = getArguments().getString(ARG_IMAGE_RESOLUTION);
         }
     }
 
@@ -82,7 +86,7 @@ public class BingImageDetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
 
-        bind(mImage, mResolution);
+        bind(mImage, mResolution, mImageResolution);
     }
 
 //    public void onButtonPressed(Uri uri) {
@@ -108,10 +112,11 @@ public class BingImageDetailFragment extends Fragment {
         mListener = null;
     }
 
-    public void bind(Image image, String resolution) {
+    public void bind(Image image, String resolution, String imageResolution) {
         mImage = image;
         mResolution = resolution;
-        mBingImageDetailView.bind(mColor, mImage, mResolution);
+        mImageResolution = imageResolution;
+        mBingImageDetailView.bind(mColor, mImage, mResolution, mImageResolution);
     }
 
     /**

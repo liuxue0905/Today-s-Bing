@@ -28,7 +28,6 @@ public class BingGalleryImageDetailView extends BingImageDetailView {
     private static final String TAG = "BGImageDetailView";
 
     private Image mImage;
-    private String mImageResolution;
 
     public BingGalleryImageDetailView(Context context) {
         super(context);
@@ -66,14 +65,9 @@ public class BingGalleryImageDetailView extends BingImageDetailView {
         mImageResolution = imageResolution;
 
         setColor();
-        btnResolution.setText(mImageResolution);
+        btnResolution.setText(imageResolution);
 
-        String url = image.getMaxpixUrl();
-        if (Image.RESOLUTION_VALUE_L.equalsIgnoreCase(imageResolution)) {
-            url = image.getImageUrl(Image.RESOLUTION_CEDE_L);
-        } else if (Image.RESOLUTION_VALUE_W.equalsIgnoreCase(imageResolution)) {
-            url = image.getImageUrl(Image.RESOLUTION_CEDE_W);
-        }
+        String url = getImageUrl(image, imageResolution);
         Log.d(TAG, "bind() url:" + url);
 
         progressBar.setVisibility(View.VISIBLE);
@@ -97,6 +91,16 @@ public class BingGalleryImageDetailView extends BingImageDetailView {
                 .into(imageView);
     }
 
+    private String getImageUrl(Image image, String imageResolution) {
+        String url = image.getMaxpixUrl();
+        if (Image.RESOLUTION_VALUE_L.equalsIgnoreCase(imageResolution)) {
+            url = image.getImageUrl(Image.RESOLUTION_CEDE_L);
+        } else if (Image.RESOLUTION_VALUE_W.equalsIgnoreCase(imageResolution)) {
+            url = image.getImageUrl(Image.RESOLUTION_CEDE_W);
+        }
+        return url;
+    }
+
     @OnClick(R.id.btnResolution)
     void onClickResolution() {
 //        Serializable obj = (Serializable) TodaysBingApplication.getInstance().getBingGalleryImageDao().loadAll();
@@ -113,10 +117,10 @@ public class BingGalleryImageDetailView extends BingImageDetailView {
     @OnClick(R.id.btnSave)
     void onClickSave() {
         Image image = mImage;
-        String resolution = mResolution;
-        String url = image.getMaxpixUrl();
-        save(url, image.getCopyright(), image.getCopyright());
+        String imageResolution = mImageResolution;
 
+        String url = getImageUrl(image, imageResolution);
+        save(url, image.getCopyright(), image.getCopyright());
     }
 
     @OnClick(R.id.btnLocation)

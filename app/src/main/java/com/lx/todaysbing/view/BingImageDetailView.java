@@ -1,20 +1,15 @@
 package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.NotificationCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -25,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -34,15 +28,14 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.ResolutionActivity;
-import bing.com.Image;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
+import bing.com.Image;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import retrofit.mime.MimeUtil;
 
 /**
  * Created by liuxue on 2015/5/9.
@@ -73,6 +66,7 @@ public class BingImageDetailView extends RelativeLayout {
 
     private Image mImage;
     protected String mResolution;
+    protected String mImageResolution;
     protected String mColor;
 
     public BingImageDetailView(Context context) {
@@ -120,8 +114,9 @@ public class BingImageDetailView extends RelativeLayout {
         layoutHud.setLayoutParams(params);
     }
 
-    public void bind(String color, Image image, String resolution) {
+    public void bind(String color, Image image, String resolution, String imageResolution) {
         Log.d(TAG, "bind() image:" + image);
+        Log.d(TAG, "bind() resolution:" + resolution);
         Log.d(TAG, "bind() resolution:" + resolution);
 
         tvEnabledRotation.setAlpha(1.0f);
@@ -129,9 +124,13 @@ public class BingImageDetailView extends RelativeLayout {
         mColor = color;
         mImage = image;
         mResolution = resolution;
+        if (imageResolution == null) {
+            imageResolution = resolution;
+        }
+        mImageResolution = imageResolution;
 
         setColor();
-        btnResolution.setText(resolution);
+        btnResolution.setText(mImageResolution);
 
         progressBar.setVisibility(View.VISIBLE);
         Glide.with(getContext())
