@@ -8,8 +8,8 @@ android {
         applicationId "com.lx.todaysbing"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 3
-        versionName "1.1.0"
+        versionCode 4
+        versionName "1.2.0"
 
         // dex突破65535的限制
         multiDexEnabled true
@@ -58,6 +58,7 @@ android {
         baidu {}
         hiapk {}
         zs91 {}
+        yyb {}
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }
