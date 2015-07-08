@@ -27,6 +27,7 @@ import butterknife.InjectView;
 
 public class ResolutionActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
+    public static final String EXTRA_RESOLUTIONS = "resolutions";
     public static final String EXTRA_RESOLUTION = "resolution";
     public static final int REQUEST_CODE = 1;
 
@@ -37,8 +38,11 @@ public class ResolutionActivity extends AppCompatActivity implements AdapterView
 
     private ResolutionAdapter mAdapter;
 
-    public static void action(Activity activity, int requestCode, String resolution) {
+    private String[] mResolutions;
+
+    public static void action(Activity activity, int requestCode, String[] resolutions, String resolution) {
         Intent intent = new Intent(activity, ResolutionActivity.class);
+        intent.putExtra(EXTRA_RESOLUTIONS, resolutions);
         intent.putExtra(EXTRA_RESOLUTION, resolution);
         activity.startActivityForResult(intent, requestCode);
     }
@@ -49,13 +53,14 @@ public class ResolutionActivity extends AppCompatActivity implements AdapterView
         setContentView(R.layout.activity_resolution);
         ButterKnife.inject(this);
 
-        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
+        mResolutions = getIntent().getStringArrayExtra(EXTRA_RESOLUTIONS);
 
+        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new ResolutionAdapter(this);
+        mAdapter = new ResolutionAdapter(this, mResolutions);
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
     }

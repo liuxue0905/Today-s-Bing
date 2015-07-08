@@ -24,9 +24,9 @@ public class ResolutionAdapter extends RecyclerView.Adapter<ResolutionAdapter.Vi
 
     private AdapterView.OnItemClickListener onItemClickListener;
 
-    public ResolutionAdapter(Context context) {
+    public ResolutionAdapter(Context context, String[] resolutions) {
         this.context = context;
-        this.resolutions = context.getResources().getStringArray(R.array.resolution);
+        this.resolutions = resolutions;
     }
 
     @Override

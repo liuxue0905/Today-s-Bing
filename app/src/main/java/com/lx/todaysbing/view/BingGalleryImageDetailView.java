@@ -1,5 +1,7 @@
 package com.lx.todaysbing.view;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,6 +13,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.lx.todaysbing.R;
+import com.lx.todaysbing.activity.ResolutionActivity;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.umeng.analytics.MobclickAgent;
 
@@ -25,6 +28,7 @@ public class BingGalleryImageDetailView extends BingImageDetailView {
     private static final String TAG = "BGImageDetailView";
 
     private Image mImage;
+    private String mImageResolution;
 
     public BingGalleryImageDetailView(Context context) {
         super(context);
@@ -38,30 +42,43 @@ public class BingGalleryImageDetailView extends BingImageDetailView {
         super(context, attrs, defStyleAttr);
     }
 
+    @SuppressLint("NewApi")
     public BingGalleryImageDetailView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
-    public void bind(String color, Image image, String resolution) {
+    public void bind(String color, Image image, String resolution, String imageResolution) {
         Log.d(TAG, "bind() image:" + image);
         Log.d(TAG, "bind() resolution:" + resolution);
+        Log.d(TAG, "bind() imageResolution:" + imageResolution);
 
         mColor = color;
         mImage = image;
         mResolution = resolution;
 
-        setColor();
-        String resolutionStr = null;
-        if (Image.RESOLUTION_CEDE_L.equalsIgnoreCase(image.getMaxpix())) {
-            resolutionStr = Image.RESOLUTION_VALUE_L;
-        } else if (Image.RESOLUTION_CEDE_W.equalsIgnoreCase(image.getMaxpix())) {
-            resolutionStr = Image.RESOLUTION_VALUE_W;
+        if (imageResolution == null) {
+            if (Image.RESOLUTION_CEDE_L.equalsIgnoreCase(image.getMaxpix())) {
+                imageResolution = Image.RESOLUTION_VALUE_L;
+            } else if (Image.RESOLUTION_CEDE_W.equalsIgnoreCase(image.getMaxpix())) {
+                imageResolution = Image.RESOLUTION_VALUE_W;
+            }
         }
-        btnResolution.setText(resolutionStr);
+        mImageResolution = imageResolution;
+
+        setColor();
+        btnResolution.setText(mImageResolution);
+
+        String url = image.getMaxpixUrl();
+        if (Image.RESOLUTION_VALUE_L.equalsIgnoreCase(imageResolution)) {
+            url = image.getImageUrl(Image.RESOLUTION_CEDE_L);
+        } else if (Image.RESOLUTION_VALUE_W.equalsIgnoreCase(imageResolution)) {
+            url = image.getImageUrl(Image.RESOLUTION_CEDE_W);
+        }
+        Log.d(TAG, "bind() url:" + url);
 
         progressBar.setVisibility(View.VISIBLE);
         Glide.with(getContext())
-                .load(image.getMaxpixUrl())
+                .load(url)
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.no_image)
                 .listener(new RequestListener<String, GlideDrawable>() {
@@ -82,7 +99,15 @@ public class BingGalleryImageDetailView extends BingImageDetailView {
 
     @OnClick(R.id.btnResolution)
     void onClickResolution() {
+//        Serializable obj = (Serializable) TodaysBingApplication.getInstance().getBingGalleryImageDao().loadAll();
+//        File cacheDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+//        ACache.get(cacheDir).put("Cache" + System.currentTimeMillis(), obj);
 
+        String[] resolutions = new String[]{Image.RESOLUTION_VALUE_L, Image.RESOLUTION_VALUE_W};
+        if (Image.RESOLUTION_VALUE_L.equalsIgnoreCase(mImage.getMaxpix())) {
+            resolutions = new String[]{Image.RESOLUTION_VALUE_L};
+        }
+        ResolutionActivity.action((Activity) getContext(), ResolutionActivity.REQUEST_CODE, resolutions, mResolution);
     }
 
     @OnClick(R.id.btnSave)

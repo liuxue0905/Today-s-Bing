@@ -1,5 +1,6 @@
 package com.lx.todaysbing.view;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -18,6 +19,7 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -40,6 +42,7 @@ import com.umeng.analytics.MobclickAgent;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import retrofit.mime.MimeUtil;
 
 /**
  * Created by liuxue on 2015/5/9.
@@ -57,6 +60,8 @@ public class BingImageDetailView extends RelativeLayout {
     ImageView imageView;
     @InjectView(R.id.progressBar)
     ProgressBar progressBar;
+//    @InjectView(R.id.tvResolution)
+//    TextView tvResolution;
     @InjectView(R.id.btnResolution)
     Button btnResolution;
     @InjectView(R.id.tvEnabledRotation)
@@ -85,7 +90,7 @@ public class BingImageDetailView extends RelativeLayout {
         init(context);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @SuppressLint("NewApi")
     public BingImageDetailView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
@@ -153,7 +158,8 @@ public class BingImageDetailView extends RelativeLayout {
     void onClickResolution() {
         MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_RESOLUTION);
 
-        ResolutionActivity.action((Activity) getContext(), ResolutionActivity.REQUEST_CODE, mResolution);
+        String[] resolutions = getContext().getResources().getStringArray(R.array.resolution);
+        ResolutionActivity.action((Activity) getContext(), ResolutionActivity.REQUEST_CODE, resolutions, mResolution);
     }
 
     @OnClick(R.id.btnSave)
@@ -188,6 +194,7 @@ public class BingImageDetailView extends RelativeLayout {
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, subPath);
         request.setTitle(title);
         request.setDescription(description);
+        request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(url)));
         request.allowScanningByMediaScanner();
         request.setVisibleInDownloadsUi(true);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);

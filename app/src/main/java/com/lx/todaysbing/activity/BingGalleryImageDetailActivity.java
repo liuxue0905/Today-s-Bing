@@ -61,7 +61,7 @@ public class BingGalleryImageDetailActivity extends AppCompatActivity {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, BingGalleryImageDetailFragment.newInstance(mColor, mImage, mResolution))
+                    .add(R.id.container, BingGalleryImageDetailFragment.newInstance(mColor, mImage, mResolution, null))
                     .commit();
         }
     }
@@ -106,10 +106,10 @@ public class BingGalleryImageDetailActivity extends AppCompatActivity {
         if (requestCode == ResolutionActivity.REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 String resolution = data.getStringExtra("resolution");
-                mResolution = resolution;
+                Log.d(TAG, "onActivityResult() resolution:" + resolution);
 
                 BingGalleryImageDetailFragment fragment = (BingGalleryImageDetailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
-                fragment.bind(mImage, mResolution);
+                fragment.bind(mImage, mResolution, resolution);
 
                 Map<String, String> map = new HashMap<>();
                 map.put("resolution", resolution);
