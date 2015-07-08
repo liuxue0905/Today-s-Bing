@@ -164,8 +164,9 @@ public class BingImageDetailView extends RelativeLayout {
     @OnClick(R.id.btnSave)
     void onClickSave() {
         Image image = mImage;
-        String resolution = mResolution;
-        String url = Image.rebuildImageUrl(image, resolution);
+        String imageResolution = mImageResolution;
+
+        String url = Image.rebuildImageUrl(image, imageResolution);
         save(url, image.copyright, image.copyright);
     }
 
