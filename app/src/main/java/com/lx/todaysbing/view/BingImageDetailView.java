@@ -117,7 +117,7 @@ public class BingImageDetailView extends RelativeLayout {
     public void bind(String color, Image image, String resolution, String imageResolution) {
         Log.d(TAG, "bind() image:" + image);
         Log.d(TAG, "bind() resolution:" + resolution);
-        Log.d(TAG, "bind() resolution:" + resolution);
+        Log.d(TAG, "bind() imageResolution:" + imageResolution);
 
         tvEnabledRotation.setAlpha(1.0f);
 
@@ -134,7 +134,7 @@ public class BingImageDetailView extends RelativeLayout {
 
         progressBar.setVisibility(View.VISIBLE);
         Glide.with(getContext())
-                .load(Image.rebuildImageUrl(image, resolution))
+                .load(Image.rebuildImageUrl(image, imageResolution))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .error(R.drawable.no_image)
                 .listener(new RequestListener<String, GlideDrawable>() {
