@@ -1,4 +1,4 @@
-package com.lx.todaysbing.view;
+package com.lx.todaysbing.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;

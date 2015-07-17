@@ -4,11 +4,19 @@
     android:layout_height="match_parent"
     android:background="@color/windowBackgroundPrimaryDark">
 
-    <ImageView
+    <!--<ImageView-->
+        <!--android:id="@+id/iv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scaleType="fitXY" />-->
+
+    <com.cesards.cropimageview.CropImageView
+        xmlns:custom="http://schemas.android.com/apk/res-auto"
         android:id="@+id/iv"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:scaleType="fitXY" />
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        custom:crop="centerLeft" />
 
     <!--240的渐变-->
     <View

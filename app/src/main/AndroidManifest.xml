@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.lx.todaysbing">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -9,6 +10,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+        tools:replace="android:theme"
         android:name=".TodaysBingApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_tb"
@@ -24,16 +26,16 @@
         </activity>
         <activity
             android:name=".activity.BingImageDetailActivity"
-            android:label="@string/title_activity_bing_image_detail"></activity>
+            android:label="@string/title_activity_bing_image_detail"/>
         <activity
             android:name=".activity.BingGalleryImageDetailActivity"
-            android:label="@string/title_activity_bing_image_detail"></activity>
+            android:label="@string/title_activity_bing_image_detail"/>
         <activity
             android:name=".activity.ResolutionActivity"
-            android:label="@string/title_activity_resolution"></activity>
+            android:label="@string/title_activity_resolution"/>
         <activity
             android:name=".activity.MarketActivity"
-            android:label="@string/title_activity_market"></activity>
+            android:label="@string/title_activity_market"/>
 
         <provider
             android:authorities="binggallery.chinacloudsites.cn.BingGalleryImage"

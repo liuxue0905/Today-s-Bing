@@ -26,6 +26,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.cesards.cropimageview.CropImageView;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.BingImageDetailActivity;
 import com.lx.todaysbing.activity.MarketActivity;
@@ -107,7 +111,7 @@ public class BingImageTodayView extends RelativeLayout {
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        /*getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @SuppressLint("NewApi")
             @Override
             public void onGlobalLayout() {
@@ -123,7 +127,7 @@ public class BingImageTodayView extends RelativeLayout {
                     getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
             }
-        });
+        });*/
     }
 
     private void setColor() {
@@ -144,7 +148,7 @@ public class BingImageTodayView extends RelativeLayout {
         progressBar.setProgressDrawable(dd);
     }
 
-    private void setupImageViewLayoutParams() {
+    /*private void setupImageViewLayoutParams() {
         ResolutionUtils.Resolution resolution = new ResolutionUtils.Resolution(mResolution);
         int[] wh = Utils.getScaledDSizeByFixHeight(resolution.width, resolution.height, this.getWidth(), this.getHeight());
 
@@ -156,7 +160,7 @@ public class BingImageTodayView extends RelativeLayout {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imageView.getLayoutParams();
         params.width = wh[0];
         imageView.setLayoutParams(params);
-    }
+    }*/
 
     public void bind(String color, String mkt, HPImageArchive hpImageArchive, String resolurtion) {
         Image image = null;
@@ -175,7 +179,7 @@ public class BingImageTodayView extends RelativeLayout {
         mImage = image;
         mResolution = resolurtion;
 
-        setupImageViewLayoutParams();
+//        setupImageViewLayoutParams();
 
         setColor();
         tvMkt.setText(Utils.getMarket(getContext(), mkt));
@@ -183,7 +187,7 @@ public class BingImageTodayView extends RelativeLayout {
         if (image == null) {
             tvCopyRightLeft.setText(null);
             tvCopyRightRight.setText(null);
-            imageView.setImageDrawable(null);
+//            imageView.setImageDrawable(null);
             return;
         }
 
@@ -196,6 +200,19 @@ public class BingImageTodayView extends RelativeLayout {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                .placeholder(R.drawable.no_image)
                 .error(R.drawable.no_image)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        ((CropImageView) imageView).setCropType(CropImageView.CropType.NONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        ((CropImageView) imageView).setCropType(CropImageView.CropType.LEFT_CENTER);
+                        return false;
+                    }
+                })
                 .into(imageView);
 
         btnRefresh.setVisibility(View.GONE);
