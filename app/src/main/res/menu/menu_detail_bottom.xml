@@ -11,19 +11,19 @@
             android:orderInCategory="100"
             app:showAsAction="always"
             android:icon="@drawable/hpc_qzone"
-            android:title="@string/action_share"/>
+            android:title="@string/action_hpc_qzone"/>
         <item
             android:id="@+id/action_hpc_weibo"
             android:orderInCategory="100"
             app:showAsAction="always"
             android:icon="@drawable/hpc_weibo"
-            android:title="@string/action_share"/>
+            android:title="@string/action_hpc_weibo"/>
         <item
             android:id="@+id/action_hpc_wechat"
             android:orderInCategory="100"
             app:showAsAction="always"
             android:icon="@drawable/hpc_wechat"
-            android:title="@string/action_share"/>
+            android:title="@string/action_hpc_wechat"/>
     </group>
 
     <item
@@ -31,7 +31,7 @@
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/hpc_share"
-        android:title="@string/action_share"/>
+        android:title="@string/action_hpc_share"/>
 
     <item
         android:id="@+id/action_hpc_previous"
@@ -39,7 +39,7 @@
         app:showAsAction="always"
         android:visible="false"
         android:icon="@drawable/hpc_previous"
-        android:title="@string/action_share"/>
+        android:title="@string/action_hpc_previous"/>
 
     <item
         android:id="@+id/action_hpc_next"
@@ -47,19 +47,19 @@
         app:showAsAction="always"
         android:visible="false"
         android:icon="@drawable/hpc_next"
-        android:title="@string/action_share"/>
+        android:title="@string/action_hpc_next"/>
 
     <item
         android:id="@+id/action_hpc_copy_info"
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/hpc_copy_info"
-        android:title="@string/action_download"/>
+        android:title="@string/action_hpc_copy_info"/>
 
     <item
         android:id="@+id/action_hpc_down"
         android:orderInCategory="100"
         app:showAsAction="always"
         android:icon="@drawable/hpc_down"
-        android:title="@string/action_download"/>
+        android:title="@string/action_hpc_down"/>
 </menu>

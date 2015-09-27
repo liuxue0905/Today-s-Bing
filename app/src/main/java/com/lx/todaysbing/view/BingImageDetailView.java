@@ -18,7 +18,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,33 +37,37 @@ import com.umeng.analytics.MobclickAgent;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by liuxue on 2015/5/9.
  */
-public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMenuItemClickListener {
+public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMenuItemClickListener, PhotoViewAttacher.OnViewTapListener {
 
     private static final String TAG = "BingImageDetailView";
 
+    @Bind(R.id.layout_toobar_top)
+    View mLayoutToobarTop;
+    @Bind(R.id.layout_toolbar_bottom)
+    View mLayoutToobarBottom;
     @Bind(R.id.toolbarTop)
     Toolbar mToolbarTop;
     @Bind(R.id.toolbarBottom)
     Toolbar mToolbarBottom;
 
-    @Bind(R.id.layoutHud)
-    View layoutHud;
     @Bind(R.id.fakeStatusBar)
     View fakeStatusBar;
     @Bind(R.id.iv)
-    ImageView imageView;
+    PhotoView imageView;
     @Bind(R.id.progressBar)
     ProgressBar progressBar;
     @Bind(R.id.btnResolution)
     Button btnResolution;
     @Bind(R.id.tvEnabledRotation)
     TextView tvEnabledRotation;
-
-//    CopyInfoHolder mCopyInfoHolder;
+    @Bind(R.id.image_detail_copy_info)
+    BingImageDetailCopyInfoView mBingImageDetailCopyInfoView;
 
 //    private Fragment mFragment;
     private String mColor;
@@ -99,9 +102,9 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 
         Utils.setupFakeStatusBarHeightOnGlobalLayout((Activity) getContext(), fakeStatusBar);
 
-        setupHudLayoutParams();
+        setupLayoutToobarTopParams();
 
-//        mCopyInfoHolder = new CopyInfoHolder(findViewById(R.id.image_detail_copy_info));
+        imageView.setOnViewTapListener(this);
     }
 
     protected void setColor() {
@@ -112,11 +115,11 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         progressBar.setProgressDrawable(d);
     }
 
-    private void setupHudLayoutParams() {
+    private void setupLayoutToobarTopParams() {
         DisplayMetrics dm = getResources().getDisplayMetrics();
-        RelativeLayout.LayoutParams params = (LayoutParams) layoutHud.getLayoutParams();
+        RelativeLayout.LayoutParams params = (LayoutParams) mLayoutToobarTop.getLayoutParams();
         params.width = Math.min(dm.widthPixels, dm.heightPixels);
-        layoutHud.setLayoutParams(params);
+        mLayoutToobarTop.setLayoutParams(params);
     }
 
     public void bind(String color, String resolution, ImageDetail imageDetail) {
@@ -136,6 +139,7 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         btnResolution.setText(mResolution);
 
         progressBar.setVisibility(View.VISIBLE);
+        imageView.setScale(1.0F, false);
         Glide.with(getContext())
                 .load(mImageDetail.getImageUrl(mResolution))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -159,6 +163,10 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         mToolbarBottom.getMenu().clear();
         mToolbarBottom.inflateMenu(R.menu.menu_detail_bottom);
         mToolbarBottom.setOnMenuItemClickListener(this);
+
+        mBingImageDetailCopyInfoView.bind(mImageDetail);
+
+//        ExifInterface exifInterface = new ExifInterface();
     }
 
     @OnClick(R.id.btnResolution)
@@ -178,11 +186,13 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
     }
 
     private void onClickHpcCopyInfo() {
-        Snackbar snackbar = Snackbar.make(this, mImageDetail.copyRight, Snackbar.LENGTH_LONG)
-                .setAction(android.R.string.ok, null);
-//        Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
-//        snackbarLayout.getMessageView().setMaxLines(Integer.MAX_VALUE);
-        snackbar.show();
+//        Snackbar snackbar = Snackbar.make(this, mImageDetail.copyRight, Snackbar.LENGTH_LONG)
+//                .setAction(android.R.string.ok, null);
+////        Snackbar.SnackbarLayout snackbarLayout = (Snackbar.SnackbarLayout) snackbar.getView();
+////        snackbarLayout.getMessageView().setMaxLines(Integer.MAX_VALUE);
+//        snackbar.show();
+
+        mBingImageDetailCopyInfoView.setVisibility(mBingImageDetailCopyInfoView.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
 
     protected void save(String url, String title, String description) {
@@ -247,27 +257,36 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         } else if (itemId == R.id.action_hpc_copy_info) {
             onClickHpcCopyInfo();
             return true;
+        } else if (itemId == R.id.action_hpc_share) {
+            onClickShare();
+            return true;
+        } else if (itemId == R.id.action_hpc_wechat) {
+            onClickHpcWechat();
+            return true;
+        } else if (itemId == R.id.action_hpc_weibo) {
+            return true;
+        } else if (itemId == R.id.action_hpc_qzone) {
+            return true;
         }
 
         return false;
     }
 
-//    class CopyInfoHolder {
-//
-//        private final View view;
-//
-//        @Bind(R.id.tv_copyright_left)
-//        TextView mCopyRightLeftTV;
-//        @Bind(R.id.tv_copyright_right)
-//        TextView mCopyRightRightTV;
-//
-//        public CopyInfoHolder(View view) {
-//            this.view = view;
-//            ButterKnife.bind(this, view);
-//        }
-//
-//        public void bind() {
-//
-//        }
-//    }
+    private void onClickHpcWechat() {
+        Log.d(TAG, "onClickHpcWechat()");
+        Log.d(TAG, "onClickHpcWechat() mImageDetail.getShareUrl()：" + mImageDetail.getShareUrl(mResolution));
+    }
+
+    boolean isGroupShareVisible = false;
+    private void onClickShare() {
+        isGroupShareVisible = !isGroupShareVisible;
+        mToolbarBottom.getMenu().setGroupVisible(R.id.group_share, isGroupShareVisible);
+
+    }
+
+    @Override
+    public void onViewTap(View view, float x, float y) {
+        mLayoutToobarTop.setVisibility(mLayoutToobarTop.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+        mLayoutToobarBottom.setVisibility(mLayoutToobarBottom.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    }
 }

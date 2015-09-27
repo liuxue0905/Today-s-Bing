@@ -18,7 +18,6 @@ public abstract class ImageDetail<T> implements Serializable {
     public String copyRightRight;
 
     public String[] resolutions;
-    public Map<String, String> imageUrls;
 
     public ImageDetail(T object, String[] resolutions) {
         this.object = object;
@@ -30,4 +29,6 @@ public abstract class ImageDetail<T> implements Serializable {
     }
 
     public abstract String getImageUrl(String resolution);
+
+    public abstract String getShareUrl(String resolution);
 }

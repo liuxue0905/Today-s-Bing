@@ -3,15 +3,15 @@
     <item android:state_focused="true">
         <shape>
             <solid android:color="#33FFFFFF" />
-            <size android:width="100dp"
-                android:height="100dp"/>
+            <!--<size android:width="100dp"-->
+                <!--android:height="100dp"/>-->
         </shape>
     </item>
     <item>
         <shape>
             <solid android:color="#00000000" />
-            <size android:width="100dp"
-                android:height="100dp"/>
+            <!--<size android:width="100dp"-->
+                <!--android:height="100dp"/>-->
         </shape>
     </item>
 </selector>

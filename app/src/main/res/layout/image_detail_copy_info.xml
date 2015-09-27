@@ -5,6 +5,7 @@
     android:id="@+id/layout_copyright"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:padding="16dp"
     tools:showIn="@layout/view_bing_image_detail">
 
     <TextView
@@ -19,6 +20,7 @@
         android:id="@+id/tv_copyright_right"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@null"
         android:textColor="#fff"
         android:textSize="12sp" />

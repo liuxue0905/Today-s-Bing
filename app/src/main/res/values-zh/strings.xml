@@ -34,4 +34,13 @@
 
     <string name="tips_im_coming_next_version">在下一版推出哦~</string>
 
+    <string name="action_hpc_share">分享</string>
+    <string name="action_hpc_qzone">分享-QQ空间</string>
+    <string name="action_hpc_weibo">分享-微博</string>
+    <string name="action_hpc_wechat">分享-微信</string>
+    <string name="action_hpc_down">下载</string>
+    <string name="action_hpc_copy_info">图片信息</string>
+    <string name="action_hpc_next">下一张</string>
+    <string name="action_hpc_previous">上一张</string>
+
 </resources>

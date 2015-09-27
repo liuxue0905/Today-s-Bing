@@ -7,6 +7,9 @@ import bing.com.Image;
  */
 public class BingImageDetail extends ImageDetail<bing.com.Image> {
 
+    // http://cn.bing.com/coverstory?date=20150926
+    public static final String URL_SHARE = "http://cn.bing.com/coverstory?date=";
+
     public BingImageDetail(Image object, String[] resolutions) {
         super(object, resolutions);
 
@@ -23,5 +26,10 @@ public class BingImageDetail extends ImageDetail<bing.com.Image> {
     public String getImageUrl(String resolution) {
         String url = Image.rebuildImageUrl(getData(), resolution);
         return url;
+    }
+
+    @Override
+    public String getShareUrl(String resolution) {
+        return URL_SHARE + getData().enddate;
     }
 }

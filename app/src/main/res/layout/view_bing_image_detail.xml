@@ -4,11 +4,16 @@
     android:layout_height="match_parent"
     android:background="@color/windowBackgroundPrimaryDark">
 
-    <ImageView
+    <!--<ImageView-->
+        <!--android:id="@+id/iv"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scaleType="fitCenter" />-->
+
+    <uk.co.senab.photoview.PhotoView
         android:id="@+id/iv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="fitCenter" />
+        android:layout_height="match_parent"/>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -22,74 +27,121 @@
         android:id="@+id/fakeStatusBar"
         android:layout_width="match_parent"
         android:layout_height="26dp"
-        android:layout_alignLeft="@+id/layoutHud"
-        android:layout_alignRight="@+id/layoutHud"
-        android:background="#66000000" />
+        android:layout_alignLeft="@+id/layout_toobar_top"
+        android:layout_alignRight="@+id/layout_toobar_top"
+        android:background="@color/overlay" />
 
     <RelativeLayout
-        android:id="@+id/layoutHud"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fakeStatusBar"
-        android:layout_centerHorizontal="true"
-        android:background="#66000000"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
-
-        <TextView
-            android:id="@+id/tvEnabledRotation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="18dp"
-            android:layout_marginRight="18dp"
-            android:alpha="0.333"
-            android:drawableLeft="@drawable/appbar_switch_portrait_landscape_dark"
-            android:gravity="center_vertical"
-            android:text="@string/image_detail_enabled_rotation"
-            android:textSize="10sp" />
-
-        <Button
-            android:id="@+id/btnResolution"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@null"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:text="480x800"
-            android:textAllCaps="false"
-            android:textSize="18sp" />
-
-    </RelativeLayout>
-
-    <LinearLayout
+        android:id="@+id/layout_toobar_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_below="@+id/fakeStatusBar"
         android:orientation="vertical">
 
         <include
             android:id="@+id/toolbarTop"
             layout="@layout/toolbar" />
-    </LinearLayout>
 
-    <!--<include-->
-        <!--android:id="@+id/image_detail_copy_info"-->
-        <!--layout="@layout/image_detail_copy_info"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignTop="@+id/toolbarBottom" />-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignTop="@+id/toolbarTop"
+            android:layout_alignBottom="@+id/toolbarTop"
+            android:background="@color/overlay">
 
-    <include
-        android:id="@+id/toolbarBottom"
-        layout="@layout/toolbar"
-        android:layout_width="fill_parent"
+            <ImageView
+                android:id="@+id/btnLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:background="@null"
+                android:textAllCaps="false"
+                android:src="@drawable/image_detail_location"
+                android:gravity="center_horizontal"
+                android:alpha="0.333"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+
+                android:textSize="8sp" />
+            <!--android:text="@string/image_detail_location"-->
+
+            <TextView
+                android:id="@+id/tvEnabledRotation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="18dp"
+                android:layout_marginRight="18dp"
+                android:alpha="0.333"
+                android:drawableLeft="@drawable/appbar_switch_portrait_landscape_dark"
+                android:gravity="center_vertical"
+                android:text="@string/image_detail_enabled_rotation"
+                android:textSize="10sp" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvResolution"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/image_detail_resolution"
+                    android:textSize="10sp"
+                    />
+                <Button
+                    android:id="@+id/btnResolution"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/selector"
+                    android:minHeight="0dp"
+                    android:minWidth="0dp"
+                    android:text="480x800"
+                    android:textAllCaps="false"
+                    android:textSize="18sp" />
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <!--<android.support.percent.PercentRelativeLayout-->
+    <android.support.percent.PercentRelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/layout_toolbar_bottom"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="#66000000" />
+        android:layout_alignParentBottom="true">
+
+        <com.lx.todaysbing.view.BingImageDetailCopyInfoView
+            android:id="@+id/image_detail_copy_info"
+            android:visibility="gone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            app:layout_widthPercent="61.8%"
+            android:background="@color/overlay" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/image_detail_copy_info"
+            android:background="@color/overlay" >
+            <include
+                android:id="@+id/toolbarBottom"
+                layout="@layout/toolbar"/>
+        </FrameLayout>
+
+    </android.support.percent.PercentRelativeLayout>
+
+
+
+
 
 </RelativeLayout>

@@ -35,4 +35,13 @@
 
     <string name="tips_im_coming_next_version">I\'m Coming Next Version~</string>
 
+    <string name="action_hpc_share">Share</string>
+    <string name="action_hpc_qzone">Share Qzone</string>
+    <string name="action_hpc_weibo">Share Weibo</string>
+    <string name="action_hpc_wechat">Share Wechat</string>
+    <string name="action_hpc_down">Download</string>
+    <string name="action_hpc_copy_info">Copy Info</string>
+    <string name="action_hpc_next">Next</string>
+    <string name="action_hpc_previous">Previous</string>
+
 </resources>

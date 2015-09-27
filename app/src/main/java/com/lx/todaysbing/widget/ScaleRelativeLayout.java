@@ -17,7 +17,7 @@ import android.widget.RelativeLayout;
  */
 public class ScaleRelativeLayout extends RelativeLayout {
 
-    private static final String TAG = "ScaleRelativeLayout";
+    private static final String TAG = ScaleRelativeLayout.class.getCanonicalName();
 
 //    private int mTouchSlop;
 
