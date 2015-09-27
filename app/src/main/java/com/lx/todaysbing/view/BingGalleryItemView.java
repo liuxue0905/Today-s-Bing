@@ -14,8 +14,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lx.todaysbing.R;
 
 import binggallery.chinacloudsites.cn.Image;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by liuxue on 2015/6/21.
@@ -23,13 +23,13 @@ import butterknife.InjectView;
 public class BingGalleryItemView extends RelativeLayout {
 
     private static final String TAG = "BingGalleryItemView";
-    @InjectView(R.id.root)
+    @Bind(R.id.root)
     public View rootView;
-    @InjectView(R.id.iv)
+    @Bind(R.id.iv)
     public ImageView imageView;
-    @InjectView(R.id.tv_copyright_left)
+    @Bind(R.id.tv_copyright_left)
     TextView tvCopyRightLeft;
-    @InjectView(R.id.tv_copyright_right)
+    @Bind(R.id.tv_copyright_right)
     public TextView tvCopyRightRight;
 
     public BingGalleryItemView(Context context) {
@@ -55,7 +55,7 @@ public class BingGalleryItemView extends RelativeLayout {
 
     private void init(Context context) {
         inflate(context, R.layout.item_bing_gallery, this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
     }
 
     public void bind(int position, Image image) {

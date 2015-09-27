@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="bing_image_nday_column">2</integer>
+    <integer name="bing_gallery_column">3</integer>
+</resources>

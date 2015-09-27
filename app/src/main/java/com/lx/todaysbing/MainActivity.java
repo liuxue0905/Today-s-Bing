@@ -24,8 +24,8 @@ import com.umeng.update.UpdateStatus;
 import java.util.HashMap;
 import java.util.Map;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class MainActivity extends AppCompatActivity implements BingImagesFragment.OnBingImagesFragmentInteractionListener {
 
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
     private Context mContext;
 
-    @InjectView(R.id.fakeStatusBar)
+    @Bind(R.id.fakeStatusBar)
     View fakeStatusBar;
 
     private String mColor;
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
         mContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
 //        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);
@@ -114,11 +114,11 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
             onActinUpdate();
             return true;
         }
-        else if (id == R.id.action_share) {
-            MobclickAgent.onEvent(this, MobclickAgentHelper.BingImageMain.EVENT_ID_BINGIMAGEMAIN_SHARE);
-            Toast.makeText(mContext, R.string.tips_im_coming_next_version, Toast.LENGTH_SHORT).show();
-            return true;
-        }
+//        else if (id == R.id.action_share) {
+//            MobclickAgent.onEvent(this, MobclickAgentHelper.BingImageMain.EVENT_ID_BINGIMAGEMAIN_SHARE);
+//            Toast.makeText(mContext, R.string.tips_im_coming_next_version, Toast.LENGTH_SHORT).show();
+//            return true;
+//        }
 
         return super.onOptionsItemSelected(item);
     }

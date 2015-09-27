@@ -6,7 +6,9 @@
 <com.lx.todaysbing.widget.ScaleRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true">
 
     <!--<com.lx.todaysbing.widget.FitRatioImageView xmlns:riv="http://schemas.android.com/apk/res-auto"-->
         <!--android:id="@+id/iv"-->
@@ -23,6 +25,16 @@
         va:width_height_ratio="1.5" />
 
     <View
+        android:id="@+id/selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/iv"
+        android:layout_alignBottom="@+id/iv"
+        android:duplicateParentState="true"
+        android:background="@drawable/selector"/>
+
+    <View
+        android:id="@+id/gradient"
         android:layout_width="match_parent"
         android:layout_height="42dp"
         android:layout_alignBottom="@+id/iv"

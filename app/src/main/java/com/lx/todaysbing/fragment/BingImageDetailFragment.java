@@ -9,11 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.lx.todaysbing.R;
-import bing.com.Image;
+import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.view.BingImageDetailView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,17 +27,16 @@ public class BingImageDetailFragment extends Fragment {
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_COLOR = "color";
-    private static final String ARG_IMAGE = "Image";
+    private static final String ARG_IMAGE_DETAIL = "Image";
     private static final String ARG_RESOLUTION = "Resolution";
-    private static final String ARG_IMAGE_RESOLUTION = "ImageResolution";
 
-    @InjectView(R.id.viewBingImageDetailView)
+    @Bind(R.id.viewBingImageDetailView)
     BingImageDetailView mBingImageDetailView;
 
     private String mColor;
-    private Image mImage;
+//    private /*Image*/Object mImage;
     private String mResolution;
-    private String mImageResolution;
+    private ImageDetail mImageDetail;
 
     private OnBingImageDetailFragmentInteractionListener mListener;
 
@@ -45,20 +44,12 @@ public class BingImageDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param image Parameter 1.
-     * @return A new instance of fragment BingImageDetailFragment.
-     */
-    public static BingImageDetailFragment newInstance(String color, Image image, String resolution, String imageResolution) {
+    public static BingImageDetailFragment newInstance(String color, ImageDetail imageDetail, String resolution, String imageResolution) {
         BingImageDetailFragment fragment = new BingImageDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_COLOR, color);
-        args.putSerializable(ARG_IMAGE, (java.io.Serializable) image);
+        args.putSerializable(ARG_IMAGE_DETAIL, (java.io.Serializable) imageDetail);
         args.putString(ARG_RESOLUTION, resolution);
-        args.putString(ARG_IMAGE_RESOLUTION, imageResolution);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,9 +59,8 @@ public class BingImageDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColor = getArguments().getString(ARG_COLOR);
-            mImage = (Image) getArguments().getSerializable(ARG_IMAGE);
+            mImageDetail = (ImageDetail) getArguments().getSerializable(ARG_IMAGE_DETAIL);
             mResolution = getArguments().getString(ARG_RESOLUTION);
-            mImageResolution = getArguments().getString(ARG_IMAGE_RESOLUTION);
         }
     }
 
@@ -84,9 +74,9 @@ public class BingImageDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
-        bind(mImage, mResolution, mImageResolution);
+        bind();
     }
 
 //    public void onButtonPressed(Uri uri) {
@@ -112,11 +102,8 @@ public class BingImageDetailFragment extends Fragment {
         mListener = null;
     }
 
-    public void bind(Image image, String resolution, String imageResolution) {
-        mImage = image;
-        mResolution = resolution;
-        mImageResolution = imageResolution;
-        mBingImageDetailView.bind(mColor, mImage, mResolution, mImageResolution);
+    public void bind() {
+        mBingImageDetailView.bind(mColor, mResolution, mImageDetail);
     }
 
     /**
@@ -130,8 +117,10 @@ public class BingImageDetailFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnBingImageDetailFragmentInteractionListener {
-        // TODO: Update argument type and name
         public void onBingImageDetailFragmentInteraction(Uri uri);
     }
 
+    public void onResolutionChanged(String resolution) {
+        mBingImageDetailView.onResolutionChanged(resolution);
+    }
 }

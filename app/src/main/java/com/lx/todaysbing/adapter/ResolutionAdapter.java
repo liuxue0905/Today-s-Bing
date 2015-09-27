@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.lx.todaysbing.R;
-import com.lx.todaysbing.activity.ResolutionActivity;
 
 /**
  * Created by liuxue on 2015/5/13.
@@ -38,7 +37,7 @@ public class ResolutionAdapter extends RecyclerView.Adapter<ResolutionAdapter.Vi
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        String resolution = this.resolutions[position];
+        String resolution = getItem(position);
         holder.getTvResolution().setText(resolution);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +52,7 @@ public class ResolutionAdapter extends RecyclerView.Adapter<ResolutionAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return this.resolutions.length;
+        return this.resolutions == null ? 0 : this.resolutions.length;
     }
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {

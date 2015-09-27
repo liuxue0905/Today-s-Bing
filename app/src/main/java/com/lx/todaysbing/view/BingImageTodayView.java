@@ -1,14 +1,10 @@
 package com.lx.todaysbing.view;
 
-import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -16,8 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewTreeObserver;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -33,22 +27,20 @@ import com.cesards.cropimageview.CropImageView;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.BingImageDetailActivity;
 import com.lx.todaysbing.activity.MarketActivity;
-import bing.com.HPImageArchive;
-import bing.com.Image;
-
 import com.lx.todaysbing.event.OnHPImageArchiveEvent;
 import com.lx.todaysbing.event.OnHPImageArchiveFailureEvent;
 import com.lx.todaysbing.event.OnHPImageArchivePreLoadEvent;
 import com.lx.todaysbing.event.OnHPImageArchiveSuccessEvent;
+import com.lx.todaysbing.model.BingImageDetail;
+import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
-import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.Arrays;
-
+import bing.com.HPImageArchive;
+import bing.com.Image;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
@@ -64,21 +56,21 @@ public class BingImageTodayView extends RelativeLayout {
     private String mResolution;
     private String mColor;
 
-    @InjectView(R.id.tv_copyright_left)
+    @Bind(R.id.tv_copyright_left)
     public TextView tvCopyRightLeft;
-    @InjectView(R.id.tv_copyright_right)
+    @Bind(R.id.tv_copyright_right)
     public TextView tvCopyRightRight;
-    @InjectView(R.id.iv)
+    @Bind(R.id.iv)
     ImageView imageView;
-    @InjectView(R.id.layout_copyright)
+    @Bind(R.id.layout_copyright)
     View layoutCopyright;
-    @InjectView(R.id.iv_mkt)
+    @Bind(R.id.iv_mkt)
     ImageView ivMkt;
-    @InjectView(R.id.tv_mkt)
+    @Bind(R.id.tv_mkt)
     TextView tvMkt;
-    @InjectView(R.id.progressBar)
+    @Bind(R.id.progressBar)
     ProgressBar progressBar;
-    @InjectView(R.id.btnRefresh)
+    @Bind(R.id.btnRefresh)
     ImageButton btnRefresh;
 
     public BingImageTodayView(Context context) {
@@ -104,7 +96,7 @@ public class BingImageTodayView extends RelativeLayout {
 
     public void init(Context context) {
         inflate(context, R.layout.view_bing_image_today, this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         AppCompatActivity activity = (AppCompatActivity) getContext();
@@ -222,7 +214,11 @@ public class BingImageTodayView extends RelativeLayout {
     void onClickLayoutCopyright() {
         if (mImage == null)
             return;
-        BingImageDetailActivity.action(getContext(), mColor, mImage, mResolution);
+
+
+        String[] resolutions = getContext().getResources().getStringArray(R.array.resolution);
+        ImageDetail imageDetail = new BingImageDetail(mImage, resolutions);
+        BingImageDetailActivity.action(getContext(), mColor, imageDetail, mResolution);
 
         MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_DETAIL);
     }

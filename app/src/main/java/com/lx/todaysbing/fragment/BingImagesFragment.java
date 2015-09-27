@@ -21,7 +21,6 @@ import com.lx.todaysbing.adapter.BingImagesPagerAdapter;
 import bing.com.HPImageArchive;
 
 import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
-import com.lx.todaysbing.event.OnBingGalleryListOnResponseEvent;
 import com.lx.todaysbing.event.OnBingGalleryListEvent;
 import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
 import com.lx.todaysbing.event.OnHPImageArchiveEvent;
@@ -32,20 +31,15 @@ import bing.com.BingAPI;
 import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.RetrofitCallback;
 import com.lx.todaysbing.util.Utils;
-import com.lx.todaysbing.view.BingGalleryView;
-
-import org.afinal.simplecache.ACache;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import binggallery.chinacloudsites.cn.BingGalleryAPI;
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.Image;
 import binggallery.chinacloudsites.cn.BingGalleryImageDao;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -72,11 +66,9 @@ public class BingImagesFragment extends Fragment {
 //    private String mParam1;
 //    private String mParam2;
 
-    private static final int TOTAL_COUNT = 3;
-
-    @InjectView(R.id.viewPagerContainer)
+    @Bind(R.id.viewPagerContainer)
     ViewGroup mViewPagerContainer;
-    @InjectView(R.id.viewPager)
+    @Bind(R.id.viewPager)
     HackyViewPager mViewPager;
 //    @InjectView(R.id.progressBar)
 //    ProgressBar progressBar;
@@ -88,6 +80,7 @@ public class BingImagesFragment extends Fragment {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             mViewPagerContainer.invalidate();
+//            mViewPager.invalidate();
         }
 
         @Override
@@ -157,7 +150,7 @@ public class BingImagesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         mViewPager.setLocked(true);
 
@@ -166,7 +159,7 @@ public class BingImagesFragment extends Fragment {
         mAdapter = new BingImagesPagerAdapter(getActivity());
 
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(TOTAL_COUNT);
+        mViewPager.setOffscreenPageLimit(mAdapter.getRealCount());
         mViewPager.setCurrentItem((mAdapter.getCount() / 2) - ((mAdapter.getCount() / 2) % mAdapter.getRealCount()));
         mViewPager.setPageMargin(0);
         mViewPager.addOnPageChangeListener(mOnPageChangeListener);

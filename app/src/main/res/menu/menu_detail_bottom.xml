@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <group
+        android:id="@+id/group_share"
+        android:visible="false">
+        <item
+            android:id="@+id/action_hpc_qzone"
+            android:orderInCategory="100"
+            app:showAsAction="always"
+            android:icon="@drawable/hpc_qzone"
+            android:title="@string/action_share"/>
+        <item
+            android:id="@+id/action_hpc_weibo"
+            android:orderInCategory="100"
+            app:showAsAction="always"
+            android:icon="@drawable/hpc_weibo"
+            android:title="@string/action_share"/>
+        <item
+            android:id="@+id/action_hpc_wechat"
+            android:orderInCategory="100"
+            app:showAsAction="always"
+            android:icon="@drawable/hpc_wechat"
+            android:title="@string/action_share"/>
+    </group>
+
+    <item
+        android:id="@+id/action_hpc_share"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/hpc_share"
+        android:title="@string/action_share"/>
+
+    <item
+        android:id="@+id/action_hpc_previous"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:visible="false"
+        android:icon="@drawable/hpc_previous"
+        android:title="@string/action_share"/>
+
+    <item
+        android:id="@+id/action_hpc_next"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:visible="false"
+        android:icon="@drawable/hpc_next"
+        android:title="@string/action_share"/>
+
+    <item
+        android:id="@+id/action_hpc_copy_info"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/hpc_copy_info"
+        android:title="@string/action_download"/>
+
+    <item
+        android:id="@+id/action_hpc_down"
+        android:orderInCategory="100"
+        app:showAsAction="always"
+        android:icon="@drawable/hpc_down"
+        android:title="@string/action_download"/>
+</menu>

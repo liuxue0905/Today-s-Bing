@@ -1,7 +1,5 @@
 package bing.com;
 
-import bing.com.HPImageArchive;
-
 import retrofit.Callback;
 import retrofit.http.GET;
 import retrofit.http.Query;

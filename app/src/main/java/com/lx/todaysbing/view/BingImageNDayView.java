@@ -3,7 +3,7 @@ package com.lx.todaysbing.view;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -14,11 +14,9 @@ import android.widget.RelativeLayout;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.BingImageDetailActivity;
 import com.lx.todaysbing.adapter.ImageNDayRecyclerViewAdapter;
-
-import bing.com.HPImageArchive;
-import bing.com.Image;
-
 import com.lx.todaysbing.event.OnBingImageNDayScrollEvent;
+import com.lx.todaysbing.model.BingImageDetail;
+import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.umeng.analytics.MobclickAgent;
 
@@ -27,8 +25,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import bing.com.HPImageArchive;
+import bing.com.Image;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -38,7 +38,7 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
 
     private static final String TAG = "BingImageNDayView";
 
-    @InjectView(R.id.recyclerView)
+    @Bind(R.id.recyclerView)
     public RecyclerView mRecyclerView;
 
     private ImageNDayRecyclerViewAdapter mAdapter;
@@ -69,7 +69,7 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
 
     public void init(Context context) {
         inflate(context, R.layout.view_bing_image_nday, this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         setRecyclerViewLayoutManager();
     }
@@ -103,7 +103,10 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
         String resolution = mResolution;
         Log.d(TAG, "onItemClick() image:" + image);
         if (image != null) {
-            BingImageDetailActivity.action(getContext(), color, image, resolution);
+
+            String[] resolutions = getContext().getResources().getStringArray(R.array.resolution);
+            ImageDetail imageDetail = new BingImageDetail(image, resolutions);
+            BingImageDetailActivity.action(getContext(), color, imageDetail, resolution);
         }
 
         Map<String, String> map = new HashMap<>();
@@ -120,7 +123,7 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
 //                    .findFirstCompletelyVisibleItemPosition();
 //        }
 
-        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), getResources().getInteger(R.integer.bing_image_nday_column));
 
         mRecyclerView.setLayoutManager(mLayoutManager);
 //        mRecyclerView.scrollToPosition(scrollPosition);

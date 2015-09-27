@@ -1,5 +1,6 @@
 package com.lx.todaysbing.activity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +11,9 @@ import android.view.MenuItem;
 
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.fragment.BingImageDetailFragment;
-import bing.com.Image;
+import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
+import com.lx.todaysbing.view.BingImageDetailView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
@@ -25,20 +27,20 @@ public class BingImageDetailActivity extends AppCompatActivity {
     private static final String TAG = "BingImageDetailActivity";
 
     private static final String EXTRA_COLOR = "color";
-    private static final String EXTRA_IMAGE = "Image";
+    private static final String EXTRA_IMAGE_DETAIL = "Image";
     private static final String EXTRA_RESOLUTION = "Resolution";
 
     private String mColor;
-    private Image mImage;
     private String mResolution;
+    private ImageDetail mImageDetail;
 
 //    @InjectView(R.id.fakeStatusBar)
 //    View fakeStatusBar;
 
-    public static void action(Context context, String color, Image image, String resolution) {
+    public static void action(Context context, String color, ImageDetail imageDetail, String resolution) {
         Intent intent = new Intent(context, BingImageDetailActivity.class);
         intent.putExtra(EXTRA_COLOR, color);
-        intent.putExtra(EXTRA_IMAGE, image);
+        intent.putExtra(EXTRA_IMAGE_DETAIL, imageDetail);
         intent.putExtra(EXTRA_RESOLUTION, resolution);
         context.startActivity(intent);
     }
@@ -48,17 +50,17 @@ public class BingImageDetailActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate() savedInstanceState:" + savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bing_image_detail);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
 //        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
         mColor = getIntent().getStringExtra(EXTRA_COLOR);
-        mImage = (Image) getIntent().getSerializableExtra(EXTRA_IMAGE);
+        mImageDetail = (ImageDetail) getIntent().getSerializableExtra(EXTRA_IMAGE_DETAIL);
         mResolution = getIntent().getStringExtra(EXTRA_RESOLUTION);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, BingImageDetailFragment.newInstance(mColor, mImage, mResolution, null))
+                    .add(R.id.container, BingImageDetailFragment.newInstance(mColor, mImageDetail, mResolution, null))
                     .commit();
         }
     }
@@ -98,14 +100,14 @@ public class BingImageDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == ResolutionActivity.REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
+            if (resultCode == Activity.RESULT_OK) {
                 String resolution = data.getStringExtra("resolution");
 
                 BingImageDetailFragment fragment = (BingImageDetailFragment) getSupportFragmentManager().findFragmentById(R.id.container);
-                fragment.bind(mImage, mResolution, resolution);
+                fragment.onResolutionChanged(resolution);
 
                 Map<String, String> map = new HashMap<>();
                 map.put("resolution", resolution);

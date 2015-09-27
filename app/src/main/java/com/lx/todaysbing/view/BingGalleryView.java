@@ -12,7 +12,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -22,19 +21,19 @@ import android.widget.RelativeLayout;
 
 import com.example.android.swiperefreshmultipleviews.MultiSwipeRefreshLayout;
 import com.lx.todaysbing.R;
-import com.lx.todaysbing.activity.BingGalleryImageDetailActivity;
+import com.lx.todaysbing.activity.BingImageDetailActivity;
 import com.lx.todaysbing.adapter.BingGalleryRVCursorAdapter;
 import com.lx.todaysbing.event.OnBingGalleryListEvent;
 import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
 import com.lx.todaysbing.event.OnBingGalleryScrollEvent;
 import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
-
-import java.util.Random;
+import com.lx.todaysbing.model.BingGalleryImageDetail;
+import com.lx.todaysbing.model.ImageDetail;
 
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.Image;
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -47,13 +46,13 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
     private String mColor;
     private String mResolution;
 
-    @InjectView(R.id.swipeRefreshLayout)
+    @Bind(R.id.swipeRefreshLayout)
     MultiSwipeRefreshLayout mSwipeRefreshLayout;
-    @InjectView(R.id.recyclerView)
+    @Bind(R.id.recyclerView)
     public RecyclerView mRecyclerView;
-//    @InjectView(R.id.btnRefresh)
+//    @Bind(R.id.btnRefresh)
 //    ImageButton btnRefresh;
-    @InjectView(R.id.layoutSnackbar)
+    @Bind(R.id.layoutSnackbar)
     FrameLayout layoutSnackbar;
 
     private BingGalleryRVCursorAdapter mAdapter;
@@ -98,7 +97,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
     public void init(Context context) {
         inflate(context, R.layout.view_bing_gallery, this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         mSwipeRefreshLayout.setSwipeableChildren(R.id.recyclerView);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -167,7 +166,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 //                    .findFirstCompletelyVisibleItemPosition();
 //        }
 
-        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), 2);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getContext(), getResources().getInteger(R.integer.bing_gallery_column));
 
 //        StaggeredGridLayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
 
@@ -209,7 +208,25 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         Image image = mAdapter.getItem(position);
         Log.d(TAG, "onItemClick() image:" + image);
         if (image != null) {
-            BingGalleryImageDetailActivity.action(getContext(), color, image, resolution);
+
+            String imageResolution = null;
+
+            if (imageResolution == null) {
+                if (binggallery.chinacloudsites.cn.Image.RESOLUTION_CEDE_L.equalsIgnoreCase(image.getMaxpix())) {
+                    imageResolution = binggallery.chinacloudsites.cn.Image.RESOLUTION_VALUE_L;
+                } else if (binggallery.chinacloudsites.cn.Image.RESOLUTION_CEDE_W.equalsIgnoreCase(image.getMaxpix())) {
+                    imageResolution = binggallery.chinacloudsites.cn.Image.RESOLUTION_VALUE_W;
+                }
+            }
+
+            String[] resolutions = new String[]{Image.RESOLUTION_VALUE_L, Image.RESOLUTION_VALUE_W};
+            if (Image.RESOLUTION_VALUE_L.equalsIgnoreCase(image.getMaxpix())) {
+                resolutions = new String[]{Image.RESOLUTION_VALUE_L};
+            }
+
+            ImageDetail imageDetail = new BingGalleryImageDetail(image, resolutions);
+
+            BingImageDetailActivity.action(getContext(), color, imageDetail, imageResolution);
         }
     }
 

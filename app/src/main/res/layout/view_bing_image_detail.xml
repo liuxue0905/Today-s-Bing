@@ -16,103 +16,80 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <View
         android:id="@+id/fakeStatusBar"
         android:layout_width="match_parent"
         android:layout_height="26dp"
-        android:background="#66000000"
         android:layout_alignLeft="@+id/layoutHud"
-        android:layout_alignRight="@+id/layoutHud"/>
+        android:layout_alignRight="@+id/layoutHud"
+        android:background="#66000000" />
 
     <RelativeLayout
         android:id="@+id/layoutHud"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/fakeStatusBar"
+        android:layout_centerHorizontal="true"
         android:background="#66000000"
         android:paddingBottom="8dp"
         android:paddingTop="8dp">
-
-        <Button
-            android:id="@+id/btnSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="12dp"
-            android:background="@null"
-            android:textAllCaps="false"
-            android:drawableTop="@drawable/image_detail_save"
-            android:gravity="center_horizontal"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:text="@string/image_detail_save"
-            android:textSize="8sp" />
-
-        <Button
-            android:id="@+id/btnLocation"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="24dp"
-            android:layout_toRightOf="@+id/btnSave"
-            android:background="@null"
-            android:textAllCaps="false"
-            android:drawableTop="@drawable/image_detail_location"
-            android:gravity="center_horizontal"
-            android:alpha="0.333"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:text="@string/image_detail_location"
-            android:textSize="8sp" />
 
         <TextView
             android:id="@+id/tvEnabledRotation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="18dp"
             android:layout_marginRight="18dp"
-            android:drawableLeft="@drawable/appbar_switch_portrait_landscape_dark"
             android:alpha="0.333"
+            android:drawableLeft="@drawable/appbar_switch_portrait_landscape_dark"
+            android:gravity="center_vertical"
             android:text="@string/image_detail_enabled_rotation"
             android:textSize="10sp" />
 
-        <RelativeLayout
+        <Button
+            android:id="@+id/btnResolution"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/tvEnabledRotation"
-            android:layout_toRightOf="@+id/btnLocation">
-
-            <TextView
-                android:id="@+id/tvResolution"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:text="@string/image_detail_resolution"
-                android:textSize="10sp"
-                />
-
-            <Button
-                android:id="@+id/btnResolution"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvResolution"
-                android:layout_centerHorizontal="true"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:background="@null"
-                android:text="480x800"
-                android:textAllCaps="false"
-                android:textSize="18sp"/>
-        </RelativeLayout>
+            android:background="@null"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:text="480x800"
+            android:textAllCaps="false"
+            android:textSize="18sp" />
 
     </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_below="@+id/fakeStatusBar"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbarTop"
+            layout="@layout/toolbar" />
+    </LinearLayout>
+
+    <!--<include-->
+        <!--android:id="@+id/image_detail_copy_info"-->
+        <!--layout="@layout/image_detail_copy_info"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignTop="@+id/toolbarBottom" />-->
+
+    <include
+        android:id="@+id/toolbarBottom"
+        layout="@layout/toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#66000000" />
 
 </RelativeLayout>

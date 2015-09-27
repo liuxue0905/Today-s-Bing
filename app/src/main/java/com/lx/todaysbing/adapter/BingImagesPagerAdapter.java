@@ -1,6 +1,7 @@
 package com.lx.todaysbing.adapter;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,6 @@ import com.lx.todaysbing.view.BingGalleryView;
 import com.lx.todaysbing.view.BingImageNDayView;
 import com.lx.todaysbing.view.BingImageTodayView;
 
-import binggallery.chinacloudsites.cn.Image;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -29,6 +29,7 @@ public class BingImagesPagerAdapter extends PagerAdapter {
 
     public BingImagesPagerAdapter(Context context) {
         this.context = context;
+//        initViews();
     }
 
     public void changeData(String color, String mkt, HPImageArchive hpImageArchive, String resolution) {
@@ -76,6 +77,50 @@ public class BingImagesPagerAdapter extends PagerAdapter {
         }
         return super.instantiateItem(container, position);
     }
+
+//    private View[] mViews = new View[3];
+//
+//    private void initViews() {
+//        BingImageTodayView view0 = new BingImageTodayView(context);
+////        view0.bind(mColor, mMkt, mHpImageArchive, mResolurtion);
+//        EventBus.getDefault().registerSticky(view0);
+//        mViews[0] = view0;
+//
+//        BingImageNDayView view1 = new BingImageNDayView(context);
+////        view1.bind(mColor, mHpImageArchive, mResolurtion);
+//        EventBus.getDefault().registerSticky(view1);
+//        mViews[1] = view1;
+//
+//        BingGalleryView view2 = new BingGalleryView(context);
+////        view2.bind(0, mColor, mResolurtion);
+//        EventBus.getDefault().registerSticky(view2);
+//        mViews[2] = view2;
+//    }
+//
+//    @Override
+//    public Object instantiateItem(ViewGroup container, int position) {
+//        int realPosition = position % getRealCount();
+//        if (realPosition == 0) {
+//            BingImageTodayView view = (BingImageTodayView) mViews[0];
+//            view.bind(mColor, mMkt, mHpImageArchive, mResolurtion);
+//            if (view.getParent() == null) {
+//                container.addView(view);
+//            }
+//        } else if (realPosition == 1) {
+//            BingImageNDayView view = (BingImageNDayView) mViews[1];
+//            view.bind(mColor, mHpImageArchive, mResolurtion);
+//            if (view.getParent() == null) {
+//                container.addView(view);
+//            }
+//        } else if (realPosition == 2) {
+//            BingGalleryView view = (BingGalleryView) mViews[2];
+//            view.bind(position, mColor, mResolurtion);
+//            if (view.getParent() == null) {
+//                container.addView(view);
+//            }
+//        }
+//        return mViews[realPosition];
+//    }
 
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {

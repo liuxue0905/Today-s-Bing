@@ -3,6 +3,10 @@ package com.lx.todaysbing.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -15,27 +19,28 @@ import com.lx.todaysbing.R;
 
 import bing.com.Image;
 
-import com.lx.todaysbing.util.Utils;
-
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by liuxue on 2015/5/9.
  */
 public class BingImageNDayItemView extends RelativeLayout {
 
-    @InjectView(R.id.root)
+    @Bind(R.id.root)
     public View rootView;
 
-    @InjectView(R.id.iv)
+    @Bind(R.id.iv)
     public ImageView imageView;
-    @InjectView(R.id.tv_copyright_left)
+    @Bind(R.id.tv_copyright_left)
     public TextView tvCopyRightLeft;
-    @InjectView(R.id.tv_copyright_right)
+    @Bind(R.id.tv_copyright_right)
     public TextView tvCopyRightRight;
-    @InjectView(R.id.tvNDaysAgo)
+    @Bind(R.id.tvNDaysAgo)
     public TextView tvNDaysAgo;
+
+    @Bind(R.id.selector)
+    View mSelectorView;
 
     private Image mImage;
     private String mResolution;
@@ -63,7 +68,7 @@ public class BingImageNDayItemView extends RelativeLayout {
 
     public void init(Context context) {
         inflate(context, R.layout.item_bing_image_nday, this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
     }
 
@@ -83,6 +88,11 @@ public class BingImageNDayItemView extends RelativeLayout {
 //                .placeholder(R.drawable.no_image)
                 .error(R.drawable.no_image)
                 .into(imageView);
+
+        Drawable drawable = DrawableCompat.wrap(mSelectorView.getBackground());
+        DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
+        DrawableCompat.setTint(drawable, Color.parseColor("#00ffff"));
+        mSelectorView.setBackgroundDrawable(drawable);
     }
 
     private void setupTvNDaysAgo(int position) {

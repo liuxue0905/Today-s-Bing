@@ -7,6 +7,7 @@
     <string name="action_settings">设置</string>
     <string name="action_update">检查更新</string>
     <string name="action_share">分享</string>
+    <string name="action_download">下载</string>
 
     <string name="title_activity_bing_image_detail">BingImageDetailActivity</string>
     <string name="title_activity_resolution">ResolutionActivity</string>
@@ -32,4 +33,5 @@
     <string name="check_update_time_out">检查更新：请检查网络</string>
 
     <string name="tips_im_coming_next_version">在下一版推出哦~</string>
+
 </resources>

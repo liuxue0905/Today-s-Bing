@@ -1,28 +1,22 @@
 package com.lx.todaysbing.activity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 
 import com.lx.todaysbing.R;
-import com.lx.todaysbing.adapter.MarketAdapter;
 import com.lx.todaysbing.adapter.ResolutionAdapter;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 
 public class ResolutionActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -31,9 +25,9 @@ public class ResolutionActivity extends AppCompatActivity implements AdapterView
     public static final String EXTRA_RESOLUTION = "resolution";
     public static final int REQUEST_CODE = 1;
 
-    @InjectView(R.id.fakeStatusBar)
+    @Bind(R.id.fakeStatusBar)
     View fakeStatusBar;
-    @InjectView(R.id.recyclerView)
+    @Bind(R.id.recyclerView)
     RecyclerView mRecyclerView;
 
     private ResolutionAdapter mAdapter;
@@ -51,7 +45,7 @@ public class ResolutionActivity extends AppCompatActivity implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resolution);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         mResolutions = getIntent().getStringArrayExtra(EXTRA_RESOLUTIONS);
 

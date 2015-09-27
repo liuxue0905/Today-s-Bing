@@ -17,13 +17,9 @@ import android.widget.RelativeLayout;
 
 import com.lx.todaysbing.R;
 
-import bing.com.Image;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by liuxue on 2015/5/10.

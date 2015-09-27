@@ -5,7 +5,8 @@
       <module fileurl="file://$PROJECT_DIR$/ImageViewKeepRatio-lib/ImageViewKeepRatio-lib.iml" filepath="$PROJECT_DIR$/ImageViewKeepRatio-lib/ImageViewKeepRatio-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/Today-s-Bing.iml" filepath="$PROJECT_DIR$/Today-s-Bing.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/greendaogenerator/greendaogenerator.iml" filepath="$PROJECT_DIR$/greendaogenerator/greendaogenerator.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data-bing-library/data-bing-library.iml" filepath="$PROJECT_DIR$/data-bing-library/data-bing-library.iml" />
+      <module fileurl="file://$PROJECT_DIR$/data-binggallery-library/data-binggallery-library.iml" filepath="$PROJECT_DIR$/data-binggallery-library/data-binggallery-library.iml" />
     </modules>
   </component>
 </project>
