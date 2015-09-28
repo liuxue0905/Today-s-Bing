@@ -29,6 +29,9 @@ public class ScaleRelativeLayout extends RelativeLayout {
 
     private float mX, mY;
 
+    private static final float SCALE = 0.97f;
+    private static int DURATION = 60;
+
     private Handler mHandler = new Handler();
 
     public ScaleRelativeLayout(Context context) {
@@ -56,21 +59,21 @@ public class ScaleRelativeLayout extends RelativeLayout {
 //        mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
 
         PropertyValuesHolder scaleXPropertyValuesHolder1 = PropertyValuesHolder.ofFloat(
-                "scaleX", 1f, 0.95f);
+                "scaleX", 1f, SCALE);
         PropertyValuesHolder scaleYPropertyValuesHolder1 = PropertyValuesHolder.ofFloat(
-                "scaleY", 1f, 0.95f);
+                "scaleY", 1f, SCALE);
         anim1 = ObjectAnimator.ofPropertyValuesHolder(this, scaleXPropertyValuesHolder1,
                 scaleYPropertyValuesHolder1);
-        anim1.setDuration(90);
+        anim1.setDuration(DURATION);
         anim1.setInterpolator(new LinearInterpolator());
 
         PropertyValuesHolder scaleXPropertyValuesHolder2 = PropertyValuesHolder.ofFloat(
-                "scaleX", 0.95f, 1f);
+                "scaleX", SCALE, 1f);
         PropertyValuesHolder scaleYPropertyValuesHolder2 = PropertyValuesHolder.ofFloat(
-                "scaleY", 0.95f, 1f);
+                "scaleY", SCALE, 1f);
         anim2 = ObjectAnimator.ofPropertyValuesHolder(this, scaleXPropertyValuesHolder2,
                 scaleYPropertyValuesHolder2);
-        anim2.setDuration(90);
+        anim2.setDuration(DURATION);
         anim2.setInterpolator(new LinearInterpolator());
     }
 

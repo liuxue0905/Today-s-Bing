@@ -51,6 +51,7 @@
             android:layout_alignBottom="@+id/toolbarTop"
             android:background="@color/overlay">
 
+            <!--android:text="@string/image_detail_location"-->
             <ImageView
                 android:id="@+id/btnLocation"
                 android:layout_width="wrap_content"
@@ -64,9 +65,7 @@
                 android:alpha="0.333"
                 android:minHeight="0dp"
                 android:minWidth="0dp"
-
                 android:textSize="8sp" />
-            <!--android:text="@string/image_detail_location"-->
 
             <TextView
                 android:id="@+id/tvEnabledRotation"
@@ -74,8 +73,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="18dp"
-                android:layout_marginRight="18dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="16dp"
                 android:alpha="0.333"
                 android:drawableLeft="@drawable/appbar_switch_portrait_landscape_dark"
                 android:gravity="center_vertical"

@@ -99,6 +99,7 @@ public class BingImageTodayView extends RelativeLayout {
         ButterKnife.bind(this);
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar.setNavigationIcon(null);
         AppCompatActivity activity = (AppCompatActivity) getContext();
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowHomeEnabled(true);

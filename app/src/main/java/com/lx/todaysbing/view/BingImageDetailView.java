@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -159,7 +160,8 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
                 })
                 .into(imageView);
 
-//        mToolbarTop.setNavigationIcon();
+        mToolbarTop.setNavigationIcon(null);
+        mToolbarBottom.setNavigationIcon(null);
         mToolbarBottom.getMenu().clear();
         mToolbarBottom.inflateMenu(R.menu.menu_detail_bottom);
         mToolbarBottom.setOnMenuItemClickListener(this);
@@ -288,5 +290,12 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
     public void onViewTap(View view, float x, float y) {
         mLayoutToobarTop.setVisibility(mLayoutToobarTop.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         mLayoutToobarBottom.setVisibility(mLayoutToobarBottom.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
+    }
+
+    @OnClick(R.id.image_detail_copy_info)
+    void onClickViewCopyInfo() {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(mImageDetail.getShareUrl(mResolution)));
+        getContext().startActivity(intent);
     }
 }

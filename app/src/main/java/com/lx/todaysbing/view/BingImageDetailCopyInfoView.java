@@ -2,6 +2,7 @@ package com.lx.todaysbing.view;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
@@ -47,10 +48,16 @@ public class BingImageDetailCopyInfoView extends LinearLayout {
     private void init(Context context) {
         inflate(context, R.layout.image_detail_copy_info, this);
         ButterKnife.bind(this);
+
+        setUnderLineTextFlag(mCopyRightLeftTV);
     }
 
     public void bind(ImageDetail imageDetail) {
         mCopyRightLeftTV.setText(imageDetail.copyRightLeft);
         mCopyRightRightTV.setText(imageDetail.copyRightRight);
+    }
+
+    public static void setUnderLineTextFlag(TextView textView) {
+        textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
     }
 }
