@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:installLocation="auto"
-    package="com.lx.todaysbing">
+    package="com.lx.todaysbing"
+    android:installLocation="auto">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -10,13 +10,20 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <!--weixin-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
-        tools:replace="android:theme"
         android:name=".TodaysBingApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher_tb"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:theme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name">
@@ -27,40 +34,39 @@
         </activity>
         <activity
             android:name=".activity.BingImageDetailActivity"
-            android:label="@string/title_activity_bing_image_detail"/>
-        <activity
-            android:name=".activity.BingGalleryImageDetailActivity"
-            android:label="@string/title_activity_bing_image_detail"/>
+            android:label="@string/title_activity_bing_image_detail" />
         <activity
             android:name=".activity.ResolutionActivity"
-            android:label="@string/title_activity_resolution"/>
+            android:label="@string/title_activity_resolution" />
         <activity
             android:name=".activity.MarketActivity"
-            android:label="@string/title_activity_market"/>
+            android:label="@string/title_activity_market" />
 
         <provider
-            android:authorities="binggallery.chinacloudsites.cn.BingGalleryImage"
             android:name="binggallery.chinacloudsites.cn.BingGalleryImageProvider"
-            />
-        
+            android:authorities="binggallery.chinacloudsites.cn.BingGalleryImage" />
+
         <service
             android:name="com.umeng.update.net.DownloadingService"
-            android:process=":DownloadingService" >
-        </service>
+            android:process=":DownloadingService"></service>
         <activity
             android:name="com.umeng.update.UpdateDialogActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
-        <meta-data android:name="com.lx.todaysbing.util.GlideConfiguration"
-            android:value="GlideModule"/>
+        <meta-data
+            android:name="com.lx.todaysbing.util.GlideConfiguration"
+            android:value="GlideModule" />
 
         <!--正式-->
-        <meta-data android:value="5566b3d167e58e04cd0067bd" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5566b3d167e58e04cd0067bd"></meta-data>
         <!--测试-->
         <!--<meta-data android:value="551a9709fd98c5034c000617" android:name="UMENG_APPKEY"></meta-data>-->
 
-        <meta-data android:value="${UMENG_CHANNEL_VALUE}" android:name="UMENG_CHANNEL" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
     </application>
 
 </manifest>
