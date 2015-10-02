@@ -2,6 +2,7 @@ package com.lx.todaysbing.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -227,12 +228,12 @@ public class BingImagesFragment extends Fragment {
 //    }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
         try {
-            mListener = (OnBingImagesFragmentInteractionListener) activity;
+            mListener = (OnBingImagesFragmentInteractionListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
+            throw new ClassCastException(context.toString()
                     + " must implement OnBingImagesFragmentInteractionListener");
         }
     }

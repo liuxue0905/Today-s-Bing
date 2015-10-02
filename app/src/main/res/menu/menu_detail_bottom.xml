@@ -5,7 +5,7 @@
 
     <group
         android:id="@+id/group_share"
-        android:visible="false">
+        android:visible="true">
         <item
             android:id="@+id/action_hpc_qzone"
             android:orderInCategory="100"

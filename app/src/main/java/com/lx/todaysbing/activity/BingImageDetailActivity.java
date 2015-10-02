@@ -3,6 +3,7 @@ package com.lx.todaysbing.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -13,7 +14,6 @@ import com.lx.todaysbing.R;
 import com.lx.todaysbing.fragment.BingImageDetailFragment;
 import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
-import com.lx.todaysbing.view.BingImageDetailView;
 import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import java.util.Map;
 import butterknife.ButterKnife;
 
 
-public class BingImageDetailActivity extends AppCompatActivity {
+public class BingImageDetailActivity extends AppCompatActivity implements BingImageDetailFragment.OnBingImageDetailFragmentInteractionListener {
 
     private static final String TAG = "BingImageDetailActivity";
 
@@ -101,7 +101,6 @@ public class BingImageDetailActivity extends AppCompatActivity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == ResolutionActivity.REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 String resolution = data.getStringExtra("resolution");
@@ -118,5 +117,10 @@ public class BingImageDetailActivity extends AppCompatActivity {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onBingImageDetailFragmentInteraction(Uri uri) {
+
     }
 }

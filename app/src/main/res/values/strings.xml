@@ -44,4 +44,8 @@
     <string name="action_hpc_next">Next</string>
     <string name="action_hpc_previous">Previous</string>
 
+    <string name="errcode_success">Success</string>
+    <string name="errcode_cancel">Cancel</string>
+    <string name="errcode_deny">Deny</string>
+    <string name="errcode_unknown">Unknown</string>
 </resources>

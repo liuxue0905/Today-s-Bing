@@ -1,6 +1,6 @@
 package com.lx.todaysbing.fragment;
 
-import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -86,14 +86,14 @@ public class BingImageDetailFragment extends Fragment {
 //    }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-//        try {
-//            mListener = (OnBingImageDetailFragmentInteractionListener) activity;
-//        } catch (ClassCastException e) {
-//            throw new ClassCastException(activity.toString()
-//                    + " must implement OnBingImageDetailFragmentInteractionListener");
-//        }
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mListener = (OnBingImageDetailFragmentInteractionListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnBingImageDetailFragmentInteractionListener");
+        }
     }
 
     @Override

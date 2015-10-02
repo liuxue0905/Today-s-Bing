@@ -7,7 +7,12 @@ The following files were *not* copied into the new Gradle project; you
 should evaluate whether these are still needed in your project and if
 so manually move them:
 
-* .DS_Store
+From OneKeyShare:
+* OneKeyShare.iml
+* build.xml
+* proguard-project.txt
+From ShareSDK:
+* build.xml
 * proguard-project.txt
 
 Moved Files:
@@ -15,11 +20,62 @@ Moved Files:
 Android Gradle projects use a different directory structure than ADT
 Eclipse projects. Here's how the projects were restructured:
 
-* AndroidManifest.xml => ImageViewKeepRatio-lib\src\main\AndroidManifest.xml
-* assets\ => ImageViewKeepRatio-lib\src\main\assets
-* res\ => ImageViewKeepRatio-lib\src\main\res\
-* src\ => ImageViewKeepRatio-lib\src\main\java\
-* src\com\va\imageviewkeepratio\.DS_Store => ImageViewKeepRatio-lib\src\main\resources\com\va\imageviewkeepratio\.DS_Store
+In ShareSDK:
+* AndroidManifest.xml => shareSDK\src\main\AndroidManifest.xml
+* assets\ => shareSDK\src\main\assets
+* libs\libapshare.jar => shareSDK\libs\libapshare.jar
+* libs\MobLogCollector.jar => shareSDK\libs\MobLogCollector.jar
+* libs\MobTools.jar => shareSDK\libs\MobTools.jar
+* libs\ShareSDK-Alipay-2.6.3.jar => shareSDK\libs\ShareSDK-Alipay-2.6.3.jar
+* libs\ShareSDK-Bluetooth-2.6.3.jar => shareSDK\libs\ShareSDK-Bluetooth-2.6.3.jar
+* libs\ShareSDK-Core-2.6.3.jar => shareSDK\libs\ShareSDK-Core-2.6.3.jar
+* libs\ShareSDK-Douban-2.6.3.jar => shareSDK\libs\ShareSDK-Douban-2.6.3.jar
+* libs\ShareSDK-Dropbox-2.6.3.jar => shareSDK\libs\ShareSDK-Dropbox-2.6.3.jar
+* libs\ShareSDK-Email-2.6.3.jar => shareSDK\libs\ShareSDK-Email-2.6.3.jar
+* libs\ShareSDK-Evernote-2.6.3.jar => shareSDK\libs\ShareSDK-Evernote-2.6.3.jar
+* libs\ShareSDK-Facebook-2.6.3.jar => shareSDK\libs\ShareSDK-Facebook-2.6.3.jar
+* libs\ShareSDK-FacebookMessenger-2.6.3.jar => shareSDK\libs\ShareSDK-FacebookMessenger-2.6.3.jar
+* libs\ShareSDK-Flickr-2.6.3.jar => shareSDK\libs\ShareSDK-Flickr-2.6.3.jar
+* libs\ShareSDK-Foursquare-2.6.3.jar => shareSDK\libs\ShareSDK-Foursquare-2.6.3.jar
+* libs\ShareSDK-GooglePlus-2.6.3.jar => shareSDK\libs\ShareSDK-GooglePlus-2.6.3.jar
+* libs\ShareSDK-Instagram-2.6.3.jar => shareSDK\libs\ShareSDK-Instagram-2.6.3.jar
+* libs\ShareSDK-Instapaper-2.6.3.jar => shareSDK\libs\ShareSDK-Instapaper-2.6.3.jar
+* libs\ShareSDK-KaiXin-2.6.3.jar => shareSDK\libs\ShareSDK-KaiXin-2.6.3.jar
+* libs\ShareSDK-Kakao-Core-2.6.3.jar => shareSDK\libs\ShareSDK-Kakao-Core-2.6.3.jar
+* libs\ShareSDK-KakaoStory-2.6.3.jar => shareSDK\libs\ShareSDK-KakaoStory-2.6.3.jar
+* libs\ShareSDK-KakaoTalk-2.6.3.jar => shareSDK\libs\ShareSDK-KakaoTalk-2.6.3.jar
+* libs\ShareSDK-Line-2.6.3.jar => shareSDK\libs\ShareSDK-Line-2.6.3.jar
+* libs\ShareSDK-Linkedin-2.6.3.jar => shareSDK\libs\ShareSDK-Linkedin-2.6.3.jar
+* libs\ShareSDK-Mingdao-2.6.3.jar => shareSDK\libs\ShareSDK-Mingdao-2.6.3.jar
+* libs\ShareSDK-Pinterest-2.6.3.jar => shareSDK\libs\ShareSDK-Pinterest-2.6.3.jar
+* libs\ShareSDK-Pocket-2.6.3.jar => shareSDK\libs\ShareSDK-Pocket-2.6.3.jar
+* libs\ShareSDK-QQ-2.6.3.jar => shareSDK\libs\ShareSDK-QQ-2.6.3.jar
+* libs\ShareSDK-QZone-2.6.3.jar => shareSDK\libs\ShareSDK-QZone-2.6.3.jar
+* libs\ShareSDK-Renren-2.6.3.jar => shareSDK\libs\ShareSDK-Renren-2.6.3.jar
+* libs\ShareSDK-ShortMessage-2.6.3.jar => shareSDK\libs\ShareSDK-ShortMessage-2.6.3.jar
+* libs\ShareSDK-SinaWeibo-2.6.3.jar => shareSDK\libs\ShareSDK-SinaWeibo-2.6.3.jar
+* libs\ShareSDK-SohuSuishenkan-2.6.3.jar => shareSDK\libs\ShareSDK-SohuSuishenkan-2.6.3.jar
+* libs\ShareSDK-TencentWeibo-2.6.3.jar => shareSDK\libs\ShareSDK-TencentWeibo-2.6.3.jar
+* libs\ShareSDK-Tumblr-2.6.3.jar => shareSDK\libs\ShareSDK-Tumblr-2.6.3.jar
+* libs\ShareSDK-Twitter-2.6.3.jar => shareSDK\libs\ShareSDK-Twitter-2.6.3.jar
+* libs\ShareSDK-VKontakte-2.6.3.jar => shareSDK\libs\ShareSDK-VKontakte-2.6.3.jar
+* libs\ShareSDK-Wechat-2.6.3.jar => shareSDK\libs\ShareSDK-Wechat-2.6.3.jar
+* libs\ShareSDK-Wechat-Core-2.6.3.jar => shareSDK\libs\ShareSDK-Wechat-Core-2.6.3.jar
+* libs\ShareSDK-Wechat-Favorite-2.6.3.jar => shareSDK\libs\ShareSDK-Wechat-Favorite-2.6.3.jar
+* libs\ShareSDK-Wechat-Moments-2.6.3.jar => shareSDK\libs\ShareSDK-Wechat-Moments-2.6.3.jar
+* libs\ShareSDK-WhatsApp-2.6.3.jar => shareSDK\libs\ShareSDK-WhatsApp-2.6.3.jar
+* libs\ShareSDK-Yixin-2.6.3.jar => shareSDK\libs\ShareSDK-Yixin-2.6.3.jar
+* libs\ShareSDK-Yixin-Core-2.6.3.jar => shareSDK\libs\ShareSDK-Yixin-Core-2.6.3.jar
+* libs\ShareSDK-Yixin-Moments-2.6.3.jar => shareSDK\libs\ShareSDK-Yixin-Moments-2.6.3.jar
+* libs\ShareSDK-YouDao-2.6.3.jar => shareSDK\libs\ShareSDK-YouDao-2.6.3.jar
+* res\ => shareSDK\src\main\res\
+* src\ => shareSDK\src\main\java
+In OneKeyShare:
+* AndroidManifest.xml => ShareSDK-OneKeyShare\src\main\AndroidManifest.xml
+* assets\ => ShareSDK-OneKeyShare\src\main\assets
+* res\ => ShareSDK-OneKeyShare\src\main\res\
+* src\ => ShareSDK-OneKeyShare\src\main\java\
+* src\.define => ShareSDK-OneKeyShare\src\main\resources\.define
 
 Next Steps:
 -----------

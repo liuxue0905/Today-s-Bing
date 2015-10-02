@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -22,11 +23,14 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.ResolutionActivity;
@@ -35,9 +39,17 @@ import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
+import cn.sharesdk.onekeyshare.OnekeyShareTheme;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -46,7 +58,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMenuItemClickListener, PhotoViewAttacher.OnViewTapListener {
 
-    private static final String TAG = "BingImageDetailView";
+    private static final String TAG = BingImageDetailView.class.getCanonicalName();
 
     @Bind(R.id.layout_toobar_top)
     View mLayoutToobarTop;
@@ -265,25 +277,134 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         } else if (itemId == R.id.action_hpc_wechat) {
             onClickHpcWechat();
             return true;
-        } else if (itemId == R.id.action_hpc_weibo) {
-            return true;
         } else if (itemId == R.id.action_hpc_qzone) {
+            onClickHpcQzone();
+            return true;
+        }
+        else if (itemId == R.id.action_hpc_weibo) {
+            Toast.makeText(getContext(), "该功能在评估中~", Toast.LENGTH_SHORT).show();
             return true;
         }
 
         return false;
     }
 
+    private void onClickHpcQzone() {
+        Log.d(TAG, "onClickHpcQzone()");
+        Log.d(TAG, "onClickHpcQzone() mImageDetail.getShareUrl()：" + mImageDetail.getShareUrl(mResolution));
+
+        ArrayList<String> imageUrlList = new ArrayList<>();
+        imageUrlList.add(mImageDetail.getImageUrl(mResolution));
+    }
+
     private void onClickHpcWechat() {
         Log.d(TAG, "onClickHpcWechat()");
         Log.d(TAG, "onClickHpcWechat() mImageDetail.getShareUrl()：" + mImageDetail.getShareUrl(mResolution));
+
+        Platform.ShareParams sp = new Platform.ShareParams();
+        sp.setTitle(mImageDetail.title);
+        sp.setText(mImageDetail.description);
+        sp.setShareType(Platform.SHARE_WEBPAGE);
+        sp.setUrl(mImageDetail.getShareUrl(mResolution));
+        sp.setImageUrl(mImageDetail.getImageUrl(mResolution));
+
+        Platform plat = ShareSDK.getPlatform("WechatMoments");
+        plat.setPlatformActionListener(/*this*/new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                Log.d(TAG, "onComplete()");
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                Log.d(TAG, "onError()");
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                Log.d(TAG, "onCancel()");
+            }
+        });
+        plat.share(sp);
+
+//        Glide.with(getContext())
+//                .load(mImageDetail.getImageUrl(mResolution))
+//                .asBitmap()
+//                .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                .into(new SimpleTarget<Bitmap>(150, 150) {
+//                    @Override
+//                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+////                        ShareWeiXin share = new ShareWeiXin(getContext());
+////                        share.shareWebpage(mImageDetail.getShareUrl(mResolution), mImageDetail.title, mImageDetail.description, resource);
+//////                        share.shareImage(/*mImageDetail.getImageUrl(mResolution)*/"https://www.baidu.com/img/bdlogo.png", "title", "description", resource);
+//
+//                        Platform.ShareParams sp = new Platform.ShareParams();
+//                        sp.setTitle(mImageDetail.title);
+//                        sp.setText(mImageDetail.description);
+//                        sp.setShareType(Platform.SHARE_TEXT);
+//                        sp.setShareType(Platform.SHARE_WEBPAGE);
+//                        sp.setUrl(mImageDetail.getShareUrl(mResolution));
+//                        sp.setImageData(resource);
+//
+//                        Platform plat = ShareSDK.getPlatform("WechatMoments");
+//                        plat.setPlatformActionListener(/*this*/new PlatformActionListener() {
+//                            @Override
+//                            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+//                                Log.d(TAG, "onComplete()");
+//                            }
+//
+//                            @Override
+//                            public void onError(Platform platform, int i, Throwable throwable) {
+//                                Log.d(TAG, "onError()");
+//                            }
+//
+//                            @Override
+//                            public void onCancel(Platform platform, int i) {
+//                                Log.d(TAG, "onCancel()");
+//                            }
+//                        });
+//                        plat.share(sp);
+//                    }
+//
+//                    @Override
+//                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+//                        super.onLoadFailed(e, errorDrawable);
+//                    }
+//                });
     }
 
-    boolean isGroupShareVisible = false;
     private void onClickShare() {
-        isGroupShareVisible = !isGroupShareVisible;
-        mToolbarBottom.getMenu().setGroupVisible(R.id.group_share, isGroupShareVisible);
+//        MenuItem menuItemGroupShare = mToolbarBottom.getMenu().findItem(R.id.group_share);
+//        menuItemGroupShare.setVisible(!menuItemGroupShare.isVisible());
 
+        final OnekeyShare oks = new OnekeyShare();
+        //oks.setAddress("12345678901");
+        oks.setTitle(mImageDetail.title);
+        oks.setTitleUrl(mImageDetail.getShareUrl(mResolution));
+        oks.setUrl(mImageDetail.getShareUrl(mResolution));
+
+        oks.setImagePath(mImageDetail.getImageUrl(mResolution));
+
+        oks.setComment(mImageDetail.description);
+        oks.setSite("今日必应壁纸");
+        oks.setSiteUrl("http://shouji.baidu.com/software/item?docid=7826820");
+//        oks.setVenueName(CustomShareFieldsPage.getString("venueName", "ShareSDK"));
+//        oks.setVenueDescription(CustomShareFieldsPage.getString("venueDescription", "This is a beautiful place!"));
+        oks.setSilent(false);
+        oks.setShareFromQQAuthSupport(/*shareFromQQLogin*/false);
+
+//        oks.setTheme(OnekeyShareTheme.SKYBLUE);
+        oks.setTheme(OnekeyShareTheme.CLASSIC);
+
+        // 令编辑页面显示为Dialog模式
+        oks.setDialogMode();
+
+        // 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
+        //oks.setCallback(new OneKeyShareCallback());
+
+        // 为EditPage设置一个背景的View
+//        oks.setEditPageBackground(getPage());
+        oks.show(getContext());
     }
 
     @Override

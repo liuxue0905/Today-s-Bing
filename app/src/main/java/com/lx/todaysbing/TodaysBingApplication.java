@@ -4,13 +4,13 @@ import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
 import bing.com.BingAPI;
-
 import binggallery.chinacloudsites.cn.BingGalleryAPI;
-import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
-import binggallery.chinacloudsites.cn.ImageConverter;
 import binggallery.chinacloudsites.cn.BingGalleryImageDao;
+import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.DaoMaster;
 import binggallery.chinacloudsites.cn.DaoSession;
+import binggallery.chinacloudsites.cn.ImageConverter;
+import cn.sharesdk.framework.ShareSDK;
 import retrofit.RestAdapter;
 
 /**
@@ -27,8 +27,6 @@ public class TodaysBingApplication extends Application {
 
     private BingAPI mBingAPI;
     private BingGalleryAPI mBingGalleryAPI;
-
-
 
     public static TodaysBingApplication getInstance() {
         return sInstance;
@@ -54,6 +52,8 @@ public class TodaysBingApplication extends Application {
                 .setConverter(new ImageConverter())
                 .build();
         mBingGalleryAPI = adapter2.create(BingGalleryAPI.class);
+
+        ShareSDK.initSDK(this);
     }
 
     @Override
@@ -74,4 +74,5 @@ public class TodaysBingApplication extends Application {
     public BingGalleryAPI getBingGalleryAPI() {
         return mBingGalleryAPI;
     }
+
 }
