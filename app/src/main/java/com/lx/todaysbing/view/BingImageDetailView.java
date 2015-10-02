@@ -293,8 +293,31 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         Log.d(TAG, "onClickHpcQzone()");
         Log.d(TAG, "onClickHpcQzone() mImageDetail.getShareUrl()：" + mImageDetail.getShareUrl(mResolution));
 
-        ArrayList<String> imageUrlList = new ArrayList<>();
-        imageUrlList.add(mImageDetail.getImageUrl(mResolution));
+        Platform.ShareParams sp = new Platform.ShareParams();
+        sp.setTitle(mImageDetail.copyRightLeft);
+        sp.setText(mImageDetail.copyRight);
+        sp.setShareType(Platform.SHARE_WEBPAGE);
+        sp.setUrl(mImageDetail.getShareUrl(mResolution));
+        sp.setImageUrl(mImageDetail.getImageUrl(mResolution));
+
+        Platform plat = ShareSDK.getPlatform("QZone");
+        plat.setPlatformActionListener(/*this*/new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+                Log.d(TAG, "onComplete()");
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                Log.d(TAG, "onError()");
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                Log.d(TAG, "onCancel()");
+            }
+        });
+        plat.share(sp);
     }
 
     private void onClickHpcWechat() {
@@ -378,23 +401,19 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 //        menuItemGroupShare.setVisible(!menuItemGroupShare.isVisible());
 
         final OnekeyShare oks = new OnekeyShare();
-        //oks.setAddress("12345678901");
-        oks.setTitle(mImageDetail.title);
+        oks.setTitle(mImageDetail.copyRightLeft);
         oks.setTitleUrl(mImageDetail.getShareUrl(mResolution));
         oks.setUrl(mImageDetail.getShareUrl(mResolution));
-
+        oks.setText(mImageDetail.title);
         oks.setImagePath(mImageDetail.getImageUrl(mResolution));
-
-        oks.setComment(mImageDetail.description);
+        oks.setComment(mImageDetail.copyRight);
         oks.setSite("今日必应壁纸");
         oks.setSiteUrl("http://shouji.baidu.com/software/item?docid=7826820");
-//        oks.setVenueName(CustomShareFieldsPage.getString("venueName", "ShareSDK"));
-//        oks.setVenueDescription(CustomShareFieldsPage.getString("venueDescription", "This is a beautiful place!"));
         oks.setSilent(false);
-        oks.setShareFromQQAuthSupport(/*shareFromQQLogin*/false);
+//        oks.setShareFromQQAuthSupport(/*shareFromQQLogin*/false);
 
-//        oks.setTheme(OnekeyShareTheme.SKYBLUE);
-        oks.setTheme(OnekeyShareTheme.CLASSIC);
+        oks.setTheme(OnekeyShareTheme.SKYBLUE);
+//        oks.setTheme(OnekeyShareTheme.CLASSIC);
 
         // 令编辑页面显示为Dialog模式
         oks.setDialogMode();
