@@ -226,7 +226,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
             ImageDetail imageDetail = new BingGalleryImageDetail(image, resolutions);
 
-            BingImageDetailActivity.action(getContext(), color, imageDetail, imageResolution);
+            BingImageDetailActivity.action(getContext(), color, null, imageDetail, imageResolution);
         }
     }
 

@@ -4,19 +4,26 @@
     android:layout_height="match_parent"
     android:background="@color/windowBackgroundPrimaryDark">
 
-    <!--<ImageView-->
-        <!--android:id="@+id/iv"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:scaleType="fitXY" />-->
-
-    <com.cesards.cropimageview.CropImageView
-        xmlns:custom="http://schemas.android.com/apk/res-auto"
+    <ImageView
         android:id="@+id/iv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        custom:crop="centerLeft" />
+        android:layout_height="match_parent"
+        android:scaleType="fitXY" />
+
+    <ImageView
+        android:id="@+id/image_error"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/no_image"/>
+
+    <!--<com.cesards.cropimageview.CropImageView-->
+        <!--xmlns:custom="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/iv"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:scaleType="fitStart"-->
+        <!--custom:crop="centerLeft" />-->
 
     <!--240的渐变-->
     <View

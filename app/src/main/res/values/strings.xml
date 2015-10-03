@@ -44,8 +44,9 @@
     <string name="action_hpc_next">Next</string>
     <string name="action_hpc_previous">Previous</string>
 
-    <string name="errcode_success">Success</string>
-    <string name="errcode_cancel">Cancel</string>
-    <string name="errcode_deny">Deny</string>
-    <string name="errcode_unknown">Unknown</string>
+    <string name="share_error_image_path_fail">Share Image Load Fail</string>
+    <string name="share_success">Share Success</string>
+    <string name="share_error_cancel">Share Cancel</string>
+    <string name="share_error_fail">Share Fail</string>
+    <string name="share_error_client_invalid">Share Client Invalid</string>
 </resources>

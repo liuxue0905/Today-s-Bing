@@ -5,19 +5,19 @@
 
     <group
         android:id="@+id/group_share"
-        android:visible="true">
+        android:visible="false">
         <item
             android:id="@+id/action_hpc_qzone"
             android:orderInCategory="100"
             app:showAsAction="always"
             android:icon="@drawable/hpc_qzone"
             android:title="@string/action_hpc_qzone"/>
-        <item
-            android:id="@+id/action_hpc_weibo"
-            android:orderInCategory="100"
-            app:showAsAction="always"
-            android:icon="@drawable/hpc_weibo"
-            android:title="@string/action_hpc_weibo"/>
+        <!--<item-->
+            <!--android:id="@+id/action_hpc_weibo"-->
+            <!--android:orderInCategory="100"-->
+            <!--app:showAsAction="always"-->
+            <!--android:icon="@drawable/hpc_weibo"-->
+            <!--android:title="@string/action_hpc_weibo"/>-->
         <item
             android:id="@+id/action_hpc_wechat"
             android:orderInCategory="100"

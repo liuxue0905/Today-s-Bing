@@ -32,4 +32,9 @@ public class BingImageDetail extends ImageDetail<bing.com.Image> {
     public String getShareUrl(String resolution) {
         return URL_SHARE + getData().enddate;
     }
+
+    @Override
+    public String getShareImageUrl() {
+        return this.getImageUrl(this.resolutions[0]);
+    }
 }

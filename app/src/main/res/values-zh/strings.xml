@@ -43,8 +43,9 @@
     <string name="action_hpc_next">下一张</string>
     <string name="action_hpc_previous">上一张</string>
 
-    <string name="errcode_success">发送成功</string>
-    <string name="errcode_cancel">发送取消</string>
-    <string name="errcode_deny">发送被拒绝</string>
-    <string name="errcode_unknown">发送返回</string>
+    <string name="share_error_image_path_fail">分享图片加载失败-请重试</string>
+    <string name="share_success">分享成功</string>
+    <string name="share_error_cancel">分享取消</string>
+    <string name="share_error_fail">分享失败</string>
+    <string name="share_error_client_invalid">分享客户端未安装-请安装</string>
 </resources>

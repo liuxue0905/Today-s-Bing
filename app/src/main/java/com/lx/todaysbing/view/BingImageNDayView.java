@@ -44,6 +44,7 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
     private ImageNDayRecyclerViewAdapter mAdapter;
 
     private String mColor;
+    private String mMkt;
     private String mResolution;
 
     public BingImageNDayView(Context context) {
@@ -74,20 +75,16 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
         setRecyclerViewLayoutManager();
     }
 
-    public void bind(String color, HPImageArchive hpImageArchive, String resolution) {
+    public void bind(String color, String mkt, HPImageArchive hpImageArchive, String resolution) {
         if (hpImageArchive != null) {
-            bind(color, new ArrayList<Image>(hpImageArchive.images.subList(1, hpImageArchive.images.size())), resolution);
+            bind(color, mkt, new ArrayList<Image>(hpImageArchive.images.subList(1, hpImageArchive.images.size())), resolution);
         }
     }
 
-    public void bind(String color, List<Image> imageList, String resolution) {
+    public void bind(String color, String mkt, List<Image> imageList, String resolution) {
         mColor = color;
+        mMkt = mkt;
         mResolution = resolution;
-
-//        mAdapter = new ImageNDayAdapter(getContext(), imageList, resolution);
-//        mListView.setAdapter(mAdapter);
-//        mListView.setOnItemClickListener(this);
-//        mListView.setOnScrollListener(this);
 
         mAdapter = new ImageNDayRecyclerViewAdapter(getContext(), imageList, resolution);
         mAdapter.setOnItemClickListener(this);
@@ -98,15 +95,14 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(TAG, "onItemClick() position:" + position);
-        String color = mColor;
         Image image = mAdapter.getItem(position);
         String resolution = mResolution;
         Log.d(TAG, "onItemClick() image:" + image);
-        if (image != null) {
 
+        if (image != null) {
             String[] resolutions = getContext().getResources().getStringArray(R.array.resolution);
             ImageDetail imageDetail = new BingImageDetail(image, resolutions);
-            BingImageDetailActivity.action(getContext(), color, imageDetail, resolution);
+            BingImageDetailActivity.action(getContext(), mColor, mMkt, imageDetail, resolution);
         }
 
         Map<String, String> map = new HashMap<>();

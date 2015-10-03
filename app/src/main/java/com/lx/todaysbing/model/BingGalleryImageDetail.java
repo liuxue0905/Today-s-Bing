@@ -29,4 +29,9 @@ public class BingGalleryImageDetail extends ImageDetail<binggallery.chinacloudsi
     public String getShareUrl(String resolution) {
         return getImageUrl(resolution);
     }
+
+    @Override
+    public String getShareImageUrl() {
+        return null;
+    }
 }

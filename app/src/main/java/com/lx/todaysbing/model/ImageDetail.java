@@ -31,4 +31,6 @@ public abstract class ImageDetail<T> implements Serializable {
     public abstract String getImageUrl(String resolution);
 
     public abstract String getShareUrl(String resolution);
+
+    public abstract String getShareImageUrl();
 }

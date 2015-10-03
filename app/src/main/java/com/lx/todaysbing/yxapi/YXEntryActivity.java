@@ -6,7 +6,7 @@
  * Copyright (c) 2013年 mob.com. All rights reserved.
  */
 
-package cn.sharesdk.demo.yxapi;
+package com.lx.todaysbing.yxapi;
 
 import cn.sharesdk.yixin.utils.YXMessage;
 import cn.sharesdk.yixin.utils.YixinHandlerActivity;

@@ -1,4 +1,4 @@
-package cn.sharesdk.demo.apshare;
+package com.lx.todaysbing.apshare;
 
 import cn.sharesdk.alipay.share.AlipayHandlerActivity;
 

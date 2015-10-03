@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -39,7 +38,7 @@ import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.HashMap;
 
 import butterknife.Bind;
@@ -48,8 +47,8 @@ import butterknife.OnClick;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.onekeyshare.OnekeyShare;
-import cn.sharesdk.onekeyshare.OnekeyShareTheme;
+import cn.sharesdk.tencent.qzone.QZone;
+import cn.sharesdk.wechat.moments.WechatMoments;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -84,6 +83,7 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 
 //    private Fragment mFragment;
     private String mColor;
+    private String mMkt;
     private String mResolution;
     private ImageDetail mImageDetail;
 
@@ -135,12 +135,13 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         mLayoutToobarTop.setLayoutParams(params);
     }
 
-    public void bind(String color, String resolution, ImageDetail imageDetail) {
+    public void bind(String color, String mkt, String resolution, ImageDetail imageDetail) {
         Log.d(TAG, "bind() imageDetail:" + imageDetail);
         Log.d(TAG, "bind() resolution:" + resolution);
 
 //        mFragment = fragment;
         mColor = color;
+        mMkt = mkt;
         mResolution = resolution;
         mImageDetail = imageDetail;
 
@@ -178,9 +179,9 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         mToolbarBottom.inflateMenu(R.menu.menu_detail_bottom);
         mToolbarBottom.setOnMenuItemClickListener(this);
 
-        mBingImageDetailCopyInfoView.bind(mImageDetail);
+        mShareGroupVisible = false;
 
-//        ExifInterface exifInterface = new ExifInterface();
+        mBingImageDetailCopyInfoView.bind(mImageDetail);
     }
 
     @OnClick(R.id.btnResolution)
@@ -281,74 +282,66 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
             onClickHpcQzone();
             return true;
         }
-        else if (itemId == R.id.action_hpc_weibo) {
-            Toast.makeText(getContext(), "该功能在评估中~", Toast.LENGTH_SHORT).show();
-            return true;
-        }
+//        else if (itemId == R.id.action_hpc_weibo) {
+//            onClickHpcWeibo();
+//            return true;
+//        }
 
         return false;
     }
+
+//    private void onClickHpcWeibo() {
+//        Log.d(TAG, "onClickHpcWeibo()");
+//        Log.d(TAG, "onClickHpcWeibo() mImageDetail.getShareUrl()：" + mImageDetail.getShareUrl(mResolution));
+//
+//        share(SinaWeibo.NAME);
+//    }
 
     private void onClickHpcQzone() {
         Log.d(TAG, "onClickHpcQzone()");
         Log.d(TAG, "onClickHpcQzone() mImageDetail.getShareUrl()：" + mImageDetail.getShareUrl(mResolution));
 
-        Platform.ShareParams sp = new Platform.ShareParams();
-        sp.setTitle(mImageDetail.copyRightLeft);
-        sp.setText(mImageDetail.copyRight);
-        sp.setShareType(Platform.SHARE_WEBPAGE);
-        sp.setUrl(mImageDetail.getShareUrl(mResolution));
-        sp.setImageUrl(mImageDetail.getImageUrl(mResolution));
+//        share(QZone.NAME);
+        Glide.with(getContext())
+                .load(mImageDetail.getImageUrl(mResolution))
+                .downloadOnly(new SimpleTarget<File>() {
+                    @Override
+                    public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                        Log.d(TAG, "onResourceReady() resource:" + resource);
+                        share(QZone.NAME, resource.getPath());
+                    }
 
-        Platform plat = ShareSDK.getPlatform("QZone");
-        plat.setPlatformActionListener(/*this*/new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                Log.d(TAG, "onComplete()");
-            }
-
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-                Log.d(TAG, "onError()");
-            }
-
-            @Override
-            public void onCancel(Platform platform, int i) {
-                Log.d(TAG, "onCancel()");
-            }
-        });
-        plat.share(sp);
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        super.onLoadFailed(e, errorDrawable);
+                        Log.d(TAG, "onLoadFailed()");
+                        Toast.makeText(getContext(), R.string.share_error_image_path_fail, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void onClickHpcWechat() {
         Log.d(TAG, "onClickHpcWechat()");
         Log.d(TAG, "onClickHpcWechat() mImageDetail.getShareUrl()：" + mImageDetail.getShareUrl(mResolution));
 
-        Platform.ShareParams sp = new Platform.ShareParams();
-        sp.setTitle(mImageDetail.title);
-        sp.setText(mImageDetail.description);
-        sp.setShareType(Platform.SHARE_WEBPAGE);
-        sp.setUrl(mImageDetail.getShareUrl(mResolution));
-        sp.setImageUrl(mImageDetail.getImageUrl(mResolution));
+//        share(WechatMoments.NAME);
+        Glide.with(getContext())
+                .load(mImageDetail.getImageUrl(mResolution))
+                .downloadOnly(new SimpleTarget<File>() {
+                    @Override
+                    public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                        Log.d(TAG, "onResourceReady() resource:" + resource);
+                        share(WechatMoments.NAME, resource.getPath());
+                    }
 
-        Platform plat = ShareSDK.getPlatform("WechatMoments");
-        plat.setPlatformActionListener(/*this*/new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-                Log.d(TAG, "onComplete()");
-            }
+                    @Override
+                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
+                        super.onLoadFailed(e, errorDrawable);
+                        Log.d(TAG, "onLoadFailed()");
+                        Toast.makeText(getContext(), R.string.share_error_image_path_fail, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-                Log.d(TAG, "onError()");
-            }
-
-            @Override
-            public void onCancel(Platform platform, int i) {
-                Log.d(TAG, "onCancel()");
-            }
-        });
-        plat.share(sp);
 
 //        Glide.with(getContext())
 //                .load(mImageDetail.getImageUrl(mResolution))
@@ -396,35 +389,43 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 //                });
     }
 
+    private boolean mShareGroupVisible = false;
+
     private void onClickShare() {
-//        MenuItem menuItemGroupShare = mToolbarBottom.getMenu().findItem(R.id.group_share);
-//        menuItemGroupShare.setVisible(!menuItemGroupShare.isVisible());
+        Log.d(TAG, "onClickShare()");
 
-        final OnekeyShare oks = new OnekeyShare();
-        oks.setTitle(mImageDetail.copyRightLeft);
-        oks.setTitleUrl(mImageDetail.getShareUrl(mResolution));
-        oks.setUrl(mImageDetail.getShareUrl(mResolution));
-        oks.setText(mImageDetail.title);
-        oks.setImagePath(mImageDetail.getImageUrl(mResolution));
-        oks.setComment(mImageDetail.copyRight);
-        oks.setSite("今日必应壁纸");
-        oks.setSiteUrl("http://shouji.baidu.com/software/item?docid=7826820");
-        oks.setSilent(false);
-//        oks.setShareFromQQAuthSupport(/*shareFromQQLogin*/false);
-
-        oks.setTheme(OnekeyShareTheme.SKYBLUE);
-//        oks.setTheme(OnekeyShareTheme.CLASSIC);
-
-        // 令编辑页面显示为Dialog模式
-        oks.setDialogMode();
-
-        // 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
-        //oks.setCallback(new OneKeyShareCallback());
-
-        // 为EditPage设置一个背景的View
-//        oks.setEditPageBackground(getPage());
-        oks.show(getContext());
+        mShareGroupVisible = !mShareGroupVisible;
+        mToolbarBottom.getMenu().setGroupVisible(R.id.group_share, mShareGroupVisible);
     }
+
+//    private void onOneKeyShare() {
+//        final OnekeyShare oks = new OnekeyShare();
+//        oks.setTitle(mImageDetail.copyRight);
+//        oks.setTitleUrl(mImageDetail.getShareUrl(mResolution));
+//        oks.setText(mImageDetail.copyRight);
+//        oks.setImageUrl(mImageDetail.getImageUrl(mResolution));
+//        oks.setUrl(mImageDetail.getShareUrl(mResolution));
+//        oks.setSite("今日必应壁纸");
+//        oks.setSiteUrl("http://shouji.baidu.com/software/item?docid=7826820");
+//        oks.setSilent(false);
+//        oks.setShareFromQQAuthSupport(/*shareFromQQLogin*/true);
+//
+////        oks.setTheme(OnekeyShareTheme.SKYBLUE);
+//        oks.setTheme(OnekeyShareTheme.CLASSIC);
+//
+//        // 令编辑页面显示为Dialog模式
+//        oks.setDialogMode();
+//
+//        // 在自动授权时可以禁用SSO方式
+////        oks.disableSSOWhenAuthorize();
+//
+//        // 去除注释，则快捷分享的操作结果将通过OneKeyShareCallback回调
+//        //oks.setCallback(new OneKeyShareCallback());
+//
+//        // 为EditPage设置一个背景的View
+////        oks.setEditPageBackground(getPage());
+//        oks.show(getContext());
+//    }
 
     @Override
     public void onViewTap(View view, float x, float y) {
@@ -434,8 +435,50 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 
     @OnClick(R.id.image_detail_copy_info)
     void onClickViewCopyInfo() {
+        if (!"zh-CN".endsWith(mMkt)) {
+            return;
+        }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(mImageDetail.getShareUrl(mResolution)));
         getContext().startActivity(intent);
     }
+
+    private void share(String platform, String imagePath) {
+        Platform.ShareParams sp = new Platform.ShareParams();
+        sp.setTitle(mImageDetail.copyRight);
+        sp.setTitleUrl(mImageDetail.getShareUrl(mResolution));
+        sp.setText(mImageDetail.copyRight);
+        sp.setImageUrl(mImageDetail.getShareImageUrl());
+        sp.setImagePath(imagePath);
+        sp.setUrl(mImageDetail.getShareUrl(mResolution));
+        sp.setShareType(Platform.SHARE_WEBPAGE);
+
+        Platform plat = ShareSDK.getPlatform(platform);
+        plat.setPlatformActionListener(/*this*/mPlatformActionListener);
+        plat.share(sp);
+    }
+
+    PlatformActionListener mPlatformActionListener = new PlatformActionListener() {
+        @Override
+        public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+            Log.d(TAG, "onComplete()");
+            Toast.makeText(platform.getContext(), R.string.share_success, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(Platform platform, int i, Throwable throwable) {
+            Log.d(TAG, "onError()");
+            if (!platform.isClientValid()) {
+                Toast.makeText(platform.getContext(), R.string.share_error_client_invalid, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Toast.makeText(platform.getContext(), R.string.share_error_fail, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onCancel(Platform platform, int i) {
+            Log.d(TAG, "onCancel()");
+            Toast.makeText(platform.getContext(), R.string.share_error_cancel, Toast.LENGTH_SHORT).show();
+        }
+    };
 }

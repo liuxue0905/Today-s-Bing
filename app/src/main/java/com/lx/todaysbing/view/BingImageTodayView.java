@@ -1,5 +1,6 @@
 package com.lx.todaysbing.view;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -23,7 +26,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.cesards.cropimageview.CropImageView;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.BingImageDetailActivity;
 import com.lx.todaysbing.activity.MarketActivity;
@@ -34,8 +36,11 @@ import com.lx.todaysbing.event.OnHPImageArchiveSuccessEvent;
 import com.lx.todaysbing.model.BingImageDetail;
 import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
+import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
+
+import java.util.Arrays;
 
 import bing.com.HPImageArchive;
 import bing.com.Image;
@@ -62,6 +67,8 @@ public class BingImageTodayView extends RelativeLayout {
     public TextView tvCopyRightRight;
     @Bind(R.id.iv)
     ImageView imageView;
+    @Bind(R.id.image_error)
+    ImageView imageError;
     @Bind(R.id.layout_copyright)
     View layoutCopyright;
     @Bind(R.id.iv_mkt)
@@ -104,7 +111,7 @@ public class BingImageTodayView extends RelativeLayout {
         activity.setSupportActionBar(mToolbar);
         activity.getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        /*getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @SuppressLint("NewApi")
             @Override
             public void onGlobalLayout() {
@@ -120,7 +127,7 @@ public class BingImageTodayView extends RelativeLayout {
                     getViewTreeObserver().removeGlobalOnLayoutListener(this);
                 }
             }
-        });*/
+        });
     }
 
     private void setColor() {
@@ -141,7 +148,7 @@ public class BingImageTodayView extends RelativeLayout {
         progressBar.setProgressDrawable(dd);
     }
 
-    /*private void setupImageViewLayoutParams() {
+    private void setupImageViewLayoutParams() {
         ResolutionUtils.Resolution resolution = new ResolutionUtils.Resolution(mResolution);
         int[] wh = Utils.getScaledDSizeByFixHeight(resolution.width, resolution.height, this.getWidth(), this.getHeight());
 
@@ -153,7 +160,7 @@ public class BingImageTodayView extends RelativeLayout {
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imageView.getLayoutParams();
         params.width = wh[0];
         imageView.setLayoutParams(params);
-    }*/
+    }
 
     public void bind(String color, String mkt, HPImageArchive hpImageArchive, String resolurtion) {
         Image image = null;
@@ -188,21 +195,24 @@ public class BingImageTodayView extends RelativeLayout {
         tvCopyRightLeft.setText(copyrightParts[0]);
         tvCopyRightRight.setText(copyrightParts[1]);
 
+        imageError.setVisibility(View.GONE);
         Glide.with(getContext())
                 .load(Image.rebuildImageUrl(image, resolurtion))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                .placeholder(R.drawable.no_image)
-                .error(R.drawable.no_image)
+//                .error(R.drawable.no_image)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        ((CropImageView) imageView).setCropType(CropImageView.CropType.NONE);
+//                        ((CropImageView) imageView).setCropType(CropImageView.CropType.NONE);
+                        imageError.setVisibility(View.VISIBLE);
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        ((CropImageView) imageView).setCropType(CropImageView.CropType.LEFT_CENTER);
+//                        ((CropImageView) imageView).setCropType(CropImageView.CropType.LEFT_CENTER);
+                        imageError.setVisibility(View.GONE);
                         return false;
                     }
                 })
@@ -219,7 +229,7 @@ public class BingImageTodayView extends RelativeLayout {
 
         String[] resolutions = getContext().getResources().getStringArray(R.array.resolution);
         ImageDetail imageDetail = new BingImageDetail(mImage, resolutions);
-        BingImageDetailActivity.action(getContext(), mColor, imageDetail, mResolution);
+        BingImageDetailActivity.action(getContext(), mColor, null, imageDetail, mResolution);
 
         MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_DETAIL);
     }

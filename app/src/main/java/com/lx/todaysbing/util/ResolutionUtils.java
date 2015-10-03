@@ -14,7 +14,36 @@ public class ResolutionUtils {
 //    }
 
     public static String getSuggestResolution(Context context, String currentResolutionStr) {
-        Resolution currentResolution = new Resolution(currentResolutionStr);
+//        Resolution currentResolution = new Resolution(currentResolutionStr);
+//        String[] resolutionArray = context.getResources().getStringArray(R.array.resolution);
+//
+//        Resolution suggestResolution = null;
+//        int abs = Integer.MAX_VALUE;
+//
+//        for (String resolutionString : resolutionArray) {
+//            Resolution resolution = new Resolution(resolutionString);
+//
+//            if (resolution.isPortrait() == currentResolution.isPortrait()
+//                    && resolution.isLandscape() == resolution.isLandscape()) {
+//
+//                int tempAbs = Math.abs(resolution.getPixels() - currentResolution.getPixels());
+//
+//                if (tempAbs < abs) {
+//                    suggestResolution = resolution;
+//                    abs = tempAbs;
+//                }
+//            }
+//        }
+//
+//        return suggestResolution.getResolutionString();
+        Resolution suggestResolution = getSuggestResolution(context, new Resolution(currentResolutionStr));
+        if (suggestResolution != null) {
+            suggestResolution.getResolutionString();
+        }
+        return null;
+    }
+
+    public static Resolution getSuggestResolution(Context context, Resolution currentResolution) {
         String[] resolutionArray = context.getResources().getStringArray(R.array.resolution);
 
         Resolution suggestResolution = null;
@@ -35,36 +64,8 @@ public class ResolutionUtils {
             }
         }
 
-        return suggestResolution.getResolutionString();
+        return suggestResolution;
     }
-
-//    public static Resolution getSuggestResolution(Context context, Resolution currentResolution) {
-//        Resolution suggestResolution = null;
-//        int abs = 0;
-//
-//        String[] resolutionStringArray = context.getResources().getStringArray(R.array.resolution);
-//        for (String resolutionString : resolutionStringArray) {
-//            Resolution resolution = new Resolution(resolutionString);
-//
-//            if (resolution.isPortrait() == currentResolution.isPortrait()
-//                    && resolution.isLandscape() == resolution.isLandscape()) {
-//
-//                int tempAbs = Math.abs(resolution.getPixels() - currentResolution.getPixels());
-//
-//
-//                if (resolution.getPixels() <= currentResolution.getPixels()) {
-//                    if (suggestResolution == null) {
-//                        suggestResolution = resolution;
-//                    }
-//                    if (resolution.getPixels() >= suggestResolution.getPixels()) {
-//                        suggestResolution = resolution;
-//                    }
-//                }
-//            }
-//        }
-//
-//        return null;
-//    }
 
     public static class Resolution {
 

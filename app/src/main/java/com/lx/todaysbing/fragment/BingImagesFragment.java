@@ -62,10 +62,6 @@ public class BingImagesFragment extends Fragment {
 //    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_COLOR = "color";
     private static final String ARG_MKT = "mkt";
-    private static final String ARG_RESOLUTION = "resolution";
-//
-//    private String mParam1;
-//    private String mParam2;
 
     @Bind(R.id.viewPagerContainer)
     ViewGroup mViewPagerContainer;
@@ -113,12 +109,11 @@ public class BingImagesFragment extends Fragment {
      *
      * @return A new instance of fragment TodaysBingFragment.
      */
-    public static BingImagesFragment newInstance(String color, String mkt/*, String resolution*/) {
+    public static BingImagesFragment newInstance(String color, String mkt) {
         BingImagesFragment fragment = new BingImagesFragment();
         Bundle args = new Bundle();
         args.putString(ARG_COLOR, color);
         args.putString(ARG_MKT, mkt);
-//        args.putString(ARG_RESOLUTION, resolution);
         fragment.setArguments(args);
         return fragment;
     }
@@ -127,17 +122,13 @@ public class BingImagesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-//            mParam1 = getArguments().getString(ARG_PARAM1);
-//            mParam2 = getArguments().getString(ARG_PARAM2);
             mColor = getArguments().getString(ARG_COLOR);
             mMkt = getArguments().getString(ARG_MKT);//"zh-CN";
-//            mResolution = getArguments().getString(ARG_RESOLUTION);//Utils.getSuggestResolution(getActivity());
             mResolution = Utils.getSuggestResolution(getActivity());
         }
 
         EventBus.getDefault().register(this);
 
-//        api = new APIImpl();
         api = TodaysBingApplication.getInstance().getBingAPI();
     }
 
@@ -220,12 +211,6 @@ public class BingImagesFragment extends Fragment {
         params.rightMargin = mViewPagerContainer.getWidth() - Math.min(Utils.get90PWidth(getActivity()), wh[0]);
         mViewPager.setLayoutParams(params);
     }
-
-//    public void onButtonPressed(Uri uri) {
-//        if (mListener != null) {
-//            mListener.onFragmentInteraction(uri);
-//        }
-//    }
 
     @Override
     public void onAttach(Context context) {
@@ -337,7 +322,7 @@ public class BingImagesFragment extends Fragment {
     }
 
     private void initBingGalleryList(boolean isNeedRefresh) {
-        Log.d("LX", "initBingGalleryList() isNeedRefresh:" + isNeedRefresh);
+        Log.d(TAG, "initBingGalleryList() isNeedRefresh:" + isNeedRefresh);
 
         EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(null));
 
@@ -346,7 +331,7 @@ public class BingImagesFragment extends Fragment {
 //            List<Image> imageList = bingGalleryImageDao.loadAll();
             long count = bingGalleryImageDao.count();
 
-            Log.d("LX", "initBingGalleryList() db count:" + count);
+            Log.d(TAG, "initBingGalleryList() db count:" + count);
             if (count != 0) {
                 return;
             }
@@ -358,7 +343,7 @@ public class BingImagesFragment extends Fragment {
         mRetrofitCallback2 = new RetrofitCallback<Image[]>(){
             @Override
             public void success(Image[] images, Response response) {
-                Log.d("LX", "success() images:" + images);
+                Log.d(TAG, "success() images:" + images);
 
                 if (images != null && images.length != 0) {
                     BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
@@ -373,7 +358,7 @@ public class BingImagesFragment extends Fragment {
             }
             @Override
             public void failure(RetrofitError error) {
-                Log.d("LX", "failure() error:" + error);
+                Log.d(TAG, "failure() error:" + error);
 //                Snackbar.make(getView(), "加载失败", Snackbar.LENGTH_SHORT)
 //                        .show();
 

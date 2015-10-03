@@ -29,8 +29,19 @@ public class Utils {
     private static final String TAG = "Utils";
 
     public static String getSuggestResolution(Context context) {
+//        DisplayMetrics dm = context.getResources().getDisplayMetrics();
+//        return ResolutionUtils.getSuggestResolution(context, dm.widthPixels + "x" + dm.heightPixels);
+
         DisplayMetrics dm = context.getResources().getDisplayMetrics();
-        return ResolutionUtils.getSuggestResolution(context, dm.widthPixels + "x" + dm.heightPixels);
+        ResolutionUtils.Resolution resolutionSuggest = ResolutionUtils.getSuggestResolution(context, new ResolutionUtils.Resolution(dm.widthPixels, dm.heightPixels));
+        ResolutionUtils.Resolution resolution720p = new ResolutionUtils.Resolution(1280, 720);
+
+        if (resolutionSuggest.isLandscape() == resolution720p.isLandscape()
+                && resolutionSuggest.isPortrait() == resolution720p.isPortrait()) {
+            return resolution720p.getResolutionString();
+        }
+
+        return resolutionSuggest.getResolutionString();
     }
 
     public static int get90PWidth(Context context) {
