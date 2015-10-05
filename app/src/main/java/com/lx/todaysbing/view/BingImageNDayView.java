@@ -101,8 +101,8 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
 
         if (image != null) {
             String[] resolutions = getContext().getResources().getStringArray(R.array.resolution);
-            ImageDetail imageDetail = new BingImageDetail(image, resolutions);
-            BingImageDetailActivity.action(getContext(), mColor, mMkt, imageDetail, resolution);
+            ImageDetail imageDetail = new BingImageDetail(image, resolutions, mMkt);
+            BingImageDetailActivity.action(getContext(), mColor, imageDetail, resolution);
         }
 
         Map<String, String> map = new HashMap<>();

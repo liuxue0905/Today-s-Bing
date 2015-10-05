@@ -27,52 +27,31 @@
 
     <!--240的渐变-->
     <View
+        android:id="@+id/gradient"
         android:layout_width="match_parent"
-        android:layout_height="240dp"
+        android:layout_height="@dimen/image_today_gradient_h"
         android:layout_gravity="bottom"
         android:background="@drawable/gradient" />
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="@dimen/activity_horizontal_margin"
+        android:layout_marginBottom="8dp"
+        android:src="@drawable/ic_bing" />
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageView
-            android:id="@+id/iv_mkt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_marginBottom="@dimen/activity_vertical_margin"
-            android:layout_marginLeft="3dp"
-            android:layout_marginRight="3dp"
-            android:src="@drawable/appbar_globe_wire_dark" />
-
-        <TextView
-            android:id="@+id/tv_mkt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/iv_mkt"
-            android:layout_alignTop="@+id/iv_mkt"
-            android:layout_toRightOf="@+id/iv_mkt"
-            android:gravity="center_vertical"
-            android:text="@null" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/activity_horizontal_margin"
-            android:layout_marginBottom="8dp"
-            android:src="@drawable/ic_bing" />
+        android:layout_height="@dimen/image_today_gradient_h"
+        android:layout_gravity="bottom">
 
         <!--<RelativeLayout-->
         <com.lx.todaysbing.widget.ScaleRelativeLayout
             android:id="@+id/layout_copyright"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="80dp"
+            android:layout_centerVertical="true"
             android:paddingBottom="@dimen/activity_vertical_margin"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin">
@@ -83,18 +62,17 @@
                 android:layout_height="wrap_content"
                 android:text="@null"
                 android:textColor="#fff"
-                android:textSize="22sp" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tv_copyright_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:layout_marginTop="8dp"
                 android:layout_below="@+id/tv_copyright_left"
                 android:text="@null"
                 android:textColor="#fff"
                 android:textSize="12sp" />
-
         </com.lx.todaysbing.widget.ScaleRelativeLayout>
 
         <ImageView
@@ -104,7 +82,41 @@
             android:layout_alignBottom="@+id/layout_copyright"
             android:layout_alignRight="@+id/layout_copyright"
             android:src="@drawable/appbar_download" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_mkt"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_marginBottom="@dimen/activity_vertical_margin"-->
+            <!--android:layout_marginLeft="3dp"-->
+            <!--android:layout_marginRight="3dp"-->
+            <!--android:src="@drawable/appbar_globe_wire_dark" />-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/tv_mkt"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:drawableLeft="@drawable/appbar_globe_wire_dark"-->
+            <!--android:layout_alignBottom="@+id/iv_mkt"-->
+            <!--android:layout_alignTop="@+id/iv_mkt"-->
+            <!--android:layout_toRightOf="@+id/iv_mkt"-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:text="@null" />-->
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_mkt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="16dp"
+        android:drawablePadding="4dp"
+        android:drawableLeft="@drawable/appbar_globe_wire_dark"
+        android:layout_gravity="bottom|left"
+        android:gravity="center_vertical"
+        android:text="@null" />
 
     <LinearLayout
         android:layout_width="fill_parent"

@@ -71,8 +71,8 @@ public class BingImageTodayView extends RelativeLayout {
     ImageView imageError;
     @Bind(R.id.layout_copyright)
     View layoutCopyright;
-    @Bind(R.id.iv_mkt)
-    ImageView ivMkt;
+//    @Bind(R.id.iv_mkt)
+//    ImageView ivMkt;
     @Bind(R.id.tv_mkt)
     TextView tvMkt;
     @Bind(R.id.progressBar)
@@ -134,12 +134,13 @@ public class BingImageTodayView extends RelativeLayout {
 
 //        Palette
 //        LayerDrawable layerDrawable = new LayerDrawable();
-        Drawable d = DrawableCompat.wrap(ivMkt.getDrawable());
+        Drawable d = DrawableCompat.wrap(tvMkt.getCompoundDrawables()[0]);
         DrawableCompat.setTint(d, Color.parseColor(mColor));
 //        ColorStateList colorStateList = new ColorStateList()
 //        DrawableCompat.setTintMode();
 //        PorterDuff.Mode.
-        ivMkt.setImageDrawable(d);
+        tvMkt.invalidate();
+//        tvMkt.setCompoundDrawables(d, null, null, null);
 
         tvMkt.setTextColor(Color.parseColor(mColor));
 
@@ -228,8 +229,8 @@ public class BingImageTodayView extends RelativeLayout {
 
 
         String[] resolutions = getContext().getResources().getStringArray(R.array.resolution);
-        ImageDetail imageDetail = new BingImageDetail(mImage, resolutions);
-        BingImageDetailActivity.action(getContext(), mColor, null, imageDetail, mResolution);
+        ImageDetail imageDetail = new BingImageDetail(mImage, resolutions, mMkt);
+        BingImageDetailActivity.action(getContext(), mColor, imageDetail, mResolution);
 
         MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_DETAIL);
     }

@@ -10,8 +10,11 @@ public class BingImageDetail extends ImageDetail<bing.com.Image> {
     // http://cn.bing.com/coverstory?date=20150926
     public static final String URL_SHARE = "http://cn.bing.com/coverstory?date=";
 
-    public BingImageDetail(Image object, String[] resolutions) {
+    private String mkt;
+
+    public BingImageDetail(Image object, String[] resolutions, String mkt) {
         super(object, resolutions);
+        this.mkt = mkt;
 
         this.title = object.copyright;
         this.description = object.copyright;
@@ -30,6 +33,9 @@ public class BingImageDetail extends ImageDetail<bing.com.Image> {
 
     @Override
     public String getShareUrl(String resolution) {
+        if (!Image.MKT_ZH_CN.equals(this.mkt)) {
+            return this.getImageUrl(resolution);
+        }
         return URL_SHARE + getData().enddate;
     }
 

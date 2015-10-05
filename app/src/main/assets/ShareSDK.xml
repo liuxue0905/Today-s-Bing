@@ -79,7 +79,7 @@
         SortId="3"
         AppId="1104675841"
         AppKey="f5SKOlYRcsvaQBpD"
-        ShareByAppClient="false"
+        ShareByAppClient="true"
         Enable="true" />
     
     <!-- 

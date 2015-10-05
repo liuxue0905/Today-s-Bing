@@ -26,7 +26,6 @@ import butterknife.ButterKnife;
 public class BingImageDetailFragment extends Fragment {
 
     private static final String ARG_COLOR = "color";
-    private static final String ARG_MKT = "mkt";
     private static final String ARG_IMAGE_DETAIL = "Image";
     private static final String ARG_RESOLUTION = "Resolution";
 
@@ -34,7 +33,6 @@ public class BingImageDetailFragment extends Fragment {
     BingImageDetailView mBingImageDetailView;
 
     private String mColor;
-    private String mMkt;
     private String mResolution;
     private ImageDetail mImageDetail;
 
@@ -44,11 +42,10 @@ public class BingImageDetailFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static BingImageDetailFragment newInstance(String color, String mkt, ImageDetail imageDetail, String resolution, String imageResolution) {
+    public static BingImageDetailFragment newInstance(String color, ImageDetail imageDetail, String resolution, String imageResolution) {
         BingImageDetailFragment fragment = new BingImageDetailFragment();
         Bundle args = new Bundle();
         args.putString(ARG_COLOR, color);
-        args.putString(ARG_MKT, mkt);
         args.putSerializable(ARG_IMAGE_DETAIL, (java.io.Serializable) imageDetail);
         args.putString(ARG_RESOLUTION, resolution);
         fragment.setArguments(args);
@@ -60,7 +57,6 @@ public class BingImageDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mColor = getArguments().getString(ARG_COLOR);
-            mMkt = getArguments().getString(ARG_MKT);
             mImageDetail = (ImageDetail) getArguments().getSerializable(ARG_IMAGE_DETAIL);
             mResolution = getArguments().getString(ARG_RESOLUTION);
         }
@@ -105,7 +101,7 @@ public class BingImageDetailFragment extends Fragment {
     }
 
     public void bind() {
-        mBingImageDetailView.bind(mColor, mMkt, mResolution, mImageDetail);
+        mBingImageDetailView.bind(mColor, mResolution, mImageDetail);
     }
 
     /**

@@ -37,49 +37,36 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/fakeStatusBar"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@color/overlay">
 
         <include
             android:id="@+id/toolbarTop"
             layout="@layout/toolbar" />
 
         <RelativeLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:layout_alignTop="@+id/toolbarTop"
-            android:layout_alignBottom="@+id/toolbarTop"
-            android:background="@color/overlay">
+            android:layout_alignBottom="@+id/toolbarTop">
 
             <!--android:text="@string/image_detail_location"-->
-            <ImageView
-                android:id="@+id/btnLocation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="16dp"
-                android:background="@null"
-                android:textAllCaps="false"
-                android:src="@drawable/image_detail_location"
-                android:gravity="center_horizontal"
-                android:alpha="0.333"
-                android:minHeight="0dp"
-                android:minWidth="0dp"
-                android:textSize="8sp" />
-
-            <TextView
-                android:id="@+id/tvEnabledRotation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="16dp"
-                android:alpha="0.333"
-                android:drawableLeft="@drawable/appbar_switch_portrait_landscape_dark"
-                android:gravity="center_vertical"
-                android:text="@string/image_detail_enabled_rotation"
-                android:textSize="10sp" />
+            <!--<ImageView-->
+                <!--android:id="@+id/btnLocation"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:layout_marginLeft="16dp"-->
+                <!--android:background="@null"-->
+                <!--android:textAllCaps="false"-->
+                <!--android:src="@drawable/image_detail_location"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:alpha="0.333"-->
+                <!--android:minHeight="0dp"-->
+                <!--android:minWidth="0dp"-->
+                <!--android:textSize="8sp" />-->
 
             <LinearLayout
                 android:orientation="vertical"
@@ -108,6 +95,20 @@
                     android:textSize="18sp" />
             </LinearLayout>
         </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tvEnabledRotation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="16dp"
+            android:alpha="0.333"
+            android:drawableLeft="@drawable/appbar_switch_portrait_landscape_dark"
+            android:gravity="center_vertical"
+            android:text="@string/image_detail_enabled_rotation"
+            android:textSize="10sp" />
     </RelativeLayout>
 
     <!--<android.support.percent.PercentRelativeLayout-->

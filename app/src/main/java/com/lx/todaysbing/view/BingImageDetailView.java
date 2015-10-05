@@ -81,9 +81,7 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
     @Bind(R.id.image_detail_copy_info)
     BingImageDetailCopyInfoView mBingImageDetailCopyInfoView;
 
-//    private Fragment mFragment;
     private String mColor;
-    private String mMkt;
     private String mResolution;
     private ImageDetail mImageDetail;
 
@@ -135,13 +133,12 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         mLayoutToobarTop.setLayoutParams(params);
     }
 
-    public void bind(String color, String mkt, String resolution, ImageDetail imageDetail) {
-        Log.d(TAG, "bind() imageDetail:" + imageDetail);
+    public void bind(String color, String resolution, ImageDetail imageDetail) {
+        Log.d(TAG, "bind() color:" + color);
         Log.d(TAG, "bind() resolution:" + resolution);
+        Log.d(TAG, "bind() imageDetail:" + imageDetail);
 
-//        mFragment = fragment;
         mColor = color;
-        mMkt = mkt;
         mResolution = resolution;
         mImageDetail = imageDetail;
 
@@ -170,14 +167,20 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
                         progressBar.setVisibility(View.GONE);
                         return false;
                     }
+
                 })
                 .into(imageView);
 
-        mToolbarTop.setNavigationIcon(null);
         mToolbarBottom.setNavigationIcon(null);
         mToolbarBottom.getMenu().clear();
         mToolbarBottom.inflateMenu(R.menu.menu_detail_bottom);
         mToolbarBottom.setOnMenuItemClickListener(this);
+        mToolbarTop.setNavigationOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((Activity)getContext()).finish();
+            }
+        });
 
         mShareGroupVisible = false;
 
@@ -347,46 +350,7 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 //                .load(mImageDetail.getImageUrl(mResolution))
 //                .asBitmap()
 //                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .into(new SimpleTarget<Bitmap>(150, 150) {
-//                    @Override
-//                    public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-////                        ShareWeiXin share = new ShareWeiXin(getContext());
-////                        share.shareWebpage(mImageDetail.getShareUrl(mResolution), mImageDetail.title, mImageDetail.description, resource);
-//////                        share.shareImage(/*mImageDetail.getImageUrl(mResolution)*/"https://www.baidu.com/img/bdlogo.png", "title", "description", resource);
-//
-//                        Platform.ShareParams sp = new Platform.ShareParams();
-//                        sp.setTitle(mImageDetail.title);
-//                        sp.setText(mImageDetail.description);
-//                        sp.setShareType(Platform.SHARE_TEXT);
-//                        sp.setShareType(Platform.SHARE_WEBPAGE);
-//                        sp.setUrl(mImageDetail.getShareUrl(mResolution));
-//                        sp.setImageData(resource);
-//
-//                        Platform plat = ShareSDK.getPlatform("WechatMoments");
-//                        plat.setPlatformActionListener(/*this*/new PlatformActionListener() {
-//                            @Override
-//                            public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-//                                Log.d(TAG, "onComplete()");
-//                            }
-//
-//                            @Override
-//                            public void onError(Platform platform, int i, Throwable throwable) {
-//                                Log.d(TAG, "onError()");
-//                            }
-//
-//                            @Override
-//                            public void onCancel(Platform platform, int i) {
-//                                Log.d(TAG, "onCancel()");
-//                            }
-//                        });
-//                        plat.share(sp);
-//                    }
-//
-//                    @Override
-//                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-//                        super.onLoadFailed(e, errorDrawable);
-//                    }
-//                });
+//                .into(new SimpleTarget<Bitmap>(150, 150) {});
     }
 
     private boolean mShareGroupVisible = false;
@@ -435,9 +399,6 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 
     @OnClick(R.id.image_detail_copy_info)
     void onClickViewCopyInfo() {
-        if (!"zh-CN".endsWith(mMkt)) {
-            return;
-        }
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(mImageDetail.getShareUrl(mResolution)));
         getContext().startActivity(intent);

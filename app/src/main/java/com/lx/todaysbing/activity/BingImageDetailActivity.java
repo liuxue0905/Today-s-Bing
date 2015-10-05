@@ -27,22 +27,19 @@ public class BingImageDetailActivity extends AppCompatActivity implements BingIm
     private static final String TAG = "BingImageDetailActivity";
 
     private static final String EXTRA_COLOR = "color";
-    private static final String EXTRA_MKT = "mkt";
     private static final String EXTRA_IMAGE_DETAIL = "Image";
     private static final String EXTRA_RESOLUTION = "Resolution";
 
     private String mColor;
-    private String mMkt;
     private String mResolution;
     private ImageDetail mImageDetail;
 
 //    @InjectView(R.id.fakeStatusBar)
 //    View fakeStatusBar;
 
-    public static void action(Context context, String color, String mkt, ImageDetail imageDetail, String resolution) {
+    public static void action(Context context, String color, ImageDetail imageDetail, String resolution) {
         Intent intent = new Intent(context, BingImageDetailActivity.class);
         intent.putExtra(EXTRA_COLOR, color);
-        intent.putExtra(EXTRA_MKT, mkt);
         intent.putExtra(EXTRA_IMAGE_DETAIL, imageDetail);
         intent.putExtra(EXTRA_RESOLUTION, resolution);
         context.startActivity(intent);
@@ -58,13 +55,12 @@ public class BingImageDetailActivity extends AppCompatActivity implements BingIm
 //        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 
         mColor = getIntent().getStringExtra(EXTRA_COLOR);
-        mMkt = getIntent().getStringExtra(EXTRA_MKT);
         mImageDetail = (ImageDetail) getIntent().getSerializableExtra(EXTRA_IMAGE_DETAIL);
         mResolution = getIntent().getStringExtra(EXTRA_RESOLUTION);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, BingImageDetailFragment.newInstance(mColor, mMkt, mImageDetail, mResolution, null))
+                    .add(R.id.container, BingImageDetailFragment.newInstance(mColor, mImageDetail, mResolution, null))
                     .commit();
         }
     }

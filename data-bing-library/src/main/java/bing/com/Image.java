@@ -12,6 +12,8 @@ public class Image implements Serializable {
 
     private static final long serialVersionUID = 0L;
 
+    public static final String MKT_ZH_CN = "zh-CN";
+
     public String startdate;
 
     public String fullstartdate;
