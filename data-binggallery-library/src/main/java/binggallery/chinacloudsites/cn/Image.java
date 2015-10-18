@@ -196,6 +196,11 @@ public class Image implements Serializable {
 
     public static Image[] parse(String parsed) {
 //        Log.d("LX", "parse()");
+
+        if (parsed == null) {
+            return null;
+        }
+
         Image[] parsedImages = null;
         Pattern pattern = Pattern.compile("(\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12})~(s)~([lw])~([^~]*)(~([^~]*))?((?=\\r\\n)|$)", Pattern.MULTILINE);
         Matcher matcher = pattern.matcher(parsed);

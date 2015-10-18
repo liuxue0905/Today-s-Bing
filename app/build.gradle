@@ -8,8 +8,8 @@ android {
         applicationId "com.lx.todaysbing"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 6
-        versionName "1.4.0"
+        versionCode 7
+        versionName "1.5.0"
 
         // dex突破65535的限制
         multiDexEnabled true
@@ -75,26 +75,27 @@ dependencies {
     compile project(':ImageViewKeepRatio-lib')
     compile project(':data-bing-library')
     compile project(':data-binggallery-library')
-    //
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:appcompat-v7:23.0.1'
-    compile 'com.android.support:recyclerview-v7:23.0.1'
-    compile 'com.android.support:design:23.0.1'
-    compile 'com.android.support:percent:23.0.1'
-    //
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.google.code.gson:gson:2.3.1'
-    compile 'com.squareup.okhttp:okhttp:2.3.0'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.github.bumptech.glide:glide:3.6.0'
-    compile 'com.commit451:PhotoView:1.2.4'
-    //    compile 'com.google.guava:guava:18.0'
-    compile 'com.umeng.analytics:analytics:5.5.3'
-    compile 'de.greenrobot:eventbus:2.4.0'
-    //    compile 'com.mcxiaoke.volley:library:1.0.16'
-    compile 'de.greenrobot:greendao:1.3.7'
-    compile 'com.cesards.android:cropimageview:1.0.1'
     compile project(':ShareSDK-OneKeyShare')
+    // com.android.support
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:recyclerview-v7:23.1.0'
+    compile 'com.android.support:design:23.1.0'
+    compile 'com.android.support:percent:23.1.0'
+    // com.android.support
+    compile 'com.google.code.gson:gson:2.4'
+    //    compile 'com.google.guava:guava:18.0'
+    compile 'com.squareup.okhttp:okhttp:2.5.0'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta2'
+    compile 'com.squareup.retrofit:converter-gson:2.0.0-beta2'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'de.greenrobot:greendao:2.0.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.github.bumptech.glide:glide:3.6.1'
+    compile 'com.commit451:PhotoView:1.2.4'
+    compile 'com.umeng.analytics:analytics:5.5.3'
+    compile 'com.cesards.android:cropimageview:1.0.1'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
 }
 
 //useOldManifestMerger true

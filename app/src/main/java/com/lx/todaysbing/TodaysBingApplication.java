@@ -3,15 +3,22 @@ package com.lx.todaysbing;
 import android.app.Application;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.lx.todaysbing.util.LoggingInterceptor;
+import com.lx.todaysbing.util.StringConverterFactory;
+import com.squareup.okhttp.OkHttpClient;
+
 import bing.com.BingAPI;
 import binggallery.chinacloudsites.cn.BingGalleryAPI;
 import binggallery.chinacloudsites.cn.BingGalleryImageDao;
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.DaoMaster;
 import binggallery.chinacloudsites.cn.DaoSession;
-import binggallery.chinacloudsites.cn.ImageConverter;
 import cn.sharesdk.framework.ShareSDK;
-import retrofit.RestAdapter;
+import retrofit.GsonConverterFactory;
+import retrofit.Retrofit;
+
+//import binggallery.chinacloudsites.cn.ImageConverter;
+//import retrofit.RestAdapter;
 
 /**
  * Created by liuxue on 2015/6/23.
@@ -45,13 +52,16 @@ public class TodaysBingApplication extends Application {
         BingGalleryImageProvider.daoSession = daoSession;
         bingGalleryImageDao = daoSession.getBingGalleryImageDao();
 
-        RestAdapter adapter = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(BingAPI.END_POINT).build();
-        mBingAPI = adapter.create(BingAPI.class);
+        OkHttpClient client = new OkHttpClient();
+        client.interceptors().add(new LoggingInterceptor());
 
-        RestAdapter adapter2 = new RestAdapter.Builder().setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(BingGalleryAPI.END_POINT)
-                .setConverter(new ImageConverter())
-                .build();
-        mBingGalleryAPI = adapter2.create(BingGalleryAPI.class);
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BingAPI.END_POINT).addConverterFactory(GsonConverterFactory.create()).client(client).build();
+        mBingAPI = retrofit.create(BingAPI.class);
+
+        Retrofit retrofit2 = new Retrofit.Builder()
+                .baseUrl(BingGalleryAPI.END_POINT).addConverterFactory(StringConverterFactory.create()).client(client).build();
+        mBingGalleryAPI = retrofit2.create(BingGalleryAPI.class);
 
         ShareSDK.initSDK(this);
     }

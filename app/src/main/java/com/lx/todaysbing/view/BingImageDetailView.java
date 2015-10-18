@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -80,6 +81,8 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
     TextView tvEnabledRotation;
     @Bind(R.id.image_detail_copy_info)
     BingImageDetailCopyInfoView mBingImageDetailCopyInfoView;
+    @Bind(R.id.image_error)
+    ImageView mImageErrorView;
 
     private String mColor;
     private String mResolution;
@@ -150,21 +153,24 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         btnResolution.setText(mResolution);
 
         progressBar.setVisibility(View.VISIBLE);
+        mImageErrorView.setVisibility(View.GONE);
         imageView.setScale(1.0F, false);
         Glide.with(getContext())
                 .load(mImageDetail.getImageUrl(mResolution))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .error(R.drawable.no_image)
+//                .error(R.drawable.no_image)
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
                         progressBar.setVisibility(View.GONE);
+                        mImageErrorView.setVisibility(View.VISIBLE);
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
                         progressBar.setVisibility(View.GONE);
+                        mImageErrorView.setVisibility(View.GONE);
                         return false;
                     }
 
@@ -390,6 +396,11 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 ////        oks.setEditPageBackground(getPage());
 //        oks.show(getContext());
 //    }
+
+    @OnClick(R.id.image_error)
+    void onClickImageError() {
+        updateViews();
+    }
 
     @Override
     public void onViewTap(View view, float x, float y) {

@@ -1,19 +1,17 @@
 package com.lx.todaysbing.event;
 
-import retrofit.RetrofitError;
-
 /**
  * Created by liuxue on 2015/6/29.
  */
 public class OnHPImageArchiveFailureEvent {
 
-    private final RetrofitError error;
+    private final String error;
 
-    public OnHPImageArchiveFailureEvent(RetrofitError error) {
+    public OnHPImageArchiveFailureEvent(String error) {
         this.error = error;
     }
 
-    public RetrofitError getError() {
+    public String getError() {
         return error;
     }
 }

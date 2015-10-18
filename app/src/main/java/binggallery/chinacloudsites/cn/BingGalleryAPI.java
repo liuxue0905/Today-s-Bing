@@ -1,6 +1,10 @@
 package binggallery.chinacloudsites.cn;
 
+import com.squareup.okhttp.ResponseBody;
+
+import retrofit.Call;
 import retrofit.Callback;
+import retrofit.Response;
 import retrofit.http.GET;
 
 /**
@@ -11,8 +15,5 @@ public interface BingGalleryAPI {
     public static final String END_POINT = "http://binggallery.chinacloudsites.cn/api/image";
 
     @GET("/list")
-    Image[] list();
-
-    @GET("/list")
-    void list(Callback<Image[]> callback);
+    Call<String> list();
 }

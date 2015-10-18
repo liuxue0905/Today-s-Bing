@@ -1,6 +1,6 @@
 package bing.com;
 
-import retrofit.Callback;
+import retrofit.Call;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
@@ -14,8 +14,5 @@ public interface BingAPI {
 
     //    http://www.bing.com/HPImageArchive.aspx?format=xml&idx=0&n=1&mkt=en-US   &video=1
     @GET("/HPImageArchive.aspx")
-    HPImageArchive getHPImageArchive(@Query("format") String format, @Query("idx") int idx, @Query("n") int n, @Query("mkt") String mkt, @Query("video") int video);
-
-    @GET("/HPImageArchive.aspx")
-    void getHPImageArchive(@Query("format") String format, @Query("idx") int idx, @Query("n") int n, @Query("mkt") String mkt, @Query("video") int video, Callback<HPImageArchive> callback);
+    Call<HPImageArchive> getHPImageArchive(@Query("format") String format, @Query("idx") int idx, @Query("n") int n, @Query("mkt") String mkt, @Query("video") int video);
 }

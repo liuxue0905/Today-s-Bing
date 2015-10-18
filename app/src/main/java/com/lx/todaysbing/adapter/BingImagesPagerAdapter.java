@@ -1,12 +1,9 @@
 package com.lx.todaysbing.adapter;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.view.View;
 import android.view.ViewGroup;
-
-import bing.com.HPImageArchive;
 
 import com.lx.todaysbing.event.OnBingGalleryScrollEvent;
 import com.lx.todaysbing.event.OnBingImageNDayScrollEvent;
@@ -14,6 +11,7 @@ import com.lx.todaysbing.view.BingGalleryView;
 import com.lx.todaysbing.view.BingImageNDayView;
 import com.lx.todaysbing.view.BingImageTodayView;
 
+import bing.com.HPImageArchive;
 import de.greenrobot.event.EventBus;
 
 /**

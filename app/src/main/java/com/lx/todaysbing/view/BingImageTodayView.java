@@ -171,7 +171,7 @@ public class BingImageTodayView extends RelativeLayout {
         bind(color, mkt, image, resolurtion);
     }
 
-    public void bind(String color, String mkt, Image image, String resolurtion) {
+    private void bind(String color, String mkt, Image image, String resolurtion) {
         Log.d(TAG, "bind() mkt:" + mkt);
         Log.d(TAG, "bind() image:" + image);
         Log.d(TAG, "bind() resolurtion:" + resolurtion);
@@ -245,6 +245,11 @@ public class BingImageTodayView extends RelativeLayout {
     @OnClick(R.id.btnRefresh)
     void onClickRefresh() {
         EventBus.getDefault().post(new OnHPImageArchiveEvent());
+    }
+
+    @OnClick(R.id.image_error)
+    void onClickImageError() {
+        bind(mColor, mMkt, mImage, mResolution);
     }
 
     public void onEvent(OnHPImageArchivePreLoadEvent event) {
