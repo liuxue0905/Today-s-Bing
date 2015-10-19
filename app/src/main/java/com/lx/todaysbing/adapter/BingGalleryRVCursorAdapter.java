@@ -71,7 +71,7 @@ public class BingGalleryRVCursorAdapter extends RecyclerViewCursorAdapter {
 
         ((BingGalleryItemView) view).bind(position, getItem(position));
 
-        ((BingGalleryItemView) view).rootView.setOnClickListener(new View.OnClickListener() {
+        ((BingGalleryItemView) view).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "a Element " + position + " clicked.");

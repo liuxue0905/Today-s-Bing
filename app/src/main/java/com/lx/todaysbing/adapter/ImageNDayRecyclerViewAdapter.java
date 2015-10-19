@@ -79,7 +79,7 @@ public class ImageNDayRecyclerViewAdapter extends RecyclerView.Adapter<ImageNDay
         ((BingImageNDayItemView) viewHolder.itemView).bind(position, mDataSet.get(position), mResolution);
 
         final ViewHolder fViewHolder = viewHolder;
-        ((BingImageNDayItemView) viewHolder.itemView).rootView.setOnClickListener(new View.OnClickListener() {
+        ((BingImageNDayItemView) viewHolder.itemView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Element " + position + " clicked.");

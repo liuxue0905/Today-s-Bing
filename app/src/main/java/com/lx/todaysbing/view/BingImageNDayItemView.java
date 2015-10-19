@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,8 +28,10 @@ import butterknife.ButterKnife;
  */
 public class BingImageNDayItemView extends RelativeLayout {
 
-    @Bind(R.id.root)
-    public View rootView;
+    @Bind(R.id.cardview)
+    CardView mCardView;
+//    @Bind(R.id.root)
+//    public View rootView;
 
     @Bind(R.id.iv)
     public ImageView imageView;
@@ -69,7 +72,6 @@ public class BingImageNDayItemView extends RelativeLayout {
     public void init(Context context) {
         inflate(context, R.layout.item_bing_image_nday, this);
         ButterKnife.bind(this);
-
     }
 
     public void bind(int position, Image image, String resolution) {
@@ -105,5 +107,11 @@ public class BingImageNDayItemView extends RelativeLayout {
             text = resources.getString(R.string.n_day_ago_n, position + 1);
         }
         tvNDaysAgo.setText(text);
+    }
+
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+//        super.setOnClickListener(l);
+        mCardView.setOnClickListener(l);
     }
 }

@@ -100,6 +100,11 @@
                     android:text="480x800"
                     android:textAllCaps="false"
                     android:textSize="18sp" />
+                <!--<Spinner-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:spinnerMode="dropdown"-->
+                    <!--android:prompt="@string/image_detail_resolution" />-->
             </LinearLayout>
         </RelativeLayout>
 

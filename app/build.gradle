@@ -58,7 +58,6 @@ android {
         baidu {}
         hiapk {}
         zs91 {}
-        yyb {}
         productFlavors.all { flavor ->
             flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
         }
@@ -82,6 +81,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.0'
     compile 'com.android.support:design:23.1.0'
     compile 'com.android.support:percent:23.1.0'
+    compile 'com.android.support:cardview-v7:23.1.0'
     // com.android.support
     compile 'com.google.code.gson:gson:2.4'
     //    compile 'com.google.guava:guava:18.0'

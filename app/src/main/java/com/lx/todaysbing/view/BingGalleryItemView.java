@@ -2,6 +2,7 @@ package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -22,9 +23,12 @@ import butterknife.ButterKnife;
  */
 public class BingGalleryItemView extends RelativeLayout {
 
-    private static final String TAG = "BingGalleryItemView";
-    @Bind(R.id.root)
-    public View rootView;
+    private static final String TAG = BingGalleryItemView.class.getCanonicalName();
+
+    @Bind(R.id.cardview)
+    CardView mCardView;
+//    @Bind(R.id.root)
+//    public View rootView;
     @Bind(R.id.iv)
     public ImageView imageView;
     @Bind(R.id.tv_copyright_left)
@@ -78,5 +82,11 @@ public class BingGalleryItemView extends RelativeLayout {
 //                .placeholder(R.drawable.no_image)
                 .error(R.drawable.no_image)
                 .into(imageView);
+    }
+
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+//        super.setOnClickListener(l);
+        mCardView.setOnClickListener(l);
     }
 }

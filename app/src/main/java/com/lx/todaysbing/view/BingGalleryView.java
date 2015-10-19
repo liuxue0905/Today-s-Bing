@@ -3,6 +3,7 @@ package com.lx.todaysbing.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
@@ -113,6 +114,29 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
+
+        mRecyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+
+                int childAdapterPostion = parent.getChildAdapterPosition(view);
+                int spanCount = ((GridLayoutManager)parent.getLayoutManager()).getSpanCount();
+                int column = childAdapterPostion % spanCount;
+
+                int left = 0;
+                int right = 0;
+
+                if (column != 0) {
+                    left = 3;
+                }
+//                if (column != spanCount - 1) {
+//                    right = 1;
+//                }
+
+                outRect.set(left, 0, right, 0);
+            }
+        });
     }
 
     private LoaderManager.LoaderCallbacks<Cursor> mLoaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>(){
@@ -178,27 +202,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         mPosition = position;
         mColor = color;
         mResolution = resolution;
-
-//        btnRefresh.setVisibility(View.GONE);
-//        mRecyclerView.setVisibility(View.VISIBLE);
     }
-
-//    public void bind(String color, Image[] images, String resolution) {
-//        bind(color, resolution);
-//
-//        Log.d(TAG, "bind() images:" + images);
-//
-////        mAdapter.changeData(images);
-////        if (images == null || images.length == 0) {
-////            btnRefresh.setVisibility(View.VISIBLE);
-////            mRecyclerView.setVisibility(View.GONE);
-////        }
-//    }
-
-//    @OnClick(R.id.btnRefresh)
-//    public void onClickRefresh() {
-//        EventBus.getDefault().post(new OnBingGalleryListEvent());
-//    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -287,14 +291,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
                 }
             });
 
-//            if (mAdapter.getItemCount() == 0) {
-//                btnRefresh.setVisibility(View.VISIBLE);
-//            } else {
-//                btnRefresh.setVisibility(View.GONE);
-//            }
-
         } else {
-//            btnRefresh.setVisibility(View.GONE);
             layoutSnackbar.post(new Runnable() {
                 @Override
                 public void run() {
