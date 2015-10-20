@@ -2,6 +2,8 @@ package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,6 +14,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.lx.todaysbing.R;
 
 import binggallery.chinacloudsites.cn.Image;
@@ -62,10 +67,13 @@ public class BingGalleryItemView extends RelativeLayout {
         ButterKnife.bind(this);
     }
 
-    public void bind(int position, Image image) {
+    public void bind(int position, String color, Image image) {
         Log.d(TAG, "bind() position:" + position);
+        Log.d(TAG, "bind() color:" + color);
         Log.d(TAG, "bind() image:" + image);
         Log.d(TAG, "bind() image.getMinpixUrl():" + image.getMinpixUrl());
+
+        setupColor();
 
         String[] copyrightParts = image.getSplitCopyright();
         if (copyrightParts != null) {
@@ -81,7 +89,28 @@ public class BingGalleryItemView extends RelativeLayout {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
 //                .placeholder(R.drawable.no_image)
                 .error(R.drawable.no_image)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                        return false;
+                    }
+                })
                 .into(imageView);
+    }
+
+    private void setupColor() {
+//        RippleDrawable rd;
+//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+//        } else {
+//        }
+//        mCardView.getForegroundTintList();
     }
 
     @Override

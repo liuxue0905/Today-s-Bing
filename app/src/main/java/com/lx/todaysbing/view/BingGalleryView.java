@@ -111,6 +111,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         setRecyclerViewLayoutManager();
 
         mAdapter = new BingGalleryRVCursorAdapter(getContext(), null, true);
+        mAdapter.setColor(mColor);
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);
@@ -215,12 +216,10 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
             String imageResolution = null;
 
-            if (imageResolution == null) {
-                if (binggallery.chinacloudsites.cn.Image.RESOLUTION_CEDE_L.equalsIgnoreCase(image.getMaxpix())) {
-                    imageResolution = binggallery.chinacloudsites.cn.Image.RESOLUTION_VALUE_L;
-                } else if (binggallery.chinacloudsites.cn.Image.RESOLUTION_CEDE_W.equalsIgnoreCase(image.getMaxpix())) {
-                    imageResolution = binggallery.chinacloudsites.cn.Image.RESOLUTION_VALUE_W;
-                }
+            if (binggallery.chinacloudsites.cn.Image.RESOLUTION_CEDE_L.equalsIgnoreCase(image.getMaxpix())) {
+                imageResolution = binggallery.chinacloudsites.cn.Image.RESOLUTION_VALUE_L;
+            } else if (binggallery.chinacloudsites.cn.Image.RESOLUTION_CEDE_W.equalsIgnoreCase(image.getMaxpix())) {
+                imageResolution = binggallery.chinacloudsites.cn.Image.RESOLUTION_VALUE_W;
             }
 
             String[] resolutions = new String[]{Image.RESOLUTION_VALUE_L, Image.RESOLUTION_VALUE_W};

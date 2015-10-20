@@ -25,7 +25,6 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingLeft="@dimen/activity_market_recyclerview_horizontal_margin"
         android:layout_below="@+id/tvTitle"
         android:scrollbarStyle="insideInset"
         android:scrollbars="vertical" />

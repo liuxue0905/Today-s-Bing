@@ -23,6 +23,7 @@ public class BingGalleryRVCursorAdapter extends RecyclerViewCursorAdapter {
 
     AdapterView.OnItemClickListener mOnItemClickListener;
     private Context context;
+    private String color;
 
     public BingGalleryRVCursorAdapter(Context context, Cursor c) {
         super(context, c);
@@ -69,7 +70,7 @@ public class BingGalleryRVCursorAdapter extends RecyclerViewCursorAdapter {
     public void bindView(final View view, Context context, Cursor cursor) {
         final int position = cursor.getPosition();
 
-        ((BingGalleryItemView) view).bind(position, getItem(position));
+        ((BingGalleryItemView) view).bind(position, color, getItem(position));
 
         ((BingGalleryItemView) view).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,5 +81,10 @@ public class BingGalleryRVCursorAdapter extends RecyclerViewCursorAdapter {
                 }
             }
         });
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+        this.notifyDataSetChanged();
     }
 }

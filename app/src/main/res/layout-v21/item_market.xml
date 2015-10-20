@@ -8,18 +8,23 @@
     android:clickable="true"
     android:focusable="true"
     android:orientation="horizontal"
+    android:foreground="@drawable/fg_item_bing_nday"
     card_view:elevation="0dp"
     card_view:cardCornerRadius="0dp"
     card_view:cardBackgroundColor="@android:color/transparent"
-    card_view:background="@android:color/transparent">
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    card_view:background="@null">
+<!--<FrameLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content">-->
+
+<!--</FrameLayout>-->
+<TextView
     android:id="@+id/tv_mkt"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingLeft="@dimen/activity_market_recyclerview_horizontal_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:textSize="18sp"
-    android:background="@drawable/fg_item_bing_nday"/>
+    android:textSize="18sp"/>
 </android.support.v7.widget.CardView>
 

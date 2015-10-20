@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="0dp"
     android:clickable="true"
+    android:focusable="true"
     android:orientation="horizontal"
     android:foreground="@drawable/fg_item_bing_nday"
     card_view:elevation="0dp"
