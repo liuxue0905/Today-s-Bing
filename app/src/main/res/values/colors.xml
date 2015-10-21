@@ -20,4 +20,6 @@
     <color name="windowBackground">#666</color>
     <!--#333-->
     <color name="overlay">#66333333</color>
+
+    <color name="transparent">#00000000</color>
 </resources>

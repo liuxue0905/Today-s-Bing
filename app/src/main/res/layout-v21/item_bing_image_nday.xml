@@ -11,8 +11,7 @@
     android:foreground="@drawable/fg_item_bing_nday"
     card_view:elevation="0dp"
     card_view:cardCornerRadius="0dp"
-    card_view:cardBackgroundColor="@android:color/transparent"
-    card_view:background="@android:color/transparent">
+    card_view:cardBackgroundColor="@android:color/transparent">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
