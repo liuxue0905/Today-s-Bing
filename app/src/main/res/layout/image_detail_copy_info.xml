@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:text="@null"
         android:textColor="#fff"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:background="@drawable/fg_item_bing_nday"/>
 
     <TextView
         android:id="@+id/tv_copyright_right"

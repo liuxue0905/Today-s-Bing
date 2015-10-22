@@ -28,8 +28,8 @@ import butterknife.ButterKnife;
  */
 public class BingImageNDayItemView extends RelativeLayout {
 
-    @Bind(R.id.cardview)
-    CardView mCardView;
+    @Bind(R.id.root)
+    View mRootView;
 //    @Bind(R.id.root)
 //    public View rootView;
 
@@ -112,6 +112,6 @@ public class BingImageNDayItemView extends RelativeLayout {
     @Override
     public void setOnClickListener(OnClickListener l) {
 //        super.setOnClickListener(l);
-        mCardView.setOnClickListener(l);
+        mRootView.setOnClickListener(l);
     }
 }

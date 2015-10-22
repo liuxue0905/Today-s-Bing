@@ -121,6 +121,8 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
             public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
                 super.getItemOffsets(outRect, view, parent, state);
 
+                float desity = parent.getResources().getDisplayMetrics().density;
+
                 int childAdapterPostion = parent.getChildAdapterPosition(view);
                 int spanCount = ((GridLayoutManager)parent.getLayoutManager()).getSpanCount();
                 int column = childAdapterPostion % spanCount;
@@ -129,7 +131,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
                 int right = 0;
 
                 if (column != 0) {
-                    left = 3;
+                    left = (int) (1 * desity);
                 }
 //                if (column != spanCount - 1) {
 //                    right = 1;

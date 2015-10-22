@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -131,18 +132,25 @@ public class BingImageTodayView extends RelativeLayout {
     }
 
     private void setColor() {
-
+        Log.d(TAG, "setColor()");
 //        Palette
 //        LayerDrawable layerDrawable = new LayerDrawable();
-        Drawable d = DrawableCompat.wrap(tvMkt.getCompoundDrawables()[0]);
+//        Drawable d = DrawableCompat.wrap(tvMkt.getCompoundDrawables()[0]);
+        Drawable d = DrawableCompat.wrap(getResources().getDrawable(R.drawable.appbar_globe_wire_dark));
         DrawableCompat.setTint(d, Color.parseColor(mColor));
 //        ColorStateList colorStateList = new ColorStateList()
 //        DrawableCompat.setTintMode();
 //        PorterDuff.Mode.
-        tvMkt.invalidate();
+        tvMkt.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
 //        tvMkt.setCompoundDrawables(d, null, null, null);
-
         tvMkt.setTextColor(Color.parseColor(mColor));
+        Log.d(TAG, "tvMkt.getBackground():" + tvMkt.getBackground());
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            RippleDrawable rd = (RippleDrawable) tvMkt.getBackground();
+            rd.setTint(Color.parseColor(mColor));
+            tvMkt.setBackground(rd);
+        }
+        tvMkt.invalidate();
 
         Drawable dd = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
         DrawableCompat.setTint(dd, Color.parseColor(mColor));

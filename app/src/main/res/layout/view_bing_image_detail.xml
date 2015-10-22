@@ -94,7 +94,7 @@
                     android:id="@+id/btnResolution"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/selector"
+                    android:background="@drawable/fg_item_bing_nday"
                     android:minHeight="0dp"
                     android:minWidth="0dp"
                     android:text="480x800"

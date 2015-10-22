@@ -109,6 +109,7 @@
             <!--android:text="@null" />-->
     </RelativeLayout>
 
+    <!--android:drawableLeft="@drawable/appbar_globe_wire_dark"-->
     <TextView
         android:id="@+id/tv_mkt"
         android:layout_width="wrap_content"
@@ -117,7 +118,7 @@
         android:layout_marginBottom="16dp"
         android:drawablePadding="4dp"
         android:paddingRight="4dp"
-        android:drawableLeft="@drawable/appbar_globe_wire_dark"
+
         android:layout_gravity="bottom|left"
         android:gravity="center_vertical"
         android:text="@null"
