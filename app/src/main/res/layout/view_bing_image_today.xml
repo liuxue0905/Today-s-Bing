@@ -57,7 +57,7 @@
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:clickable="true"
             android:focusable="true"
-            android:background="@drawable/fg_item_bing_nday">
+            android:background="?attr/selectableItemBackground">
 
             <TextView
                 android:id="@+id/tv_copyright_left"
@@ -114,17 +114,17 @@
         android:id="@+id/tv_mkt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
-        android:layout_marginBottom="16dp"
+        android:paddingLeft="8dp"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
         android:drawablePadding="4dp"
-        android:paddingRight="4dp"
-
+        android:paddingRight="16dp"
         android:layout_gravity="bottom|left"
         android:gravity="center_vertical"
         android:text="@null"
         android:clickable="true"
         android:focusable="true"
-        android:background="@drawable/fg_item_bing_nday"/>
+        android:background="?attr/selectableItemBackground"/>
 
     <LinearLayout
         android:layout_width="fill_parent"

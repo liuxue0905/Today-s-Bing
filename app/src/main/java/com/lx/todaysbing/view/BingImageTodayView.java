@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
@@ -37,6 +38,7 @@ import com.lx.todaysbing.event.OnHPImageArchiveSuccessEvent;
 import com.lx.todaysbing.model.BingImageDetail;
 import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
+import com.lx.todaysbing.util.DrawableCompatUtils;
 import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
@@ -144,13 +146,9 @@ public class BingImageTodayView extends RelativeLayout {
         tvMkt.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
 //        tvMkt.setCompoundDrawables(d, null, null, null);
         tvMkt.setTextColor(Color.parseColor(mColor));
-        Log.d(TAG, "tvMkt.getBackground():" + tvMkt.getBackground());
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            RippleDrawable rd = (RippleDrawable) tvMkt.getBackground();
-            rd.setTint(Color.parseColor(mColor));
-            tvMkt.setBackground(rd);
-        }
         tvMkt.invalidate();
+
+//        DrawableCompatUtils.setBackground(tvMkt, DrawableCompatUtils.setTintList(getContext(), R.drawable.item_background_material));
 
         Drawable dd = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
         DrawableCompat.setTint(dd, Color.parseColor(mColor));

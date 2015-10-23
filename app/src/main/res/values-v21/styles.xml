@@ -2,6 +2,8 @@
 
     <style name="AppTheme" parent="AppTheme.Base">
 
+        <item name="selectableItemBackground">@drawable/item_background_material</item>
+
         <item name="android:windowTranslucentStatus">true</item>
         <!--<item name="android:windowTranslucentNavigation">true</item>-->
 

@@ -2,17 +2,17 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android" android:exitFadeDuration="@android:integer/config_mediumAnimTime">
     <item android:state_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="#42ffffff"/>
+            <solid android:color="#42ff0000"/>
         </shape>
     </item>
     <item android:state_selected="true">
         <shape android:shape="rectangle">
-            <solid android:color="#42ffffff"/>
+            <solid android:color="#42ff0000"/>
         </shape>
     </item>
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="#42ffffff"/>
+            <solid android:color="#42ff0000"/>
         </shape>
     </item>
     <item>

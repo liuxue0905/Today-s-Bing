@@ -6,12 +6,12 @@
     <color name="colorPrimaryDark">#3f51b5</color>
     <color name="colorAccent">#ff4081</color>
 
-    <!-- general colors for drawer -->
-    <color name="list_background">#F2F2F2</color>
-    <!-- primary colors for drawer -->
-    <color name="list_background_normal">#FCFCFC</color>
-    <!-- secondary colors for drawer -->
-    <color name="list_background_secondary_normal">#F2F2F2</color>
+    <!--&lt;!&ndash; general colors for drawer &ndash;&gt;-->
+    <!--<color name="list_background">#F2F2F2</color>-->
+    <!--&lt;!&ndash; primary colors for drawer &ndash;&gt;-->
+    <!--<color name="list_background_normal">#FCFCFC</color>-->
+    <!--&lt;!&ndash; secondary colors for drawer &ndash;&gt;-->
+    <!--<color name="list_background_secondary_normal">#F2F2F2</color>-->
 
     <color name="windowBackgroundPrimaryDark">#000000</color>
     <color name="windowBackgroundSecondaryDark">#1E1E1E</color>
@@ -22,4 +22,39 @@
     <color name="overlay">#66333333</color>
 
     <color name="transparent">#00000000</color>
+
+
+
+
+
+
+
+
+
+
+
+    <!-- A light Holo shade of blue -->
+    <color name="holo_blue_light">#ff33b5e5</color>
+    <!-- A light Holo shade of gray -->
+    <color name="holo_gray_light">#33999999</color>
+    <!-- A light Holo shade of green -->
+    <color name="holo_green_light">#ff99cc00</color>
+    <!-- A light Holo shade of red -->
+    <color name="holo_red_light">#ffff4444</color>
+    <!-- A dark Holo shade of blue -->
+    <color name="holo_blue_dark">#ff0099cc</color>
+    <!-- A dark Holo shade of green -->
+    <color name="holo_green_dark">#ff669900</color>
+    <!-- A dark Holo shade of red -->
+    <color name="holo_red_dark">#ffcc0000</color>
+    <!-- A Holo shade of purple -->
+    <color name="holo_purple">#ffaa66cc</color>
+    <!-- A light Holo shade of orange -->
+    <color name="holo_orange_light">#ffffbb33</color>
+    <!-- A dark Holo shade of orange -->
+    <color name="holo_orange_dark">#ffff8800</color>
+    <!-- A really bright Holo shade of blue -->
+    <color name="holo_blue_bright">#ff00ddff</color>
+    <!-- A really bright Holo shade of gray -->
+    <color name="holo_gray_bright">#33CCCCCC</color>
 </resources>

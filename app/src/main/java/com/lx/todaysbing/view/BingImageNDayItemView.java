@@ -19,7 +19,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lx.todaysbing.R;
 
 import bing.com.Image;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -28,10 +27,8 @@ import butterknife.ButterKnife;
  */
 public class BingImageNDayItemView extends RelativeLayout {
 
-    @Bind(R.id.root)
-    View mRootView;
-//    @Bind(R.id.root)
-//    public View rootView;
+    @Bind(R.id.cardview)
+    CardView mCardView;
 
     @Bind(R.id.iv)
     public ImageView imageView;
@@ -112,6 +109,6 @@ public class BingImageNDayItemView extends RelativeLayout {
     @Override
     public void setOnClickListener(OnClickListener l) {
 //        super.setOnClickListener(l);
-        mRootView.setOnClickListener(l);
+        mCardView.setOnClickListener(l);
     }
 }
