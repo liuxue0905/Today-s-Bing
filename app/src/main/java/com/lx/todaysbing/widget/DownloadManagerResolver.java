@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.AppCompatTextView;
 
 import com.lx.todaysbing.R;
 
