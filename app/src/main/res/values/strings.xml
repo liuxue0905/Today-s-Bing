@@ -49,4 +49,7 @@
     <string name="share_error_cancel">Share Cancel</string>
     <string name="share_error_fail">Share Fail</string>
     <string name="share_error_client_invalid">Share Client Invalid</string>
+    <string name="image_detail_download_failures">Download Failure - Please Check Storage</string>
+    <string name="dialog_alert_download_neutral">Download By Other Way</string>
+    <string name="dialog_alert_download_message">DownloadManager is disabled. Please enable it.</string>
 </resources>

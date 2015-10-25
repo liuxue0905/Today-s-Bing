@@ -12,119 +12,101 @@
 
     <ImageView
         android:id="@+id/image_error"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@drawable/no_image"/>
+        android:src="@drawable/no_image"
+        android:visibility="gone" />
 
     <!--<com.cesards.cropimageview.CropImageView-->
-        <!--xmlns:custom="http://schemas.android.com/apk/res-auto"-->
-        <!--android:id="@+id/iv"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:scaleType="fitStart"-->
-        <!--custom:crop="centerLeft" />-->
-
-    <!--240的渐变-->
-    <View
-        android:id="@+id/gradient"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/image_today_gradient_h"
-        android:layout_gravity="bottom"
-        android:background="@drawable/gradient" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="@dimen/activity_horizontal_margin"
-        android:layout_marginBottom="8dp"
-        android:src="@drawable/ic_bing" />
+    <!--xmlns:custom="http://schemas.android.com/apk/res-auto"-->
+    <!--android:id="@+id/iv"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:scaleType="fitStart"-->
+    <!--custom:crop="centerLeft" />-->
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/image_today_gradient_h"
         android:layout_gravity="bottom">
 
+        <!--240的渐变-->
+        <View
+            android:id="@+id/gradient"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/image_today_gradient_h"
+            android:layout_gravity="bottom"
+            android:background="@drawable/gradient" />
+
         <!--<com.lx.todaysbing.widget.ScaleRelativeLayout-->
         <RelativeLayout
             android:id="@+id/layout_copyright"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_mkt"
             android:layout_centerVertical="true"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
             android:focusable="true"
-            android:background="?attr/selectableItemBackground">
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/tv_copyright_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@null"
-                android:textColor="#fff"
+                android:text="tv_copyright_left"
+                android:textColor="@color/textPrimary"
                 android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/tv_copyright_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_below="@+id/tv_copyright_left"
-                android:text="@null"
-                android:textColor="#fff"
+                android:layout_marginTop="8dp"
+                android:text="tv_copyright_right"
+                android:textColor="@color/textPrimary"
                 android:textSize="12sp" />
+
+            <ImageView
+                android:id="@+id/ivDownload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_copyright_right"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/appbar_download" />
         </RelativeLayout>
 
-        <ImageView
-            android:id="@+id/ivDownload"
+        <!--android:drawableLeft="@drawable/appbar_globe_wire_dark"-->
+        <TextView
+            android:id="@+id/tv_mkt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/layout_copyright"
-            android:layout_alignRight="@+id/layout_copyright"
-            android:src="@drawable/appbar_download" />
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:drawablePadding="4dp"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"/>
 
-        <!--<ImageView-->
-            <!--android:id="@+id/iv_mkt"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_alignParentBottom="true"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_marginBottom="@dimen/activity_vertical_margin"-->
-            <!--android:layout_marginLeft="3dp"-->
-            <!--android:layout_marginRight="3dp"-->
-            <!--android:src="@drawable/appbar_globe_wire_dark" />-->
-
-        <!--<TextView-->
-            <!--android:id="@+id/tv_mkt"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:drawableLeft="@drawable/appbar_globe_wire_dark"-->
-            <!--android:layout_alignBottom="@+id/iv_mkt"-->
-            <!--android:layout_alignTop="@+id/iv_mkt"-->
-            <!--android:layout_toRightOf="@+id/iv_mkt"-->
-            <!--android:gravity="center_vertical"-->
-            <!--android:text="@null" />-->
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:src="@drawable/ic_bing" />
     </RelativeLayout>
-
-    <!--android:drawableLeft="@drawable/appbar_globe_wire_dark"-->
-    <TextView
-        android:id="@+id/tv_mkt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingLeft="8dp"
-        android:paddingBottom="16dp"
-        android:paddingTop="16dp"
-        android:drawablePadding="4dp"
-        android:paddingRight="16dp"
-        android:layout_gravity="bottom|left"
-        android:gravity="center_vertical"
-        android:text="@null"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?attr/selectableItemBackground"/>
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -143,14 +125,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 
     <ImageButton
         android:id="@+id/btnRefresh"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/appbar_refresh_dark"
-        android:visibility="gone"/>
+        android:src="@drawable/ic_refresh_white_48dp"
+        android:background="@null"
+        android:visibility="visible" />
 
 </FrameLayout>

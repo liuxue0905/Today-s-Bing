@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<ripple xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:color="?attr/colorControlHighlight">-->
+    <!--android:color="?attr/colorControlHighlight"-->
+    <!--<item name="colorControlHighlight">@color/ripple_material_light</item>-->
+    <!--<color name="ripple_material_light">#1f000000</color>-->
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="@android:color/holo_green_light">
+    android:color="?attr/colorAccent">
     <item>
         <shape
             android:shape="rectangle"
-            android:tint="#00ffffff" />
+            android:tint="@android:color/transparent" />
     </item>
     <item android:id="@android:id/mask">
         <color android:color="@android:color/white" />

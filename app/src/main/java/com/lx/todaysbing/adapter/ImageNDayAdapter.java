@@ -16,11 +16,13 @@ import java.util.List;
 public class ImageNDayAdapter extends BaseAdapter {
 
     private Context context;
+    String mColor;
     private List<Image> imageList;
     private String mResolution;
 
-    public ImageNDayAdapter(Context context, List<Image> imageList, String resolution) {
+    public ImageNDayAdapter(Context context, String color, List<Image> imageList, String resolution) {
         this.context = context;
+        mColor = color;
         this.imageList = imageList;
         mResolution = resolution;
     }
@@ -52,7 +54,7 @@ public class ImageNDayAdapter extends BaseAdapter {
 //            itemView.imageView.setLayoutParams(mImageViewLayoutParams);
 //        }
 
-        itemView.bind(position, getItem(position), mResolution);
+        itemView.bind(position, mColor, getItem(position), mResolution);
         return itemView;
     }
 

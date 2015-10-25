@@ -37,6 +37,7 @@ public class ImageNDayRecyclerViewAdapter extends RecyclerView.Adapter<ImageNDay
     private Context context;
     private List<Image> mDataSet;
     private String mResolution;
+    private String mColor;
 
     /**
      * Initialize the dataset of the Adapter.
@@ -44,10 +45,11 @@ public class ImageNDayRecyclerViewAdapter extends RecyclerView.Adapter<ImageNDay
      * @param dataSet String[] containing the data to populate views to be used by RecyclerView.
      * @param resolution
      */
-    public ImageNDayRecyclerViewAdapter(Context context, List<Image> dataSet, String resolution) {
+    public ImageNDayRecyclerViewAdapter(Context context, List<Image> dataSet, String resolution, String color) {
         this.context = context;
         mDataSet = dataSet;
         mResolution = resolution;
+        mColor = color;
     }
 
     public void setOnItemClickListener(AdapterView.OnItemClickListener listener) {
@@ -76,7 +78,7 @@ public class ImageNDayRecyclerViewAdapter extends RecyclerView.Adapter<ImageNDay
         // with that element
 //        viewHolder.getTextView().setText(mDataSet[position]);
 
-        ((BingImageNDayItemView) viewHolder.itemView).bind(position, mDataSet.get(position), mResolution);
+        ((BingImageNDayItemView) viewHolder.itemView).bind(position, mColor, mDataSet.get(position), mResolution);
 
         final ViewHolder fViewHolder = viewHolder;
         ((BingImageNDayItemView) viewHolder.itemView).setOnClickListener(new View.OnClickListener() {

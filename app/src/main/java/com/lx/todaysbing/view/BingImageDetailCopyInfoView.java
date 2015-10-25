@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Paint;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -19,6 +20,10 @@ import butterknife.ButterKnife;
  */
 public class BingImageDetailCopyInfoView extends LinearLayout {
 
+    private String mColor;
+
+    @Bind(R.id.layout_copyright)
+    View mCopyRightLayout;
     @Bind(R.id.tv_copyright_left)
     TextView mCopyRightLeftTV;
     @Bind(R.id.tv_copyright_right)
@@ -52,12 +57,25 @@ public class BingImageDetailCopyInfoView extends LinearLayout {
         setUnderLineTextFlag(mCopyRightLeftTV);
     }
 
-    public void bind(ImageDetail imageDetail) {
+    public void bind(String color, ImageDetail imageDetail) {
+        mColor = color;
         mCopyRightLeftTV.setText(imageDetail.copyRightLeft);
         mCopyRightRightTV.setText(imageDetail.copyRightRight);
+
+        setColor();
     }
 
     public static void setUnderLineTextFlag(TextView textView) {
         textView.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
+    }
+
+    private void setColor() {
+//        DrawableCompatUtils.setBackground(mCopyRightLayout, DrawableCompatUtils.selectableItemBackground(getContext(), mColor));
+    }
+
+    @Override
+    public void setOnClickListener(OnClickListener l) {
+//        super.setOnClickListener(l);
+        mCopyRightLayout.setOnClickListener(l);
     }
 }

@@ -34,7 +34,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by liuxue on 2015/5/8.
  */
-public class BingImageNDayView extends RelativeLayout implements AdapterView.OnItemClickListener/*, AbsListView.OnScrollListener */{
+public class BingImageNDayView extends RelativeLayout implements AdapterView.OnItemClickListener/*, AbsListView.OnScrollListener */ {
 
     private static final String TAG = "BingImageNDayView";
 
@@ -86,7 +86,7 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
         mMkt = mkt;
         mResolution = resolution;
 
-        mAdapter = new ImageNDayRecyclerViewAdapter(getContext(), imageList, resolution);
+        mAdapter = new ImageNDayRecyclerViewAdapter(getContext(), imageList, resolution, mColor);
         mAdapter.setOnItemClickListener(this);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.addOnScrollListener(mOnScrollListener);

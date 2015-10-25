@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
@@ -44,6 +45,7 @@ public class BingImageNDayItemView extends RelativeLayout {
 
     private Image mImage;
     private String mResolution;
+    private String mColor;
 
     public BingImageNDayItemView(Context context) {
         super(context);
@@ -71,9 +73,12 @@ public class BingImageNDayItemView extends RelativeLayout {
         ButterKnife.bind(this);
     }
 
-    public void bind(int position, Image image, String resolution) {
+    public void bind(int position, String color, Image image, String resolution) {
         mImage = image;
         mResolution = resolution;
+        mColor = color;
+
+        setColor();
 
         String[] copyrightParts = image.getSplitCopyright();
         tvCopyRightLeft.setText(copyrightParts[0]);
@@ -92,6 +97,13 @@ public class BingImageNDayItemView extends RelativeLayout {
         DrawableCompat.setTintMode(drawable, PorterDuff.Mode.SRC_IN);
         DrawableCompat.setTint(drawable, Color.parseColor("#00ffff"));
         mSelectorView.setBackgroundDrawable(drawable);
+    }
+
+    private void setColor() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            mCardView.setForegroundTintList(DrawableCompatUtils.getColorStateList(mColor));
+//            mCardView.setForegroundTintMode(PorterDuff.Mode.DST_IN);
+        }
     }
 
     private void setupTvNDaysAgo(int position) {

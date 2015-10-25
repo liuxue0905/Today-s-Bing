@@ -49,4 +49,7 @@
     <string name="share_error_cancel">分享取消</string>
     <string name="share_error_fail">分享失败</string>
     <string name="share_error_client_invalid">分享客户端未安装-请安装</string>
+    <string name="image_detail_download_failures">下载失败 - 请检查存储设备</string>
+    <string name="dialog_alert_download_neutral">其他下载方式</string>
+    <string name="dialog_alert_download_message">下载管理器 被停用，请启用。</string>
 </resources>

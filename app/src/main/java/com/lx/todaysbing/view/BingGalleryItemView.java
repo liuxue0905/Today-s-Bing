@@ -2,6 +2,7 @@ package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -41,6 +42,8 @@ public class BingGalleryItemView extends RelativeLayout {
     @Bind(R.id.tv_copyright_right)
     public TextView tvCopyRightRight;
 
+    private String mColor;
+
     public BingGalleryItemView(Context context) {
         super(context);
         init(context);
@@ -72,6 +75,8 @@ public class BingGalleryItemView extends RelativeLayout {
         Log.d(TAG, "bind() color:" + color);
         Log.d(TAG, "bind() image:" + image);
         Log.d(TAG, "bind() image.getMinpixUrl():" + image.getMinpixUrl());
+
+        mColor = color;
 
         setupColor();
 
@@ -106,11 +111,10 @@ public class BingGalleryItemView extends RelativeLayout {
     }
 
     private void setupColor() {
-//        RippleDrawable rd;
-//        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-//        } else {
-//        }
-//        mCardView.getForegroundTintList();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            mCardView.setForegroundTintList(DrawableCompatUtils.getColorStateList("#FF0000"));
+//            mCardView.setForegroundTintMode(PorterDuff.Mode.DST_IN);
+        }
     }
 
     @Override

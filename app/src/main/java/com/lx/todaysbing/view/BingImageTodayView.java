@@ -11,6 +11,7 @@ import android.os.Build;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.graphics.drawable.DrawableWrapper;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -38,7 +39,6 @@ import com.lx.todaysbing.event.OnHPImageArchiveSuccessEvent;
 import com.lx.todaysbing.model.BingImageDetail;
 import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
-import com.lx.todaysbing.util.DrawableCompatUtils;
 import com.lx.todaysbing.util.ResolutionUtils;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
@@ -140,15 +140,11 @@ public class BingImageTodayView extends RelativeLayout {
 //        Drawable d = DrawableCompat.wrap(tvMkt.getCompoundDrawables()[0]);
         Drawable d = DrawableCompat.wrap(getResources().getDrawable(R.drawable.appbar_globe_wire_dark));
         DrawableCompat.setTint(d, Color.parseColor(mColor));
-//        ColorStateList colorStateList = new ColorStateList()
-//        DrawableCompat.setTintMode();
-//        PorterDuff.Mode.
         tvMkt.setCompoundDrawablesWithIntrinsicBounds(d, null, null, null);
-//        tvMkt.setCompoundDrawables(d, null, null, null);
         tvMkt.setTextColor(Color.parseColor(mColor));
-        tvMkt.invalidate();
 
-//        DrawableCompatUtils.setBackground(tvMkt, DrawableCompatUtils.setTintList(getContext(), R.drawable.item_background_material));
+//        DrawableCompatUtils.setBackground(tvMkt, DrawableCompatUtils.selectableItemBackground(getContext(), mColor));
+//        DrawableCompatUtils.setBackground(layoutCopyright, DrawableCompatUtils.selectableItemBackground(getContext(), mColor));
 
         Drawable dd = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
         DrawableCompat.setTint(dd, Color.parseColor(mColor));
@@ -187,8 +183,8 @@ public class BingImageTodayView extends RelativeLayout {
         mResolution = resolurtion;
 
 //        setupImageViewLayoutParams();
-
         setColor();
+
         tvMkt.setText(Utils.getMarket(getContext(), mkt));
 
         if (image == null) {
@@ -197,6 +193,8 @@ public class BingImageTodayView extends RelativeLayout {
 //            imageView.setImageDrawable(null);
             return;
         }
+
+        layoutCopyright.setVisibility(View.VISIBLE);
 
         String[] copyrightParts = image.getSplitCopyright();
         tvCopyRightLeft.setText(copyrightParts[0]);

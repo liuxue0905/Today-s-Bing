@@ -37,6 +37,7 @@ import com.lx.todaysbing.activity.ResolutionActivity;
 import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
+import com.lx.todaysbing.widget.DownloadManagerResolver;
 import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
@@ -123,6 +124,7 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 
     protected void setColor() {
         btnResolution.setTextColor(Color.parseColor(mColor));
+//        DrawableCompatUtils.setBackground(btnResolution, DrawableCompatUtils.selectableItemBackground(getContext(), mColor));
 
         Drawable d = DrawableCompat.wrap(progressBar.getIndeterminateDrawable());
         DrawableCompat.setTint(d, Color.parseColor(mColor));
@@ -184,13 +186,13 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         mToolbarTop.setNavigationOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((Activity)getContext()).finish();
+                ((Activity) getContext()).finish();
             }
         });
 
         mShareGroupVisible = false;
 
-        mBingImageDetailCopyInfoView.bind(mImageDetail);
+        mBingImageDetailCopyInfoView.bind(mColor, mImageDetail);
     }
 
     @OnClick(R.id.btnResolution)
@@ -224,7 +226,6 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 
         String subPath = Utils.getSubPath(url);
 
-        DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
         boolean has = Utils.hasExternalStoragePublicPicture(subPath);
         if (has) {
 //            Toast.makeText(getContext(), R.string.image_detail_downloaded, Toast.LENGTH_LONG).show();
@@ -234,37 +235,35 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
             return;
         }
 
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, subPath);
-        request.setTitle(title);
-        request.setDescription(description);
-        request.setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(url)));
-        request.allowScanningByMediaScanner();
-        request.setVisibleInDownloadsUi(true);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-
-        manager.enqueue(request);
-
-//        Toast.makeText(getContext(), getContext().getString(R.string.image_detail_download_start), Toast.LENGTH_LONG).show();
-        Snackbar.make(this, R.string.image_detail_download_start, Snackbar.LENGTH_LONG)
-                .setAction(android.R.string.ok, null)
-                .show();
-
-//        NotificationManager mNotificationManager = (NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-//
-//        android.support.v4.app.NotificationCompat v4NotificationCompat;
-//        android.support.v7.app.NotificationCompat v7NotificationCompat;
-//
-//        Notification notification = new NotificationCompat.Builder(getContext())
-//                .setAutoCancel(false)
-//                .setContentTitle(null)
-//                .setContentText(null)
-//                .setContentInfo(null)
-//                .build();
-//
-//        mNotificationManager.notify(null, 0, notification);
+        if (DownloadManagerResolver.resolve(getContext(), url)) {
+            saveByDownloadManager(url, subPath, title, description);
+        }
     }
 
+    private void saveByDownloadManager(String url, String subPath, String title, String description) {
+        try {
+            DownloadManager manager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url))
+                    .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES, subPath)
+                    .setTitle(title)
+                    .setDescription(description)
+                    .setMimeType(MimeTypeMap.getSingleton().getMimeTypeFromExtension(MimeTypeMap.getFileExtensionFromUrl(url)))
+                    .setVisibleInDownloadsUi(true)
+                    .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.allowScanningByMediaScanner();
+            manager.enqueue(request);
+
+            Snackbar.make(this, R.string.image_detail_download_start, Snackbar.LENGTH_LONG)
+                    .setAction(android.R.string.ok, null)
+                    .show();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            Snackbar.make(this, R.string.image_detail_download_failures, Snackbar.LENGTH_LONG)
+                    .setAction(android.R.string.ok, null)
+                    .show();
+        }
+    }
 
     public void onResolutionChanged(String resolution) {
         mResolution = resolution;
@@ -291,20 +290,9 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
             onClickHpcQzone();
             return true;
         }
-//        else if (itemId == R.id.action_hpc_weibo) {
-//            onClickHpcWeibo();
-//            return true;
-//        }
 
         return false;
     }
-
-//    private void onClickHpcWeibo() {
-//        Log.d(TAG, "onClickHpcWeibo()");
-//        Log.d(TAG, "onClickHpcWeibo() mImageDetail.getShareUrl()：" + mImageDetail.getShareUrl(mResolution));
-//
-//        share(SinaWeibo.NAME);
-//    }
 
     private void onClickHpcQzone() {
         Log.d(TAG, "onClickHpcQzone()");
