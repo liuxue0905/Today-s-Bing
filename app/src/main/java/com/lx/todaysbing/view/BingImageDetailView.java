@@ -46,11 +46,6 @@ import java.util.HashMap;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.tencent.qzone.QZone;
-import cn.sharesdk.wechat.moments.WechatMoments;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -305,7 +300,7 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
                     @Override
                     public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
                         Log.d(TAG, "onResourceReady() resource:" + resource);
-                        share(QZone.NAME, resource.getPath());
+//                        share(QZone.NAME, resource.getPath());
                     }
 
                     @Override
@@ -328,7 +323,7 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
                     @Override
                     public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
                         Log.d(TAG, "onResourceReady() resource:" + resource);
-                        share(WechatMoments.NAME, resource.getPath());
+//                        share(WechatMoments.NAME, resource.getPath());
                     }
 
                     @Override
@@ -403,42 +398,42 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         getContext().startActivity(intent);
     }
 
-    private void share(String platform, String imagePath) {
-        Platform.ShareParams sp = new Platform.ShareParams();
-        sp.setTitle(mImageDetail.copyRight);
-        sp.setTitleUrl(mImageDetail.getShareUrl(mResolution));
-        sp.setText(mImageDetail.copyRight);
-        sp.setImageUrl(mImageDetail.getShareImageUrl());
-        sp.setImagePath(imagePath);
-        sp.setUrl(mImageDetail.getShareUrl(mResolution));
-        sp.setShareType(Platform.SHARE_WEBPAGE);
+//    private void share(String platform, String imagePath) {
+//        Platform.ShareParams sp = new Platform.ShareParams();
+//        sp.setTitle(mImageDetail.copyRight);
+//        sp.setTitleUrl(mImageDetail.getShareUrl(mResolution));
+//        sp.setText(mImageDetail.copyRight);
+//        sp.setImageUrl(mImageDetail.getShareImageUrl());
+//        sp.setImagePath(imagePath);
+//        sp.setUrl(mImageDetail.getShareUrl(mResolution));
+//        sp.setShareType(Platform.SHARE_WEBPAGE);
+//
+//        Platform plat = ShareSDK.getPlatform(platform);
+//        plat.setPlatformActionListener(/*this*/mPlatformActionListener);
+//        plat.share(sp);
+//    }
 
-        Platform plat = ShareSDK.getPlatform(platform);
-        plat.setPlatformActionListener(/*this*/mPlatformActionListener);
-        plat.share(sp);
-    }
-
-    PlatformActionListener mPlatformActionListener = new PlatformActionListener() {
-        @Override
-        public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-            Log.d(TAG, "onComplete()");
-            Toast.makeText(platform.getContext(), R.string.share_success, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onError(Platform platform, int i, Throwable throwable) {
-            Log.d(TAG, "onError()");
-            if (!platform.isClientValid()) {
-                Toast.makeText(platform.getContext(), R.string.share_error_client_invalid, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Toast.makeText(platform.getContext(), R.string.share_error_fail, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onCancel(Platform platform, int i) {
-            Log.d(TAG, "onCancel()");
-            Toast.makeText(platform.getContext(), R.string.share_error_cancel, Toast.LENGTH_SHORT).show();
-        }
-    };
+//    PlatformActionListener mPlatformActionListener = new PlatformActionListener() {
+//        @Override
+//        public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
+//            Log.d(TAG, "onComplete()");
+//            Toast.makeText(platform.getContext(), R.string.share_success, Toast.LENGTH_SHORT).show();
+//        }
+//
+//        @Override
+//        public void onError(Platform platform, int i, Throwable throwable) {
+//            Log.d(TAG, "onError()");
+//            if (!platform.isClientValid()) {
+//                Toast.makeText(platform.getContext(), R.string.share_error_client_invalid, Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//            Toast.makeText(platform.getContext(), R.string.share_error_fail, Toast.LENGTH_SHORT).show();
+//        }
+//
+//        @Override
+//        public void onCancel(Platform platform, int i) {
+//            Log.d(TAG, "onCancel()");
+//            Toast.makeText(platform.getContext(), R.string.share_error_cancel, Toast.LENGTH_SHORT).show();
+//        }
+//    };
 }

@@ -9,8 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
-
-import de.greenrobot.dao.DaoLog;
+import android.util.Log;
 
 import binggallery.chinacloudsites.cn.DaoSession;
 import binggallery.chinacloudsites.cn.BingGalleryImageDao;
@@ -25,21 +24,23 @@ import binggallery.chinacloudsites.cn.BingGalleryImageDao;
 
 public class BingGalleryImageProvider extends ContentProvider {
 
+    private static final String TAG = "DB";
+
     public static final String AUTHORITY = "binggallery.chinacloudsites.cn.BingGalleryImage";
     public static final String BASE_PATH = "BingGalleryImage";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
     public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE
             + "/" + BASE_PATH;
+
     public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE
             + "/" + BASE_PATH;
-
     private static final String TABLENAME = BingGalleryImageDao.TABLENAME;
+
     private static final String PK = BingGalleryImageDao.Properties.Id
             .columnName;
-
     private static final int BINGGALLERYIMAGE_DIR = 0;
-    private static final int BINGGALLERYIMAGE_ID = 1;
 
+    private static final int BINGGALLERYIMAGE_ID = 1;
     private static final UriMatcher sURIMatcher;
 
     static {
@@ -59,7 +60,7 @@ public class BingGalleryImageProvider extends ContentProvider {
         // if(daoSession == null) {
         // throw new IllegalStateException("DaoSession must be set before content provider is created");
         // }
-        DaoLog.d("Content Provider started: " + CONTENT_URI);
+        Log.d(TAG, "Content Provider started: " + CONTENT_URI);
         return true;
     }
 
@@ -67,7 +68,7 @@ public class BingGalleryImageProvider extends ContentProvider {
         if (daoSession == null) {
             throw new IllegalStateException("DaoSession must be set during content provider is active");
         }
-        return daoSession.getDatabase();
+        return (SQLiteDatabase) daoSession.getDatabase().getRawDatabase();
     }
 
     @Override

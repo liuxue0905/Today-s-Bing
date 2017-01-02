@@ -33,11 +33,8 @@ public class Image implements Serializable {
     public static final String RESOLUTION_VALUE_L = "958x512";
     public static final String RESOLUTION_VALUE_W = "1920x1200";
 
-//    private String raw;
+    private String raw;
 
-    /** db. */
-    private Long id;
-    /** Not-null value. */
     private String uid;
     private String minpix;
     private String maxpix;
@@ -45,9 +42,8 @@ public class Image implements Serializable {
     private String desc;
 
     public Image(String raw) {
-//        setRaw(raw);
+        this.raw = raw;
 
-//        this.raw = raw;
         String[] splitRaw = raw.split("~");
 
         this.uid = arrayIndex(splitRaw, 0);
@@ -57,21 +53,12 @@ public class Image implements Serializable {
         this.desc = arrayIndex(splitRaw, 4);
     }
 
-    public Image(Long id, String uid, String minpix, String maxpix, String copyright, String desc) {
-        this.id = id;
+    public Image(String uid, String minpix, String maxpix, String copyright, String desc) {
         this.uid = uid;
         this.minpix = minpix;
         this.maxpix = maxpix;
         this.copyright = copyright;
         this.desc = desc;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     /** Not-null value. */

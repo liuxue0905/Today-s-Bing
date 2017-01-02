@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android" android:shape="rectangle">
-    <corners android:radius="5dp"/>
-	<solid android:color="#ffe0e9f7"/>
-</shape>
-<!-- From: file:/I:/Users/liuxue/StudioProjects/Today-s-Bing/ShareSDK-MainLibs/src/main/res/drawable/ssdk_recomm_def_app_image.xml --><!-- From: file:/I:/Users/liuxue/StudioProjects/Today-s-Bing/ShareSDK-OneKeyShare/build/intermediates/exploded-aar/Today-s-Bing/ShareSDK-MainLibs/unspecified/res/drawable/ssdk_recomm_def_app_image.xml -->

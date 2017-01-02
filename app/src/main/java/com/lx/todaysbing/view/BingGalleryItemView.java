@@ -20,6 +20,8 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.lx.todaysbing.R;
 
+import binggallery.chinacloudsites.cn.BingGalleryImage;
+import binggallery.chinacloudsites.cn.BingGalleryImageUtil;
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,7 +72,10 @@ public class BingGalleryItemView extends RelativeLayout {
         ButterKnife.bind(this);
     }
 
-    public void bind(int position, String color, Image image) {
+    public void bind(int position, String color, BingGalleryImage bingGalleryImage) {
+
+        Image image = BingGalleryImageUtil.bingGalleryImage2Image(bingGalleryImage);
+
         Log.d(TAG, "bind() position:" + position);
         Log.d(TAG, "bind() color:" + color);
         Log.d(TAG, "bind() image:" + image);

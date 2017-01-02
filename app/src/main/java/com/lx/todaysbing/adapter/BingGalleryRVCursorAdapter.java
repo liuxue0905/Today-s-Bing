@@ -11,6 +11,7 @@ import com.lx.todaysbing.TodaysBingApplication;
 import com.lx.todaysbing.view.BingGalleryItemView;
 import com.lx.todaysbing.widget.RecyclerViewCursorAdapter;
 
+import binggallery.chinacloudsites.cn.BingGalleryImage;
 import binggallery.chinacloudsites.cn.BingGalleryImageDao;
 import binggallery.chinacloudsites.cn.Image;
 
@@ -52,7 +53,7 @@ public class BingGalleryRVCursorAdapter extends RecyclerViewCursorAdapter {
         this.context = context;
     }
 
-    public Image getItem(int position) {
+    public BingGalleryImage getItem(int position) {
         Log.d(TAG, "getItem() position:" + position);
         Cursor cursor = (Cursor) super.getItem(position);
         return mBingGalleryImageDao.readEntity(cursor, 0);

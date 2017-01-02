@@ -8,5 +8,5 @@
     android:background="@android:color/transparent"
     android:minHeight="?attr/actionBarSize"
     local:popupTheme="@style/ThemeOverlay.AppCompat.ActionBar"
-    local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-    local:navigationIcon="@drawable/abc_ic_ab_back_mtrl_am_alpha"/>
+    local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <!--local:navigationIcon="@drawable/abc_ic_ab_back_mtrl_am_alpha"-->

@@ -15,11 +15,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.TodaysBingApplication;
 import com.lx.todaysbing.adapter.BingImagesPagerAdapter;
@@ -37,16 +32,17 @@ import java.util.Arrays;
 
 import bing.com.BingAPI;
 import bing.com.HPImageArchive;
+import binggallery.chinacloudsites.cn.BingGalleryAPI;
 import binggallery.chinacloudsites.cn.BingGalleryImageDao;
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
+import binggallery.chinacloudsites.cn.BingGalleryImageUtil;
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
-import retrofit.Call;
-import retrofit.Callback;
-import retrofit.Response;
-import retrofit.Retrofit;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import uk.co.senab.photoview.sample.HackyViewPager;
 
 /**
@@ -75,27 +71,26 @@ public class BingImagesFragment extends Fragment {
     BingAPI api;
     Call<HPImageArchive> mCallGetHPImageArchive;
     Call<String> mCallList;
-    StringRequest mStringRequestImageList;
 
     BingImagesPagerAdapter mAdapter;
-    ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
-
-        @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            mViewPagerContainer.invalidate();
+//    ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
+//
+//        @Override
+//        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//            mViewPagerContainer.invalidate();
 //            mViewPager.invalidate();
-        }
-
-        @Override
-        public void onPageSelected(int position) {
-
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int state) {
-
-        }
-    };
+//        }
+//
+//        @Override
+//        public void onPageSelected(int position) {
+//
+//        }
+//
+//        @Override
+//        public void onPageScrollStateChanged(int state) {
+//
+//        }
+//    };
     private OnBingImagesFragmentInteractionListener mListener;
 
     private String mMkt;
@@ -160,7 +155,7 @@ public class BingImagesFragment extends Fragment {
         mViewPager.setOffscreenPageLimit(mAdapter.getRealCount());
         mViewPager.setCurrentItem((mAdapter.getCount() / 2) - ((mAdapter.getCount() / 2) % mAdapter.getRealCount()));
         mViewPager.setPageMargin(0);
-        mViewPager.addOnPageChangeListener(mOnPageChangeListener);
+//        mViewPager.addOnPageChangeListener(mOnPageChangeListener);
         mViewPagerContainer.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -203,19 +198,34 @@ public class BingImagesFragment extends Fragment {
 //        progressBar.setProgressDrawable(d);
     }
 
-    private void setupViewPagerLayoutParams() {
-        ResolutionUtils.Resolution resolution = new ResolutionUtils.Resolution(mResolution);
+    private boolean setupViewPagerLayoutParams() {
 
-        int[] wh = Utils.getScaledDSizeByFixHeight(resolution.width, resolution.height, mViewPagerContainer.getWidth(), mViewPagerContainer.getHeight());
+        if (mViewPagerContainer.getWidth() != 0) {
 
-        Log.d(TAG, "setupViewPagerLayoutParams() mViewPagerContainer.getWidth()" + mViewPagerContainer.getWidth());
-        Log.d(TAG, "setupViewPagerLayoutParams() mViewPagerContainer.getHeight()" + mViewPagerContainer.getHeight());
-        Log.d(TAG, "setupViewPagerLayoutParams() resolution:" + resolution);
-        Log.d(TAG, "setupViewPagerLayoutParams() wh:" + Arrays.toString(wh));
+            ResolutionUtils.Resolution resolution = new ResolutionUtils.Resolution(mResolution);
 
-        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mViewPager.getLayoutParams();
-        params.rightMargin = mViewPagerContainer.getWidth() - Math.min(Utils.get90PWidth(getActivity()), wh[0]);
-        mViewPager.setLayoutParams(params);
+            int[] wh = Utils.getScaledDSizeByFixHeight(resolution.width, resolution.height, mViewPagerContainer.getWidth(), mViewPagerContainer.getHeight());
+
+            Log.d(TAG, "setupViewPagerLayoutParams() mViewPagerContainer.getWidth()" + mViewPagerContainer.getWidth());
+            Log.d(TAG, "setupViewPagerLayoutParams() mViewPagerContainer.getHeight()" + mViewPagerContainer.getHeight());
+            Log.d(TAG, "setupViewPagerLayoutParams() resolution:" + resolution);
+            Log.d(TAG, "setupViewPagerLayoutParams() wh:" + Arrays.toString(wh));
+            Log.d(TAG, "setupViewPagerLayoutParams() Utils.get90PWidth(getActivity()):" + Utils.get90PWidth(getActivity()));
+
+//        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mViewPager.getLayoutParams();
+//        params.rightMargin = mViewPagerContainer.getWidth() - Math.min(Utils.get90PWidth(getActivity()), wh[0]);
+//        mViewPager.setLayoutParams(params);
+
+            float pageWidth = (float) Math.min(Utils.get90PWidth(getActivity()), wh[0]) / mViewPagerContainer.getWidth();
+
+            Log.d(TAG, "setupViewPagerLayoutParams() pageWidth:" + pageWidth);
+
+            mAdapter.setPageWidth(pageWidth);
+
+            return true;
+        }
+
+        return false;
     }
 
     @Override
@@ -249,17 +259,13 @@ public class BingImagesFragment extends Fragment {
         if (mCallList != null) {
             mCallList.cancel();
         }
-
-        if (mStringRequestImageList != null) {
-            mStringRequestImageList.cancel();
-        }
     }
 
 
     public void bind(String color, final String mkt) {
         mColor = color;
         mMkt = mkt;
-        mResolution = mResolution;
+
         Log.d(TAG, "bind() color:" + color);
         Log.d(TAG, "bind() mkt:" + mkt);
         Log.d(TAG, "bind() resolution:" + mResolution);
@@ -276,10 +282,10 @@ public class BingImagesFragment extends Fragment {
         mCallGetHPImageArchive = api.getHPImageArchive("js", 0, 7, mkt, 1);
         mCallGetHPImageArchive.enqueue(new Callback<HPImageArchive>() {
             @Override
-            public void onResponse(Response<HPImageArchive> response, Retrofit retrofit) {
+            public void onResponse(Call<HPImageArchive> call, Response<HPImageArchive> response) {
                 Log.d(TAG, "onResponse()");
+                Log.d(TAG, "onResponse() call:" + call);
                 Log.d(TAG, "onResponse() response:" + response);
-                Log.d(TAG, "onResponse() retrofit:" + retrofit);
                 Log.d(TAG, "onResponse() response.body():" + response.body());
                 Log.d(TAG, "onResponse() response.message():" + response.message());
 
@@ -296,7 +302,8 @@ public class BingImagesFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Throwable t) {
+            public void onFailure(Call<HPImageArchive> call, Throwable t) {
+                Log.d(TAG, "onFailure() call:" + call);
                 Log.d(TAG, "onFailure() t:" + t);
 
                 EventBus.getDefault().removeStickyEvent(OnHPImageArchivePreLoadEvent.class);
@@ -321,7 +328,7 @@ public class BingImagesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnBingImagesFragmentInteractionListener {
-        public void onFragmentInteraction(Uri uri);
+        void onFragmentInteraction(Uri uri);
     }
 
     private void initBingGalleryList(boolean isNeedRefresh) {
@@ -342,56 +349,19 @@ public class BingImagesFragment extends Fragment {
 
         EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
 
-//        BingGalleryAPI api = TodaysBingApplication.getInstance().getBingGalleryAPI();
-//        mCallList = api.list();
-//        mCallList.enqueue(new Callback<String>() {
-//            @Override
-//            public void onResponse(Response<String> response, Retrofit retrofit) {
-//                Log.d(TAG, "onResponse()");
-//                Log.d(TAG, "onResponse() response:" + response);
-//                Log.d(TAG, "onResponse() retrofit:" + retrofit);
-//                Log.d(TAG, "onResponse() response.body():" + response.body());
-//                Log.d(TAG, "onResponse() response.message():" + response.message());
-//
-//                Image[] images = Image.parse(response.body());
-//
-//                if (images != null && images.length != 0) {
-//                    BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
-//                    bingGalleryImageDao.deleteAll();
-//                    bingGalleryImageDao.insertInTx(images);
-//
-//                    getActivity().getContentResolver().notifyChange(BingGalleryImageProvider.CONTENT_URI, null);
-//
-//                    EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-//                    EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(null));
-//                } else {
-//                    EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-//                    EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(""));
-//                }
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable t) {
-//                Log.d(TAG, "onFailure() t:" + t);
-//                //                Snackbar.make(getView(), "加载失败", Snackbar.LENGTH_SHORT)
-////                        .show();
-//
-//                EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-//                EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(t.getMessage()));
-//            }
-//        });
-
-        mStringRequestImageList = new StringRequest(Request.Method.GET, Image.API_LIST, new com.android.volley.Response.Listener<String>() {
+        BingGalleryAPI api = TodaysBingApplication.getInstance().getBingGalleryAPI();
+        mCallList = api.list();
+        mCallList.enqueue(new Callback<String>() {
             @Override
-            public void onResponse(String response) {
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.d(TAG, "onResponse() call:" + call);
                 Log.d(TAG, "onResponse() response:" + response);
-                Image[] images = Image.parse(response);
+                Image[] images = Image.parse(response.body());
 
                 if (images != null && images.length != 0) {
                     BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
                     bingGalleryImageDao.deleteAll();
-                    bingGalleryImageDao.insertInTx(images);
+                    bingGalleryImageDao.insertInTx(BingGalleryImageUtil.images2BingGalleryImages(images));
 
                     getActivity().getContentResolver().notifyChange(BingGalleryImageProvider.CONTENT_URI, null);
 
@@ -402,16 +372,16 @@ public class BingImagesFragment extends Fragment {
                     EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(""));
                 }
             }
-        }, new com.android.volley.Response.ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "onErrorResponse() error:" + error);
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d(TAG, "onResponse() call:" + call);
+                Log.d(TAG, "onResponse() t:" + t);
                 EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-                EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(error.getMessage()));
+                EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(t.getMessage()));
             }
         });
-        RequestQueue mQueue = Volley.newRequestQueue(getContext());
-        mQueue.add(mStringRequestImageList);
+
     }
 
     public void onEvent(OnBingGalleryListEvent event) {

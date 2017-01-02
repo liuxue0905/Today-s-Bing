@@ -32,6 +32,7 @@ import com.lx.todaysbing.model.BingGalleryImageDetail;
 import com.lx.todaysbing.model.ImageDetail;
 
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
+import binggallery.chinacloudsites.cn.BingGalleryImageUtil;
 import binggallery.chinacloudsites.cn.Image;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -212,7 +213,7 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
         Log.d(TAG, "onItemClick() position:" + position);
         String color = mColor;
         String resolution = mResolution;
-        Image image = mAdapter.getItem(position);
+        Image image = BingGalleryImageUtil.bingGalleryImage2Image(mAdapter.getItem(position));
         Log.d(TAG, "onItemClick() image:" + image);
         if (image != null) {
 

@@ -25,9 +25,18 @@ public class BingImagesPagerAdapter extends PagerAdapter {
     HPImageArchive mHpImageArchive;
     String mResolurtion;
 
+    private float pageWidth = 0.9f;
+
     public BingImagesPagerAdapter(Context context) {
         this.context = context;
 //        initViews();
+    }
+
+    @Override
+    public float getPageWidth(int position) {
+//        return super.getPageWidth(position);
+//        return 0.9f;
+        return pageWidth;
     }
 
     public void changeData(String color, String mkt, HPImageArchive hpImageArchive, String resolution) {
@@ -140,5 +149,10 @@ public class BingImagesPagerAdapter extends PagerAdapter {
 
     public int getRealCount() {
         return 3;
+    }
+
+    public void setPageWidth(float pageWidth) {
+        this.pageWidth = pageWidth;
+        this.notifyDataSetChanged();
     }
 }
