@@ -19,8 +19,6 @@ import com.umeng.analytics.MobclickAgent;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.ButterKnife;
-
 
 public class BingImageDetailActivity extends AppCompatActivity implements BingImageDetailFragment.OnBingImageDetailFragmentInteractionListener {
 
@@ -50,7 +48,6 @@ public class BingImageDetailActivity extends AppCompatActivity implements BingIm
         Log.d(TAG, "onCreate() savedInstanceState:" + savedInstanceState);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bing_image_detail);
-        ButterKnife.bind(this);
 
 //        Utils.setupFakeStatusBarHeightOnGlobalLayout(this, fakeStatusBar);
 

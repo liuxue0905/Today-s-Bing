@@ -12,9 +12,6 @@ import com.lx.todaysbing.R;
 import com.lx.todaysbing.model.ImageDetail;
 import com.lx.todaysbing.view.BingImageDetailView;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -29,8 +26,7 @@ public class BingImageDetailFragment extends Fragment {
     private static final String ARG_IMAGE_DETAIL = "Image";
     private static final String ARG_RESOLUTION = "Resolution";
 
-    @Bind(R.id.viewBingImageDetailView)
-    BingImageDetailView mBingImageDetailView;
+    private BingImageDetailView mBingImageDetailView;
 
     private String mColor;
     private String mResolution;
@@ -72,7 +68,8 @@ public class BingImageDetailFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+
+        mBingImageDetailView = view.findViewById(R.id.viewBingImageDetailView);
 
         bind();
     }

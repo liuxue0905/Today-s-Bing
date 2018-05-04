@@ -47,9 +47,6 @@ import java.util.Arrays;
 
 import bing.com.HPImageArchive;
 import bing.com.Image;
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -64,24 +61,16 @@ public class BingImageTodayView extends RelativeLayout {
     private String mResolution;
     private String mColor;
 
-    @Bind(R.id.tv_copyright_left)
     public TextView tvCopyRightLeft;
-    @Bind(R.id.tv_copyright_right)
     public TextView tvCopyRightRight;
-    @Bind(R.id.iv)
-    ImageView imageView;
-    @Bind(R.id.image_error)
-    ImageView imageError;
-    @Bind(R.id.layout_copyright)
-    View layoutCopyright;
+    private ImageView imageView;
+    private ImageView imageError;
+    private View layoutCopyright;
 //    @Bind(R.id.iv_mkt)
 //    ImageView ivMkt;
-    @Bind(R.id.tv_mkt)
-    TextView tvMkt;
-    @Bind(R.id.progressBar)
-    ProgressBar progressBar;
-    @Bind(R.id.btnRefresh)
-    ImageButton btnRefresh;
+    private TextView tvMkt;
+    private ProgressBar progressBar;
+    private ImageButton btnRefresh;
 
     public BingImageTodayView(Context context) {
         super(context);
@@ -106,7 +95,50 @@ public class BingImageTodayView extends RelativeLayout {
 
     public void init(Context context) {
         inflate(context, R.layout.view_bing_image_today, this);
-        ButterKnife.bind(this);
+
+        tvCopyRightLeft = findViewById(R.id.tv_copyright_left);
+        tvCopyRightRight = findViewById(R.id.tv_copyright_right);
+        imageView = findViewById(R.id.iv);
+        imageError = findViewById(R.id.image_error);
+        layoutCopyright = findViewById(R.id.layout_copyright);
+        tvMkt = findViewById(R.id.tv_mkt);
+        progressBar = findViewById(R.id.progressBar);
+        btnRefresh = findViewById(R.id.btnRefresh);
+
+        layoutCopyright.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mImage == null)
+                    return;
+
+
+                String[] resolutions = getContext().getResources().getStringArray(R.array.resolution);
+                ImageDetail imageDetail = new BingImageDetail(mImage, resolutions, mMkt);
+                BingImageDetailActivity.action(getContext(), mColor, imageDetail, mResolution);
+
+                MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_DETAIL);
+            }
+        });
+        tvMkt.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MarketActivity.action((Activity)getContext(), MarketActivity.REQUEST_CODE, mMkt);
+
+                MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_MKT);
+            }
+        });
+        btnRefresh.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EventBus.getDefault().post(new OnHPImageArchiveEvent());
+            }
+        });
+        imageError.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bind(mColor, mMkt, mImage, mResolution);
+            }
+        });
 
         Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mToolbar.setNavigationIcon(null);
@@ -224,36 +256,6 @@ public class BingImageTodayView extends RelativeLayout {
                 .into(imageView);
 
         btnRefresh.setVisibility(View.GONE);
-    }
-
-    @OnClick(R.id.layout_copyright)
-    void onClickLayoutCopyright() {
-        if (mImage == null)
-            return;
-
-
-        String[] resolutions = getContext().getResources().getStringArray(R.array.resolution);
-        ImageDetail imageDetail = new BingImageDetail(mImage, resolutions, mMkt);
-        BingImageDetailActivity.action(getContext(), mColor, imageDetail, mResolution);
-
-        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_DETAIL);
-    }
-
-    @OnClick(R.id.tv_mkt)
-    void onClickMkt() {
-        MarketActivity.action((Activity)getContext(), MarketActivity.REQUEST_CODE, mMkt);
-
-        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageToday.EVENT_ID_BINGIMAGETODAY_MKT);
-    }
-
-    @OnClick(R.id.btnRefresh)
-    void onClickRefresh() {
-        EventBus.getDefault().post(new OnHPImageArchiveEvent());
-    }
-
-    @OnClick(R.id.image_error)
-    void onClickImageError() {
-        bind(mColor, mMkt, mImage, mResolution);
     }
 
     public void onEvent(OnHPImageArchivePreLoadEvent event) {

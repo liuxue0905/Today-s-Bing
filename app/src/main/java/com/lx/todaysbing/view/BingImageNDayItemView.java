@@ -20,28 +20,20 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.lx.todaysbing.R;
 
 import bing.com.Image;
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by liuxue on 2015/5/9.
  */
 public class BingImageNDayItemView extends RelativeLayout {
 
-    @Bind(R.id.cardview)
-    CardView mCardView;
+    private CardView mCardView;
 
-    @Bind(R.id.iv)
     public ImageView imageView;
-    @Bind(R.id.tv_copyright_left)
     public TextView tvCopyRightLeft;
-    @Bind(R.id.tv_copyright_right)
     public TextView tvCopyRightRight;
-    @Bind(R.id.tvNDaysAgo)
     public TextView tvNDaysAgo;
 
-    @Bind(R.id.selector)
-    View mSelectorView;
+    private View mSelectorView;
 
     private Image mImage;
     private String mResolution;
@@ -70,7 +62,15 @@ public class BingImageNDayItemView extends RelativeLayout {
 
     public void init(Context context) {
         inflate(context, R.layout.item_bing_image_nday, this);
-        ButterKnife.bind(this);
+
+        mCardView = findViewById(R.id.cardview);
+
+        imageView = findViewById(R.id.iv);
+        tvCopyRightLeft = findViewById(R.id.tv_copyright_left);
+        tvCopyRightRight = findViewById(R.id.tv_copyright_right);
+        tvNDaysAgo = findViewById(R.id.tvNDaysAgo);
+
+        mSelectorView = findViewById(R.id.selector);
     }
 
     public void bind(int position, String color, Image image, String resolution) {

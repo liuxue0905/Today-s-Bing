@@ -34,8 +34,6 @@ import com.lx.todaysbing.model.ImageDetail;
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.BingGalleryImageUtil;
 import binggallery.chinacloudsites.cn.Image;
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -48,14 +46,11 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
     private String mColor;
     private String mResolution;
 
-    @Bind(R.id.swipeRefreshLayout)
-    MultiSwipeRefreshLayout mSwipeRefreshLayout;
-    @Bind(R.id.recyclerView)
+    private MultiSwipeRefreshLayout mSwipeRefreshLayout;
     public RecyclerView mRecyclerView;
 //    @Bind(R.id.btnRefresh)
 //    ImageButton btnRefresh;
-    @Bind(R.id.layoutSnackbar)
-    FrameLayout layoutSnackbar;
+    private FrameLayout layoutSnackbar;
 
     private BingGalleryRVCursorAdapter mAdapter;
 
@@ -99,7 +94,10 @@ public class BingGalleryView extends RelativeLayout implements AdapterView.OnIte
 
     public void init(Context context) {
         inflate(context, R.layout.view_bing_gallery, this);
-        ButterKnife.bind(this);
+
+        mSwipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+        mRecyclerView = findViewById(R.id.recyclerView);
+        layoutSnackbar = findViewById(R.id.layoutSnackbar);
 
         mSwipeRefreshLayout.setSwipeableChildren(R.id.recyclerView);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

@@ -26,8 +26,6 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements BingImagesFragment.OnBingImagesFragmentInteractionListener {
 
@@ -35,8 +33,7 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
 
     private Context mContext;
 
-    @Bind(R.id.fakeStatusBar)
-    View fakeStatusBar;
+    private View fakeStatusBar;
 
     private String mColor;
     private String mMkt;
@@ -47,7 +44,8 @@ public class MainActivity extends AppCompatActivity implements BingImagesFragmen
         mContext = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+
+        fakeStatusBar = findViewById(R.id.fakeStatusBar);
 
 //        Toolbar mToolbar = (Toolbar) findViewById(R.id.toolbar);
 //        setSupportActionBar(mToolbar);

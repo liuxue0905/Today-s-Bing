@@ -12,9 +12,6 @@ import android.widget.TextView;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.model.ImageDetail;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 /**
  * Created by liuxue on 2015/9/27.
  */
@@ -22,12 +19,9 @@ public class BingImageDetailCopyInfoView extends LinearLayout {
 
     private String mColor;
 
-    @Bind(R.id.layout_copyright)
-    View mCopyRightLayout;
-    @Bind(R.id.tv_copyright_left)
-    TextView mCopyRightLeftTV;
-    @Bind(R.id.tv_copyright_right)
-    TextView mCopyRightRightTV;
+    private View mCopyRightLayout;
+    private TextView mCopyRightLeftTV;
+    private TextView mCopyRightRightTV;
 
     public BingImageDetailCopyInfoView(Context context) {
         super(context);
@@ -52,7 +46,10 @@ public class BingImageDetailCopyInfoView extends LinearLayout {
 
     private void init(Context context) {
         inflate(context, R.layout.image_detail_copy_info, this);
-        ButterKnife.bind(this);
+
+        mCopyRightLayout = findViewById(R.id.layout_copyright);
+        mCopyRightLeftTV = findViewById(R.id.tv_copyright_left);
+        mCopyRightRightTV = findViewById(R.id.tv_copyright_right);
 
         setUnderLineTextFlag(mCopyRightLeftTV);
     }

@@ -37,8 +37,6 @@ import binggallery.chinacloudsites.cn.BingGalleryImageDao;
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.BingGalleryImageUtil;
 import binggallery.chinacloudsites.cn.Image;
-import butterknife.Bind;
-import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,10 +59,8 @@ public class BingImagesFragment extends Fragment {
     private static final String ARG_COLOR = "color";
     private static final String ARG_MKT = "mkt";
 
-    @Bind(R.id.viewPagerContainer)
-    ViewGroup mViewPagerContainer;
-    @Bind(R.id.viewPager)
-    HackyViewPager mViewPager;
+    private ViewGroup mViewPagerContainer;
+    private HackyViewPager mViewPager;
 //    @InjectView(R.id.progressBar)
 //    ProgressBar progressBar;
 
@@ -73,7 +69,7 @@ public class BingImagesFragment extends Fragment {
     Call<String> mCallList;
 
     BingImagesPagerAdapter mAdapter;
-//    ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
+    //    ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
 //
 //        @Override
 //        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -143,7 +139,9 @@ public class BingImagesFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
+
+        mViewPagerContainer = view.findViewById(R.id.viewPagerContainer);
+        mViewPager = view.findViewById(R.id.viewPager);
 
         mViewPager.setLocked(true);
 

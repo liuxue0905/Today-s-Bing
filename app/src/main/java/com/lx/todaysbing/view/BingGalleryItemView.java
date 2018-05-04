@@ -23,8 +23,6 @@ import com.lx.todaysbing.R;
 import binggallery.chinacloudsites.cn.BingGalleryImage;
 import binggallery.chinacloudsites.cn.BingGalleryImageUtil;
 import binggallery.chinacloudsites.cn.Image;
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by liuxue on 2015/6/21.
@@ -33,15 +31,11 @@ public class BingGalleryItemView extends RelativeLayout {
 
     private static final String TAG = BingGalleryItemView.class.getCanonicalName();
 
-    @Bind(R.id.cardview)
-    CardView mCardView;
-//    @Bind(R.id.root)
+    private CardView mCardView;
+    //    @Bind(R.id.root)
 //    public View rootView;
-    @Bind(R.id.iv)
     public ImageView imageView;
-    @Bind(R.id.tv_copyright_left)
     TextView tvCopyRightLeft;
-    @Bind(R.id.tv_copyright_right)
     public TextView tvCopyRightRight;
 
     private String mColor;
@@ -69,7 +63,11 @@ public class BingGalleryItemView extends RelativeLayout {
 
     private void init(Context context) {
         inflate(context, R.layout.item_bing_gallery, this);
-        ButterKnife.bind(this);
+
+        mCardView = findViewById(R.id.cardview);
+        imageView = findViewById(R.id.iv);
+        tvCopyRightLeft = findViewById(R.id.tv_copyright_left);
+        tvCopyRightRight = findViewById(R.id.tv_copyright_right);
     }
 
     public void bind(int position, String color, BingGalleryImage bingGalleryImage) {

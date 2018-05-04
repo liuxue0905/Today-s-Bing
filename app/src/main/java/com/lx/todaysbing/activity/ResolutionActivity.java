@@ -15,9 +15,6 @@ import com.lx.todaysbing.adapter.ResolutionAdapter;
 import com.lx.todaysbing.util.Utils;
 import com.umeng.analytics.MobclickAgent;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 
 public class ResolutionActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -25,10 +22,8 @@ public class ResolutionActivity extends AppCompatActivity implements AdapterView
     public static final String EXTRA_RESOLUTION = "resolution";
     public static final int REQUEST_CODE = 1;
 
-    @Bind(R.id.fakeStatusBar)
-    View fakeStatusBar;
-    @Bind(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    private View fakeStatusBar;
+    private RecyclerView mRecyclerView;
 
     private ResolutionAdapter mAdapter;
 
@@ -45,7 +40,9 @@ public class ResolutionActivity extends AppCompatActivity implements AdapterView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resolution);
-        ButterKnife.bind(this);
+
+        fakeStatusBar = findViewById(R.id.fakeStatusBar);
+        mRecyclerView = findViewById(R.id.recyclerView);
 
         mResolutions = getIntent().getStringArrayExtra(EXTRA_RESOLUTIONS);
 

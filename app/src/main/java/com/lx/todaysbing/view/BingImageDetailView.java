@@ -43,9 +43,6 @@ import com.umeng.analytics.MobclickAgent;
 import java.io.File;
 import java.util.HashMap;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -56,29 +53,18 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 
     private static final String TAG = BingImageDetailView.class.getCanonicalName();
 
-    @Bind(R.id.layout_toobar_top)
-    View mLayoutToobarTop;
-    @Bind(R.id.layout_toolbar_bottom)
-    View mLayoutToobarBottom;
-    @Bind(R.id.toolbarTop)
-    Toolbar mToolbarTop;
-    @Bind(R.id.toolbarBottom)
-    Toolbar mToolbarBottom;
+    private View mLayoutToobarTop;
+    private View mLayoutToobarBottom;
+    private Toolbar mToolbarTop;
+    private Toolbar mToolbarBottom;
 
-    @Bind(R.id.fakeStatusBar)
-    View fakeStatusBar;
-    @Bind(R.id.iv)
-    PhotoView imageView;
-    @Bind(R.id.progressBar)
-    ProgressBar progressBar;
-    @Bind(R.id.btnResolution)
-    Button btnResolution;
-    @Bind(R.id.tvEnabledRotation)
-    TextView tvEnabledRotation;
-    @Bind(R.id.image_detail_copy_info)
-    BingImageDetailCopyInfoView mBingImageDetailCopyInfoView;
-    @Bind(R.id.image_error)
-    ImageView mImageErrorView;
+    private View fakeStatusBar;
+    private PhotoView imageView;
+    private ProgressBar progressBar;
+    private Button btnResolution;
+    private TextView tvEnabledRotation;
+    private BingImageDetailCopyInfoView mBingImageDetailCopyInfoView;
+    private ImageView mImageErrorView;
 
     private String mColor;
     private String mResolution;
@@ -108,7 +94,43 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 
     public void init(Context context) {
         inflate(context, R.layout.view_bing_image_detail, this);
-        ButterKnife.bind(this);
+
+        mLayoutToobarTop = findViewById(R.id.layout_toobar_top);
+        mLayoutToobarBottom = findViewById(R.id.layout_toolbar_bottom);
+        mToolbarTop = findViewById(R.id.toolbarTop);
+        mToolbarBottom = findViewById(R.id.toolbarBottom);
+
+        fakeStatusBar = findViewById(R.id.fakeStatusBar);
+        imageView = findViewById(R.id.iv);
+        progressBar = findViewById(R.id.progressBar);
+        btnResolution = findViewById(R.id.btnResolution);
+        tvEnabledRotation = findViewById(R.id.tvEnabledRotation);
+        mBingImageDetailCopyInfoView = findViewById(R.id.image_detail_copy_info);
+        mImageErrorView = findViewById(R.id.image_error);
+
+        btnResolution.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "onClickResolution()");
+                ResolutionActivity.action((Activity) getContext(), ResolutionActivity.REQUEST_CODE, mImageDetail.resolutions, mResolution);
+
+                MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_RESOLUTION);
+            }
+        });
+        mBingImageDetailCopyInfoView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(mImageDetail.getShareUrl(mResolution)));
+                getContext().startActivity(intent);
+            }
+        });
+        mImageErrorView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateViews();
+            }
+        });
 
         Utils.setupFakeStatusBarHeightOnGlobalLayout((Activity) getContext(), fakeStatusBar);
 
@@ -188,14 +210,6 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         mShareGroupVisible = false;
 
         mBingImageDetailCopyInfoView.bind(mColor, mImageDetail);
-    }
-
-    @OnClick(R.id.btnResolution)
-    void onClickResolution() {
-        Log.d(TAG, "onClickResolution()");
-        ResolutionActivity.action((Activity) getContext(), ResolutionActivity.REQUEST_CODE, mImageDetail.resolutions, mResolution);
-
-        MobclickAgent.onEvent(getContext(), MobclickAgentHelper.BingImageDetail.EVENT_ID_BINGIMAGENDAY_RESOLUTION);
     }
 
     void onClickHpcDown() {
@@ -380,22 +394,10 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 //        oks.show(getContext());
 //    }
 
-    @OnClick(R.id.image_error)
-    void onClickImageError() {
-        updateViews();
-    }
-
     @Override
     public void onViewTap(View view, float x, float y) {
         mLayoutToobarTop.setVisibility(mLayoutToobarTop.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         mLayoutToobarBottom.setVisibility(mLayoutToobarBottom.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
-    }
-
-    @OnClick(R.id.image_detail_copy_info)
-    void onClickViewCopyInfo() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(mImageDetail.getShareUrl(mResolution)));
-        getContext().startActivity(intent);
     }
 
 //    private void share(String platform, String imagePath) {

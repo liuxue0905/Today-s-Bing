@@ -14,17 +14,13 @@ import com.lx.todaysbing.R;
 import com.lx.todaysbing.adapter.MarketAdapter;
 import com.umeng.analytics.MobclickAgent;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
-
 
 public class MarketActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     public static final String EXTRA_MARKET = "market";
     public static final int REQUEST_CODE = 1;
 
-    @Bind(R.id.recyclerView)
-    RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
 
     private MarketAdapter mAdapter;
 
@@ -38,7 +34,8 @@ public class MarketActivity extends AppCompatActivity implements AdapterView.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market);
-        ButterKnife.bind(this);
+
+        mRecyclerView = findViewById(R.id.recyclerView);
 
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);

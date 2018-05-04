@@ -27,8 +27,7 @@ import java.util.Map;
 
 import bing.com.HPImageArchive;
 import bing.com.Image;
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
 import de.greenrobot.event.EventBus;
 
 /**
@@ -38,7 +37,6 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
 
     private static final String TAG = "BingImageNDayView";
 
-    @Bind(R.id.recyclerView)
     public RecyclerView mRecyclerView;
 
     private ImageNDayRecyclerViewAdapter mAdapter;
@@ -70,7 +68,8 @@ public class BingImageNDayView extends RelativeLayout implements AdapterView.OnI
 
     public void init(Context context) {
         inflate(context, R.layout.view_bing_image_nday, this);
-        ButterKnife.bind(this);
+
+        mRecyclerView = findViewById(R.id.recyclerView);
 
         setRecyclerViewLayoutManager();
     }
