@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.lx.todaysbing.R;
 
 import bing.com.Image;
@@ -86,11 +87,13 @@ public class BingImageNDayItemView extends RelativeLayout {
 
         setupTvNDaysAgo(position);
 
+        RequestOptions requestOptions = new RequestOptions()
+                .error(R.drawable.no_image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
         Glide.with(getContext())
                 .load(Image.rebuildImageUrl(image, resolution))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .placeholder(R.drawable.no_image)
-                .error(R.drawable.no_image)
+                .apply(requestOptions)
                 .into(imageView);
 
         Drawable drawable = DrawableCompat.wrap(mSelectorView.getBackground());

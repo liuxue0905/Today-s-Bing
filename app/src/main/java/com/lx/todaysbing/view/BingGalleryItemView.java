@@ -2,21 +2,22 @@ package com.lx.todaysbing.view;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.RippleDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.lx.todaysbing.R;
 
@@ -92,20 +93,22 @@ public class BingGalleryItemView extends RelativeLayout {
             tvCopyRightRight.setText(null);
         }
 
+        RequestOptions requestOptions = new RequestOptions()
+                .error(R.drawable.no_image)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
         Glide.with(getContext())
                 .load(image.getMinpixUrl())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .placeholder(R.drawable.no_image)
-                .error(R.drawable.no_image)
-                .listener(new RequestListener<String, GlideDrawable>() {
+                .apply(requestOptions)
+                .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
                         return false;
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         imageView.setScaleType(ImageView.ScaleType.FIT_XY);
                         return false;
                     }

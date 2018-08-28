@@ -23,10 +23,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import bing.com.Image;
 import com.lx.todaysbing.view.BingImageNDayItemView;
 
 import java.util.List;
+
+import bing.com.Image;
 
 /**
  * Provide views to RecyclerView with data from mDataSet.

@@ -1,7 +1,6 @@
 package com.lx.todaysbing.model;
 
 import java.io.Serializable;
-import java.util.Map;
 
 /**
  * Created by liuxue on 2015/9/26.

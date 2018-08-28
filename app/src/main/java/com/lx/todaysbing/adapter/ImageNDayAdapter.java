@@ -5,10 +5,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import bing.com.Image;
 import com.lx.todaysbing.view.BingImageNDayItemView;
 
 import java.util.List;
+
+import bing.com.Image;
 
 /**
  * Created by liuxue on 2015/5/9.

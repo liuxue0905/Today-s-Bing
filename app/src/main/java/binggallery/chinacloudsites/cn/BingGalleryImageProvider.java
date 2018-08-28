@@ -11,9 +11,6 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
-import binggallery.chinacloudsites.cn.DaoSession;
-import binggallery.chinacloudsites.cn.BingGalleryImageDao;
-
 /* Copy this code snippet into your AndroidManifest.xml inside the
 <application> element:
 

@@ -27,7 +27,6 @@ import java.util.Map;
 
 import bing.com.HPImageArchive;
 import bing.com.Image;
-
 import de.greenrobot.event.EventBus;
 
 /**

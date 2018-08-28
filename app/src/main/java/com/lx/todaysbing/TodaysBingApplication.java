@@ -10,12 +10,13 @@ import binggallery.chinacloudsites.cn.BingGalleryImageDao;
 import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
 import binggallery.chinacloudsites.cn.DaoMaster;
 import binggallery.chinacloudsites.cn.DaoSession;
-//import cn.sharesdk.framework.ShareSDK;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
+
+//import cn.sharesdk.framework.ShareSDK;
 
 //import binggallery.chinacloudsites.cn.ImageConverter;
 //import retrofit.RestAdapter;

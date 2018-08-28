@@ -13,7 +13,6 @@ import com.lx.todaysbing.widget.RecyclerViewCursorAdapter;
 
 import binggallery.chinacloudsites.cn.BingGalleryImage;
 import binggallery.chinacloudsites.cn.BingGalleryImageDao;
-import binggallery.chinacloudsites.cn.Image;
 
 /**
  * Created by liuxue on 2015/6/21.

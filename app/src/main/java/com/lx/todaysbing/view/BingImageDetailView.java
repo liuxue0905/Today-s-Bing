@@ -9,6 +9,8 @@ import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.Toolbar;
@@ -26,12 +28,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
+import com.bumptech.glide.request.transition.Transition;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.ResolutionActivity;
 import com.lx.todaysbing.model.ImageDetail;
@@ -39,9 +41,6 @@ import com.lx.todaysbing.umeng.MobclickAgentHelper;
 import com.lx.todaysbing.util.Utils;
 import com.lx.todaysbing.widget.DownloadManagerResolver;
 import com.umeng.analytics.MobclickAgent;
-
-import java.io.File;
-import java.util.HashMap;
 
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -176,23 +175,20 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
         imageView.setScale(1.0F, false);
         Glide.with(getContext())
                 .load(mImageDetail.getImageUrl(mResolution))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-//                .error(R.drawable.no_image)
-                .listener(new RequestListener<String, GlideDrawable>() {
+                .listener(new RequestListener<Drawable>() {
                     @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
                         progressBar.setVisibility(View.GONE);
                         mImageErrorView.setVisibility(View.VISIBLE);
                         return false;
                     }
 
                     @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
                         progressBar.setVisibility(View.GONE);
                         mImageErrorView.setVisibility(View.GONE);
                         return false;
                     }
-
                 })
                 .into(imageView);
 
@@ -310,16 +306,16 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 //        share(QZone.NAME);
         Glide.with(getContext())
                 .load(mImageDetail.getImageUrl(mResolution))
-                .downloadOnly(new SimpleTarget<File>() {
+                .into(new SimpleTarget<Drawable>() {
                     @Override
-                    public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         Log.d(TAG, "onResourceReady() resource:" + resource);
-//                        share(QZone.NAME, resource.getPath());
                     }
 
                     @Override
-                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                        super.onLoadFailed(e, errorDrawable);
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                        super.onLoadFailed(errorDrawable);
+
                         Log.d(TAG, "onLoadFailed()");
                         Toast.makeText(getContext(), R.string.share_error_image_path_fail, Toast.LENGTH_SHORT).show();
                     }
@@ -333,21 +329,20 @@ public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMen
 //        share(WechatMoments.NAME);
         Glide.with(getContext())
                 .load(mImageDetail.getImageUrl(mResolution))
-                .downloadOnly(new SimpleTarget<File>() {
+                .into(new SimpleTarget<Drawable>() {
                     @Override
-                    public void onResourceReady(File resource, GlideAnimation<? super File> glideAnimation) {
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                         Log.d(TAG, "onResourceReady() resource:" + resource);
-//                        share(WechatMoments.NAME, resource.getPath());
                     }
 
                     @Override
-                    public void onLoadFailed(Exception e, Drawable errorDrawable) {
-                        super.onLoadFailed(e, errorDrawable);
+                    public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                        super.onLoadFailed(errorDrawable);
+
                         Log.d(TAG, "onLoadFailed()");
                         Toast.makeText(getContext(), R.string.share_error_image_path_fail, Toast.LENGTH_SHORT).show();
                     }
                 });
-
 
 //        Glide.with(getContext())
 //                .load(mImageDetail.getImageUrl(mResolution))

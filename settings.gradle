@@ -1,2 +1,1 @@
 include ':app', ':data-bing-library', ':data-binggallery-library'
-include ':ImageViewKeepRatio-lib'
