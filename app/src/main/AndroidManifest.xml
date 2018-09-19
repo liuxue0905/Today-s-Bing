@@ -46,10 +46,6 @@
             android:name=".activity.MarketActivity"
             android:label="@string/title_activity_market" />
 
-        <provider
-            android:name="binggallery.chinacloudsites.cn.BingGalleryImageProvider"
-            android:authorities="binggallery.chinacloudsites.cn.BingGalleryImage" />
-
         <service
             android:name="com.umeng.update.net.DownloadingService"
             android:process=":DownloadingService"></service>

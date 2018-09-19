@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -16,9 +17,6 @@ import android.view.ViewTreeObserver;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.TodaysBingApplication;
 import com.lx.todaysbing.adapter.BingImagesPagerAdapter;
-import com.lx.todaysbing.event.OnBingGalleryListEvent;
-import com.lx.todaysbing.event.OnBingGalleryListOnErrorResponseEvent;
-import com.lx.todaysbing.event.OnBingGallerySwipeRefreshLayoutRefreshingEvent;
 import com.lx.todaysbing.event.OnHPImageArchiveEvent;
 import com.lx.todaysbing.event.OnHPImageArchiveFailureEvent;
 import com.lx.todaysbing.event.OnHPImageArchivePreLoadEvent;
@@ -30,11 +28,6 @@ import java.util.Arrays;
 
 import bing.com.BingAPI;
 import bing.com.HPImageArchive;
-import binggallery.chinacloudsites.cn.BingGalleryAPI;
-import binggallery.chinacloudsites.cn.BingGalleryImageDao;
-import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
-import binggallery.chinacloudsites.cn.BingGalleryImageUtil;
-import binggallery.chinacloudsites.cn.Image;
 import de.greenrobot.event.EventBus;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -67,7 +60,7 @@ public class BingImagesFragment extends Fragment {
     Call<String> mCallList;
 
     BingImagesPagerAdapter mAdapter;
-    //    ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
+//        ViewPager.OnPageChangeListener mOnPageChangeListener = new ViewPager.OnPageChangeListener() {
 //
 //        @Override
 //        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -148,7 +141,8 @@ public class BingImagesFragment extends Fragment {
         mAdapter = new BingImagesPagerAdapter(getActivity());
 
         mViewPager.setAdapter(mAdapter);
-        mViewPager.setOffscreenPageLimit(mAdapter.getRealCount());
+//        mViewPager.setOffscreenPageLimit(mAdapter.getRealCount());
+        mViewPager.setOffscreenPageLimit(3);
         mViewPager.setCurrentItem((mAdapter.getCount() / 2) - ((mAdapter.getCount() / 2) % mAdapter.getRealCount()));
         mViewPager.setPageMargin(0);
 //        mViewPager.addOnPageChangeListener(mOnPageChangeListener);
@@ -207,10 +201,6 @@ public class BingImagesFragment extends Fragment {
             Log.d(TAG, "setupViewPagerLayoutParams() resolution:" + resolution);
             Log.d(TAG, "setupViewPagerLayoutParams() wh:" + Arrays.toString(wh));
             Log.d(TAG, "setupViewPagerLayoutParams() Utils.get90PWidth(getActivity()):" + Utils.get90PWidth(getActivity()));
-
-//        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) mViewPager.getLayoutParams();
-//        params.rightMargin = mViewPagerContainer.getWidth() - Math.min(Utils.get90PWidth(getActivity()), wh[0]);
-//        mViewPager.setLayoutParams(params);
 
             float pageWidth = (float) Math.min(Utils.get90PWidth(getActivity()), wh[0]) / mViewPagerContainer.getWidth();
 
@@ -293,8 +283,6 @@ public class BingImagesFragment extends Fragment {
                 mAdapter.changeData(mColor, mMkt, hpImageArchive, mResolution);
 
                 mViewPager.setLocked(false);
-
-                initBingGalleryList(false);
             }
 
             @Override
@@ -325,63 +313,6 @@ public class BingImagesFragment extends Fragment {
      */
     public interface OnBingImagesFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
-    }
-
-    private void initBingGalleryList(boolean isNeedRefresh) {
-        Log.d(TAG, "initBingGalleryList() isNeedRefresh:" + isNeedRefresh);
-
-        EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(null));
-
-        if (!isNeedRefresh) {
-            BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
-//            List<Image> imageList = bingGalleryImageDao.loadAll();
-            long count = bingGalleryImageDao.count();
-
-            Log.d(TAG, "initBingGalleryList() db count:" + count);
-            if (count != 0) {
-                return;
-            }
-        }
-
-        EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(true));
-
-        BingGalleryAPI api = TodaysBingApplication.getInstance().getBingGalleryAPI();
-        mCallList = api.list();
-        mCallList.enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                Log.d(TAG, "onResponse() call:" + call);
-                Log.d(TAG, "onResponse() response:" + response);
-                Image[] images = Image.parse(response.body());
-
-                if (images != null && images.length != 0) {
-                    BingGalleryImageDao bingGalleryImageDao = TodaysBingApplication.getInstance().getBingGalleryImageDao();
-                    bingGalleryImageDao.deleteAll();
-                    bingGalleryImageDao.insertInTx(BingGalleryImageUtil.images2BingGalleryImages(images));
-
-                    getActivity().getContentResolver().notifyChange(BingGalleryImageProvider.CONTENT_URI, null);
-
-                    EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-                    EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(null));
-                } else {
-                    EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-                    EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(""));
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                Log.d(TAG, "onResponse() call:" + call);
-                Log.d(TAG, "onResponse() t:" + t);
-                EventBus.getDefault().postSticky(new OnBingGallerySwipeRefreshLayoutRefreshingEvent(false));
-                EventBus.getDefault().postSticky(new OnBingGalleryListOnErrorResponseEvent(t.getMessage()));
-            }
-        });
-
-    }
-
-    public void onEvent(OnBingGalleryListEvent event) {
-        initBingGalleryList(true);
     }
 
     public void onEvent(OnHPImageArchiveEvent event) {

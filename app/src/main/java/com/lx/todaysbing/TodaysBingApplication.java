@@ -5,11 +5,6 @@ import android.app.Application;
 import org.greenrobot.greendao.database.Database;
 
 import bing.com.BingAPI;
-import binggallery.chinacloudsites.cn.BingGalleryAPI;
-import binggallery.chinacloudsites.cn.BingGalleryImageDao;
-import binggallery.chinacloudsites.cn.BingGalleryImageProvider;
-import binggallery.chinacloudsites.cn.DaoMaster;
-import binggallery.chinacloudsites.cn.DaoSession;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -33,10 +28,7 @@ public class TodaysBingApplication extends Application {
      */
     public static final boolean ENCRYPTED = false;
 
-    private DaoSession daoSession;
-
     private BingAPI mBingAPI;
-    private BingGalleryAPI mBingGalleryAPI;
 
     public static TodaysBingApplication getInstance() {
         return sInstance;
@@ -46,20 +38,9 @@ public class TodaysBingApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        // greendao
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, ENCRYPTED ? "bing-db-encrypted" : "bing-db");
-        Database db = ENCRYPTED ? helper.getEncryptedWritableDb("super-secret") : helper.getWritableDb();
-        daoSession = new DaoMaster(db).newSession();
-
-        BingGalleryImageProvider.daoSession = daoSession;
-
         sInstance = this;
 
 //        ShareSDK.initSDK(this);
-    }
-
-    public DaoSession getDaoSession() {
-        return daoSession;
     }
 
     @Override
@@ -67,10 +48,6 @@ public class TodaysBingApplication extends Application {
         super.onTerminate();
 
         sInstance = null;
-    }
-
-    public BingGalleryImageDao getBingGalleryImageDao() {
-        return daoSession.getBingGalleryImageDao();
     }
 
     public BingAPI getBingAPI() {
@@ -96,32 +73,6 @@ public class TodaysBingApplication extends Application {
         }
 
         return mBingAPI;
-    }
-
-    public BingGalleryAPI getBingGalleryAPI() {
-
-        if (mBingGalleryAPI == null) {
-
-            HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-            // set your desired log level
-            logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-            OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
-            // add your other interceptors
-
-            // add logging as last interceptor
-            httpClient.addInterceptor(logging);  // <-- this is the important line!
-
-            Retrofit retrofit = new Retrofit.Builder()
-                    .baseUrl(BingGalleryAPI.END_POINT)
-                    .addConverterFactory(ScalarsConverterFactory.create())
-                    .client(httpClient.build())
-                    .build();
-
-            mBingGalleryAPI = retrofit.create(BingGalleryAPI.class);
-        }
-
-        return mBingGalleryAPI;
     }
 
 }

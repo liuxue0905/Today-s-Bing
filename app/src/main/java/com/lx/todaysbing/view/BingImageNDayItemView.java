@@ -89,6 +89,7 @@ public class BingImageNDayItemView extends RelativeLayout {
 
         RequestOptions requestOptions = new RequestOptions()
                 .error(R.drawable.no_image)
+                .disallowHardwareConfig()
                 .diskCacheStrategy(DiskCacheStrategy.ALL);
 
         Glide.with(getContext())
