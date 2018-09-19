@@ -35,6 +35,8 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
+import com.github.chrisbanes.photoview.OnViewTapListener;
+import com.github.chrisbanes.photoview.PhotoView;
 import com.lx.todaysbing.R;
 import com.lx.todaysbing.activity.ResolutionActivity;
 import com.lx.todaysbing.model.ImageDetail;
@@ -43,13 +45,10 @@ import com.lx.todaysbing.util.Utils;
 import com.lx.todaysbing.widget.DownloadManagerResolver;
 import com.umeng.analytics.MobclickAgent;
 
-import uk.co.senab.photoview.PhotoView;
-import uk.co.senab.photoview.PhotoViewAttacher;
-
 /**
  * Created by liuxue on 2015/5/9.
  */
-public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMenuItemClickListener, PhotoViewAttacher.OnViewTapListener {
+public class BingImageDetailView extends RelativeLayout implements Toolbar.OnMenuItemClickListener, OnViewTapListener {
 
     private static final String TAG = BingImageDetailView.class.getCanonicalName();
 

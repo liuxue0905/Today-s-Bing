@@ -2,8 +2,6 @@ package com.lx.todaysbing;
 
 import android.app.Application;
 
-import org.greenrobot.greendao.database.Database;
-
 import bing.com.BingAPI;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -12,9 +10,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 //import cn.sharesdk.framework.ShareSDK;
-
-//import binggallery.chinacloudsites.cn.ImageConverter;
-//import retrofit.RestAdapter;
 
 /**
  * Created by liuxue on 2015/6/23.
